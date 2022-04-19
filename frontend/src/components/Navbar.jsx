@@ -1,10 +1,14 @@
-import { Outlet } from "react-router-dom";
 
 const Navbar = () => {
+
+  const Login = () => {
+    console.log('hi')
+  }
+
   return (
     <>
-      <h1>네브바</h1>
-      <Outlet /> 
+      <h1>SSapilogue</h1>
+      <button onClick={Login} >로그인</button>
     </>
   )
 }
