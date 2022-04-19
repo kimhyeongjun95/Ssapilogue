@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,6 +36,9 @@ public class ProjectComment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @OneToMany(mappedBy = "projectComment", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder
     public ProjectComment(String content, Project project) {
