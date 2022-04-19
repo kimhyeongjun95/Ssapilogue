@@ -25,7 +25,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .groupName("Ssapilogue API")
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ssafy.ssapilogue.api.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.ssafy.ssapilogue.api"))
                 .paths(PathSelectors.any())
                 .build();
     }
