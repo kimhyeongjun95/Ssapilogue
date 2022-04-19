@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +22,10 @@ public class TechStack {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @Builder
+    private TechStack(String name, Project project) {
+        this.name = name;
+        this.project = project;
+    }
 }
