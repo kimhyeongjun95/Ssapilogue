@@ -13,9 +13,9 @@ import java.util.List;
 public class Survey {
 
     @Id
-    private String id;
+    private Long id;
 
-//    private Project project;
+    private Project project;
 
     private String title;
 
