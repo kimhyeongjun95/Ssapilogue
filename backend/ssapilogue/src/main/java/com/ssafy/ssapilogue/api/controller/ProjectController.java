@@ -1,6 +1,7 @@
 package com.ssafy.ssapilogue.api.controller;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
+import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
 import com.ssafy.ssapilogue.api.service.ProjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Api(tags = "Project", value = "프로젝트 API")
@@ -19,6 +21,20 @@ import java.util.Map;
 public class ProjectController {
 
     private final ProjectService projectService;
+
+    @GetMapping
+    @ApiOperation(value = "프로젝트 전체조회", notes = "전체 프로젝트를 조회한다.")
+    public ResponseEntity<Map<String, Object>> findProject(
+            @RequestParam @ApiParam(value = "카테고리") String category) {
+
+        Map<String, Object> result = new HashMap<>();
+        List<FindProjectResDto> projectList = null;
+
+        projectList = projectService.findProjects(category);
+        result.put("projectList", projectList);
+
+        return ResponseEntity.ok().body(result);
+    }
 
     @PostMapping
     @ApiOperation(value = "프로젝트 등록", notes = "새로운 프로젝트를 등록한다.")
@@ -36,7 +52,7 @@ public class ProjectController {
     @DeleteMapping("/{projectId}")
     @ApiOperation(value = "프로젝트 삭제", notes = "프로젝트를 삭제한다.")
     public ResponseEntity<Map<String, Object>> deleteProject(
-            @PathVariable @ApiParam(value = "프로젝트 id", required = true) Long projectId) {
+            @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId) {
 
         Map<String, Object> result = new HashMap<>();
 

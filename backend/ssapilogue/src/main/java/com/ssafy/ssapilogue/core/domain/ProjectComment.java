@@ -38,7 +38,7 @@ public class ProjectComment {
     private Project project;
 
     @OneToMany(mappedBy = "projectComment", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Bookmark> bookmarkList = new ArrayList<>();
+    private List<ProjectRecomment> projectRecomments = new ArrayList<>();
 
     @Builder
     public ProjectComment(String content, Project project) {
