@@ -1,9 +1,13 @@
-import './App.css';
+import React from 'react';
+
+import Routes from './pages/Routes';
+import Navbar from './components/Navbar';
 
 function App() {
   return (
     <>
-      <h1>하이</h1>
+      <Navbar />
+      <Routes />
     </>
   );
 }
