@@ -1,17 +1,22 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Table(name = "project")
 @NoArgsConstructor
+@EntityListeners({AuditingEntityListener.class})
 public class Project {
 
     @Id
@@ -41,6 +46,29 @@ public class Project {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<TechStack> techStacks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ProjectComment> projectComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Liked> likedList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Bookmark> bookmarkList = new ArrayList<>();
+
+    @Builder
+    private Project(String title, String introduce, Category category, String deployAddress, String gitAddress, String thumbnail, String readme) {
+        this.title = title;
+        this.introduce = introduce;
+        this.category = category;
+        this.deployAddress = deployAddress;
+        this.gitAddress = gitAddress;
+        this.thumbnail = thumbnail;
+        this.readme = readme;
+    }
 
     // 조회수 증가를 위한 편의 함수
     public void increaseHits() {
