@@ -20,6 +20,7 @@ public class ProjectServiceImpl implements ProjectService{
     private final ProjectRepository projectRepository;
     private final TechStackRepository techStackRepository;
 
+    // 프로젝트 등록
     @Override
     public Long createProject(CreateProjectReqDto createProjectReqDto) {
         Project project = Project.builder()
@@ -44,5 +45,11 @@ public class ProjectServiceImpl implements ProjectService{
         }
 
         return saveProject.getId();
+    }
+
+    // 프로젝트 삭제
+    @Override
+    public void deleteProject(Long projectId) {
+        projectRepository.deleteById(projectId);
     }
 }

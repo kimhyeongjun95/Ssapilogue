@@ -33,5 +33,16 @@ public class ProjectController {
         return ResponseEntity.ok().body(result);
     }
 
-    
+    @DeleteMapping("/{projectId}")
+    @ApiOperation(value = "프로젝트 삭제", notes = "프로젝트를 삭제한다.")
+    public ResponseEntity<Map<String, Object>> deleteProject(
+            @PathVariable @ApiParam(value = "프로젝트 id", required = true) Long projectId) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        projectService.deleteProject(projectId);
+        result.put("status", "SUCCESS");
+
+        return ResponseEntity.ok().body(result);
+    }
 }
