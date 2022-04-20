@@ -13,10 +13,6 @@ import javax.validation.constraints.NotNull;
 public class CreateSurveyOptionReqDto {
 
     @NotNull
-    @ApiModelProperty(value = "설문조사 id", required = true, example = "1")
-    private Long surveyId;
-
-    @NotNull
     @ApiModelProperty(value = "옵션 번호", required = true, example = "1")
     private Integer index;
 

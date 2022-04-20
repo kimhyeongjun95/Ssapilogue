@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.api.dto.response;
 
+import com.ssafy.ssapilogue.core.domain.Survey;
 import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.domain.SurveyType;
 import io.swagger.annotations.ApiModel;
@@ -22,4 +23,10 @@ public class FindSurveyResDto {
 
     @ApiModelProperty(value = "객관식 질문 옵션")
     private List<SurveyOption> surveyOptions;
+
+    public FindSurveyResDto(Survey survey) {
+        title = survey.getTitle();
+        surveyType = survey.getSurveyType();
+        surveyOptions = survey.getSurveyOptions();
+    }
 }

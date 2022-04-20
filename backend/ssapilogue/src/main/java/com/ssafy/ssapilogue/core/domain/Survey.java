@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,7 +22,17 @@ public class Survey {
 
     private SurveyType surveyType;
 
-    private Boolean is_delete;
-
     List<SurveyOption> surveyOptions;
+
+    @Builder
+    public Survey(Project project, String title, SurveyType surveyType, List<SurveyOption> surveyOptions) {
+        this.project = project;
+        this.title = title;
+        this.surveyType = surveyType;
+        this.surveyOptions = surveyOptions;
+    }
+
+    public void addSurveyOptions(List surveyOptions) {
+        this.surveyOptions = surveyOptions;
+    }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.api.dto.request;
 
+import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.domain.SurveyType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,4 +26,7 @@ public class CreateSurveyReqDto {
     @NotNull
     @ApiModelProperty(value = "설문조사 타입", required = true, example = "객관식")
     private SurveyType surveyType;
+
+    @ApiModelProperty(value = "객관식 설문조사 옵션")
+    private List<CreateSurveyOptionReqDto> surveyOptions;
 }

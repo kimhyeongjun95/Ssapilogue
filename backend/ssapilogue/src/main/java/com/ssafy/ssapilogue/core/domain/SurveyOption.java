@@ -22,8 +22,7 @@ public class SurveyOption {
     private String content;
 
     @Builder
-    public SurveyOption(Long id, Survey survey, Integer index, String content) {
-        this.id = id;
+    public SurveyOption(Survey survey, Integer index, String content) {
         this.survey = survey;
         this.index = index;
         this.content = content;

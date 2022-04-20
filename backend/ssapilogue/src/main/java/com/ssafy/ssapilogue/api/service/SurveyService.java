@@ -6,6 +6,7 @@ import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import java.util.List;
 
 public interface SurveyService {
-    List<FindSurveyResDto> findSurvey(Long surveyId);
+    List<FindSurveyResDto> findSurveys(Long surveyId);
     Long createSurvey(CreateSurveyReqDto createSurveyReqDto);
+    void deleteSurvey(Long surveyId);
 }

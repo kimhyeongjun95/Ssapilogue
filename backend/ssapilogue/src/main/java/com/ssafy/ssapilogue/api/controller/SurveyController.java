@@ -23,13 +23,13 @@ public class SurveyController {
 
     private final SurveyService surveyService;
 
-    @GetMapping("/{surveyId}")
-    @ApiOperation(value = "설문조사 조회", notes = "설문조사를 조회한다.")
-    public ResponseEntity<Map<String, Object>> findSurvey(
-            @PathVariable @ApiParam(value = "설문조사 id", required = true, example = "1") Long surveyId) {
+    @GetMapping("/{projectId}")
+    @ApiOperation(value = "설문조사 문항 전체 조회", notes = "설문조사 문항을 전체 조회한다.")
+    public ResponseEntity<Map<String, Object>> findSurveys(
+            @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId) {
         Map<String, Object> result = new HashMap<>();
 
-        List<FindSurveyResDto> surveyList = surveyService.findSurvey(surveyId);
+        List<FindSurveyResDto> surveyList = surveyService.findSurveys(projectId);
         result.put("surveyList", surveyList);
         result.put("status", "SUCCESS");
 
@@ -37,7 +37,7 @@ public class SurveyController {
     }
 
     @PostMapping
-    @ApiOperation(value = "설문조사 등록", notes = "새로운 설문조사를 등록한다.")
+    @ApiOperation(value = "설문조사 문항 등록", notes = "새로운 설문조사 문항을 등록한다.")
     public ResponseEntity<Map<String, Object>> createSurvey(
             @RequestBody @ApiParam(value = "설문조사 정보", required = true) CreateSurveyReqDto createSurveyReqDto) {
         Map<String, Object> result = new HashMap<>();
@@ -47,5 +47,17 @@ public class SurveyController {
         result.put("status", "SUCCESS");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{surveyId}")
+    @ApiOperation(value = "설문조사 문항 삭제", notes = "설문조사 문항을 삭제한다.")
+    public ResponseEntity<Map<String, Object>> deleteSurvey(
+            @PathVariable @ApiParam(value = "설문조사 id", required = true, example = "1") Long surveyId) {
+        Map<String, Object> result = new HashMap<>();
+
+        surveyService.deleteSurvey(surveyId);
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 }
