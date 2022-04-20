@@ -25,9 +25,11 @@ public class UserServiceImpl implements UserService{
         User user = User.builder()
                 .email(signupUserReqDto.getEmail())
                 .password(encPass)
-                .mmId(signupUserReqDto.getMmId())
+                .userId(signupUserReqDto.getUserId())
                 .nickname(signupUserReqDto.getNickname())
                 .gitId(signupUserReqDto.getGitId())
+                .greeting(signupUserReqDto.getGreeting())
+                .image(signupUserReqDto.getImage())
                 .build();
         user = userRepository.save(user);
 

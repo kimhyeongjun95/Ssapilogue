@@ -4,6 +4,7 @@ import com.ssafy.ssapilogue.api.dto.request.LoginUserReqDto;
 import com.ssafy.ssapilogue.api.dto.request.SignupUserReqDto;
 import com.ssafy.ssapilogue.api.dto.response.SignupUserResDto;
 import com.ssafy.ssapilogue.api.service.UserService;
+import com.ssafy.ssapilogue.core.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+
+    private final UserRepository userRepository;
 
     @PostMapping("/signup")
     public ResponseEntity<Map<String, Object>> signup(@RequestBody SignupUserReqDto signupUserReqDto) {
@@ -43,6 +47,9 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserReqDto loginUserReqDto) {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
+        if (userRepository.findByEmail(loginUserReqDto.getEmail()) == null) {
+            throw new NoSuchElementException();
+        }
         try {
             userService.login(loginUserReqDto);
         } catch (Exception e) {

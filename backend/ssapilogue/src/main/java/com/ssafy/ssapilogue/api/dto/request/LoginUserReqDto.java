@@ -16,4 +16,7 @@ public class LoginUserReqDto {
 
     @NotNull
     private String password;
+
+    @NotNull
+    private String userId;
 }
