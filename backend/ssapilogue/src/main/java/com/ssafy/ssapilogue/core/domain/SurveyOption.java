@@ -15,15 +15,15 @@ public class SurveyOption {
     @Id
     private Long id;
 
-    private Survey survey;
+    private Long surveyId;
 
     private Integer index;
 
     private String content;
 
     @Builder
-    public SurveyOption(Survey survey, Integer index, String content) {
-        this.survey = survey;
+    public SurveyOption(Long surveyId, Integer index, String content) {
+        this.surveyId = surveyId;
         this.index = index;
         this.content = content;
     }

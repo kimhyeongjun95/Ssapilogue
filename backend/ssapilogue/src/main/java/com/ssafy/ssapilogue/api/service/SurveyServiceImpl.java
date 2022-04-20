@@ -45,24 +45,24 @@ public class SurveyServiceImpl implements SurveyService {
         Survey survey = Survey.builder()
                 .project(project)
                 .title(createSurveyReqDto.getTitle())
-                .surveyType(createSurveyReqDto.getSurveyType())
+                .surveyType(SurveyType.valueOf(createSurveyReqDto.getSurveyType()))
                 .build();
 
+        Survey saveSurvey = surveyRepository.save(survey);
+
         // 객관식인 경우, SurveyOption 추가
-        if (survey.getSurveyType() == SurveyType.객관식) {
+        if (saveSurvey.getSurveyType() == SurveyType.객관식) {
             List<SurveyOption> surveyOptions = new ArrayList<>();
 
             for (CreateSurveyOptionReqDto createSurveyOptionReqDto : createSurveyReqDto.getSurveyOptions()) {
-                Long surveyOptionId = surveyOptionService.createSurveyOption(survey.getId(), createSurveyOptionReqDto);
-                SurveyOption surveyOption = surveyOptionRepository.findById(surveyOptionId)
-                        .orElseThrow(() -> new IllegalStateException("존재하지 않는 옵션입니다."));
+                SurveyOption surveyOption = surveyOptionService.createSurveyOption(saveSurvey.getId(), createSurveyOptionReqDto);
                 surveyOptions.add(surveyOption);
             }
 
-            survey.addSurveyOptions(surveyOptions);
+            saveSurvey.addSurveyOptions(surveyOptions);
         }
 
-        return survey.getId();
+        return saveSurvey.getId();
     }
 
     @Override
