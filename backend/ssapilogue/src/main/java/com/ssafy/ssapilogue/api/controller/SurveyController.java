@@ -26,7 +26,7 @@ public class SurveyController {
     @GetMapping("/{surveyId}")
     @ApiOperation(value = "설문조사 조회", notes = "설문조사를 조회한다.")
     public ResponseEntity<Map<String, Object>> findSurvey(
-            @PathVariable @ApiParam(value = "설문조사 id", required = true) Long surveyId) {
+            @PathVariable @ApiParam(value = "설문조사 id", required = true, example = "1") Long surveyId) {
         Map<String, Object> result = new HashMap<>();
 
         List<FindSurveyResDto> surveyList = surveyService.findSurvey(surveyId);
