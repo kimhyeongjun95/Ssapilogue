@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
-@ApiModel("UserLoginDto")
+@ApiModel("LoginUserReqDto")
 public class LoginUserReqDto {
 
     @NotNull
