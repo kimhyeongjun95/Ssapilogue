@@ -1,6 +1,7 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
+import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
 import com.ssafy.ssapilogue.core.domain.Category;
 import com.ssafy.ssapilogue.core.domain.Project;
@@ -61,6 +62,15 @@ public class ProjectServiceImpl implements ProjectService{
         }
 
         return saveProject.getId();
+    }
+
+    @Override
+    public FindProjectDetailResDto findProject(Long projectId) {
+        Project project = projectRepository.getById(projectId);
+
+        project.increaseHits();
+
+        return new FindProjectDetailResDto(project);
     }
 
     // 프로젝트 삭제
