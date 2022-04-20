@@ -65,6 +65,20 @@ public class ProjectController {
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 
+    @PutMapping("/{projectId}")
+    @ApiOperation(value = "프로젝트 수정", notes = "프로젝트를 수정한다.")
+    public ResponseEntity<Map<String, Object>> updateProject(
+            @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId,
+            @RequestBody @ApiParam(value = "프로젝트 정보", required = true) CreateProjectReqDto createProjectReqDto) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        projectService.updateProject(projectId, createProjectReqDto);
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{projectId}")
     @ApiOperation(value = "프로젝트 삭제", notes = "프로젝트를 삭제한다.")
     public ResponseEntity<Map<String, Object>> deleteProject(

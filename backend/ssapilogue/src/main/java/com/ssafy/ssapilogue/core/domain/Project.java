@@ -48,7 +48,7 @@ public class Project {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<TechStack> techStacks = new ArrayList<>();
+    private List<ProjectStack> projectStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ProjectComment> projectComments = new ArrayList<>();
@@ -73,5 +73,16 @@ public class Project {
     // 조회수 증가를 위한 편의 함수
     public void increaseHits() {
         this.hits++;
+    }
+
+    // 프로젝트 수정을 위한 편의 함수
+    public void update(String title, String introduce, Category category, String deployAddress, String gitAddress, String thumbnail, String readme) {
+        this.title = title;
+        this.introduce = introduce;
+        this.category = category;
+        this.deployAddress = deployAddress;
+        this.gitAddress = gitAddress;
+        this.thumbnail = thumbnail;
+        this.readme = readme;
     }
 }
