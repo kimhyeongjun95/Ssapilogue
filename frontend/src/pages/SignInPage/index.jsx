@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import API from "../api/API";
+import API from "../../api/API";
 // import axios from "axios";
 
-const store = {
-  setLocalStorage({ key, val }) {
-    localStorage.setItem(`${key}`, JSON.stringify(val));
-  },
-  getLocalStorage(key) {
-	  return JSON.parse(localStorage.getItem(`${key}`));
-  },
-};
+// const store = {
+//   setLocalStorage({ key, val }) {
+//     localStorage.setItem(`${key}`, JSON.stringify(val));
+//   },
+//   getLocalStorage(key) {
+// 	  return JSON.parse(localStorage.getItem(`${key}`));
+//   },
+// };
 
 const SignInPage = () => {
 
