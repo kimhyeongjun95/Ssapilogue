@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
 
@@ -8,7 +9,9 @@ const Navbar = () => {
   return (
     <>
       <h1>SSapilogue</h1>
-      <button onClick={Login} >로그인</button>
+      <Link to="/signin">
+        <button onClick={Login} >로그인</button>
+      </Link>
     </>
   )
 }
