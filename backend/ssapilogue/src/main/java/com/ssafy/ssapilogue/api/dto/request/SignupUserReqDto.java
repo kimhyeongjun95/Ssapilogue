@@ -18,10 +18,15 @@ public class SignupUserReqDto {
     private String password;
 
     @NotBlank
-    private String mmId;
+    private String userId;
 
     @NotBlank
     private String nickname;
 
     private String gitId;
+
+    private String greeting;
+
+    private String image;
+
 }

@@ -15,25 +15,34 @@ public class User {
 
     @Id
     @NotBlank
+    private String userId;
+
+    @NotBlank
     private String email;
 
     @NotBlank
     private String password;
 
     @NotBlank
-    private String mmId;
-
-    @NotBlank
     private String nickname;
 
     private String gitId;
 
+    private String greeting;
+
+    private String image;
+
+    private int like;
+
     @Builder
-    public User(String email, String password, String mmId, String nickname, String gitId) {
+    public User(String email, String password, String userId, String nickname, String gitId, String greeting, String image) {
         this.email = email;
         this.password = password;
-        this.mmId = mmId;
+        this.userId = userId;
         this.nickname = nickname;
         this.gitId = gitId;
+        this.greeting = greeting;
+        this.image = image;
+        this.like = 0;
     }
 }
