@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @ApiModel("UserLoginDto")
-public class UserLoginDto {
+public class LoginUserReqDto {
 
     @NotNull
     private String email;

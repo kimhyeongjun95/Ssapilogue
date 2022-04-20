@@ -1,8 +1,8 @@
 package com.ssafy.ssapilogue.api.service;
 
-import com.ssafy.ssapilogue.api.dto.request.UserLoginDto;
-import com.ssafy.ssapilogue.api.dto.request.UserRequestDto;
-import com.ssafy.ssapilogue.api.dto.response.UserSimpleResponseDto;
+import com.ssafy.ssapilogue.api.dto.request.LoginUserReqDto;
+import com.ssafy.ssapilogue.api.dto.request.SignupUserReqDto;
+import com.ssafy.ssapilogue.api.dto.response.SignupUserResDto;
 import com.ssafy.ssapilogue.core.domain.User;
 import com.ssafy.ssapilogue.core.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,26 +19,26 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public UserSimpleResponseDto signup(UserRequestDto userDto) {
-        String password = userDto.getPassword();
+    public SignupUserResDto signup(SignupUserReqDto signupUserReqDto) {
+        String password = signupUserReqDto.getPassword();
         String encPass = BCrypt.hashpw(password, BCrypt.gensalt());
         User user = User.builder()
-                .email(userDto.getEmail())
+                .email(signupUserReqDto.getEmail())
                 .password(encPass)
-                .mmId(userDto.getMmId())
-                .nickname(userDto.getNickname())
-                .gitId(userDto.getGitId())
+                .mmId(signupUserReqDto.getMmId())
+                .nickname(signupUserReqDto.getNickname())
+                .gitId(signupUserReqDto.getGitId())
                 .build();
         user = userRepository.save(user);
 
-        return new UserSimpleResponseDto(user);
+        return new SignupUserResDto(user);
     }
 
     @Override
-    public User login(UserLoginDto userLoginDto) throws Exception {
-        User findUser = userRepository.findByEmail(userLoginDto.getEmail());
+    public User login(LoginUserReqDto loginUserReqDto) throws Exception {
+        User findUser = userRepository.findByEmail(loginUserReqDto.getEmail());
         if (findUser == null) throw new Exception("멤버가 조회되지않습니다.");
-        boolean check = BCrypt.checkpw(userLoginDto.getPassword(), findUser.getPassword());
+        boolean check = BCrypt.checkpw(loginUserReqDto.getPassword(), findUser.getPassword());
         if (check == false) throw new Exception("비밀번호가 틀립니다.");
         return findUser;
     }
