@@ -2,6 +2,15 @@ import React, { useState } from "react";
 import API from "../api/API";
 // import axios from "axios";
 
+const store = {
+  setLocalStorage({ key, val }) {
+    localStorage.setItem(`${key}`, JSON.stringify(val));
+  },
+  getLocalStorage(key) {
+	  return JSON.parse(localStorage.getItem(`${key}`));
+  },
+};
+
 const SignInPage = () => {
 
   const [inputs, setInputs] = useState({
@@ -19,29 +28,17 @@ const SignInPage = () => {
   };
 
   const login = () => {
-    // axios.post("https://meeting.ssafy.com/api/v4/users/login", {
-    //   login_id: id,
-    //   password: pw,
-    // },
-    // {
-    //   headers: {
-    //     "Access-Control-Allow-Origin": "*",
-    //   }
-    // })
     API.post("/api/v4/users/login", {
       login_id: id,
       password: pw,
-    }, 
-    )
+    })
       .then((res) => {
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       })
-    
   }
-
 
   return (
     <div>
