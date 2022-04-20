@@ -26,9 +26,9 @@ public class FindProjectResDto {
     @ApiModelProperty(value = "카테고리", example = "자율")
     private Category category;
 
-    @ElementCollection
-    @ApiModelProperty(value = "기술 스택", example = "['ReactNative', 'Spring']")
-    private List<String> techStack;
+//    @ElementCollection
+//    @ApiModelProperty(value = "기술 스택", example = "['ReactNative', 'Spring']")
+//    private List<String> techStack;
 
     @ApiModelProperty(value = "썸네일 이미지", example = "https://j6ssafy.c104.com/images/xxxxx")
     private String thumbnail;
@@ -49,7 +49,7 @@ public class FindProjectResDto {
         title = project.getTitle();
         introduce = project.getIntroduce();
         category = project.getCategory();
-        techStack = project.getTechStacks().stream().map(TechStack::getName).collect(Collectors.toList());
+//        techStack = project.getTechStacks().stream().map(TechStack::getName).collect(Collectors.toList());
         thumbnail = project.getThumbnail();
         hits = project.getHits();
     }

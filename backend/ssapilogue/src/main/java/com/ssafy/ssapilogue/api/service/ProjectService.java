@@ -11,5 +11,6 @@ public interface ProjectService {
     List<FindProjectResDto> findProjects(String category);
     Long createProject(CreateProjectReqDto createProjectReqDto);
     FindProjectDetailResDto findProject(Long projectId);
+    void updateProject(Long projectId, CreateProjectReqDto createProjectReqDto);
     void deleteProject(Long projectId);
 }

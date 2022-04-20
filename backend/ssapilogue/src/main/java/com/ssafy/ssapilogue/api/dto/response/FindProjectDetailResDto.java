@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
 @ApiModel("FindProjectDetailResDto")
 public class FindProjectDetailResDto {
 
+    @ApiModelProperty(value = "프로젝트 아이디", example = "1")
+    private Long projectId;
+
     @ApiModelProperty(value = "프로젝트 이름", example = "라이키")
     private String title;
 
@@ -48,9 +51,10 @@ public class FindProjectDetailResDto {
 //    @ApiModelProperty(value = "좋아요 여부", example = "False")
 //    private String isLiked;
 
-    public FindProjectDetailResDto(Project project) {
+    public FindProjectDetailResDto(Project project, List<TechStack> techStacks) {
+        projectId = project.getId();
         title = project.getTitle();
-        techStack = project.getTechStacks().stream().map(TechStack::getName).collect(Collectors.toList());
+        techStack = techStacks.stream().map(TechStack::getName).collect(Collectors.toList());
         category = project.getCategory();
         deployAddress = project.getDeployAddress();
         gitAddress = project.getGitAddress();
