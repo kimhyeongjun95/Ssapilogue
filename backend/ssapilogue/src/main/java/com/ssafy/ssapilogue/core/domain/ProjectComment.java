@@ -37,6 +37,10 @@ public class ProjectComment {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "projectComment", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ProjectRecomment> projectRecomments = new ArrayList<>();
 

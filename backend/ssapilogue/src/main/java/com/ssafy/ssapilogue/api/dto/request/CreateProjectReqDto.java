@@ -26,6 +26,15 @@ public class CreateProjectReqDto {
     @ApiModelProperty(value = "카테고리", required = true, example = "자율")
     private String category;
 
+    @NotNull
+    @ElementCollection
+    @ApiModelProperty(value = "기술 스택", example = "['ReactNative', 'Spring']")
+    private List<String> techStack;
+
+    @ElementCollection
+    @ApiModelProperty(value = "멤버", example = "['동균', '현서']")
+    private List<String> member;
+
     @ApiModelProperty(value = "배포 주소", example = "https://j6ssafy.c104.com/")
     private String deployAddress;
 
@@ -42,9 +51,4 @@ public class CreateProjectReqDto {
 
     @ApiModelProperty(value = "리드미", example = "라이키 readme 어쩌구")
     private String readme;
-
-    @NotNull
-    @ElementCollection
-    @ApiModelProperty(value = "기술 스택", example = "['ReactNative', 'Spring']")
-    private List<String> techStack;
 }
