@@ -1,9 +1,6 @@
 package com.ssafy.ssapilogue.api.dto.response;
 
-import com.ssafy.ssapilogue.core.domain.Category;
-import com.ssafy.ssapilogue.core.domain.Project;
-import com.ssafy.ssapilogue.core.domain.ProjectStack;
-import com.ssafy.ssapilogue.core.domain.TechStack;
+import com.ssafy.ssapilogue.core.domain.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,8 +25,11 @@ public class FindProjectDetailResDto {
     @ApiModelProperty(value = "기술 스택", example = "['ReactNative', 'Spring']")
     private List<String> techStack;
 
-//    @ApiModelProperty(value = "멤버 닉네임", example = "['동균', '현서']")
-//    private List<String> member;
+    @ApiModelProperty(value = "멤버 닉네임", example = "['동균', '현서']")
+    private List<String> member;
+
+    @ApiModelProperty(value = "멤버 닉네임", example = "['형준', '은서']")
+    private List<String> anonymousMember;
 
     @ApiModelProperty(value = "카테고리", example = "자율")
     private Category category;
@@ -58,6 +58,11 @@ public class FindProjectDetailResDto {
         techStack = project.getProjectStacks()
                 .stream().map(ProjectStack::getTechStack).collect(Collectors.toList())
                 .stream().map(TechStack::getName).collect(Collectors.toList());
+        member = project.getProjectMembers()
+                .stream().map(ProjectMember::getUser).collect(Collectors.toList())
+                .stream().map(User::getNickname).collect(Collectors.toList());
+        anonymousMember = project.getAnonymousMembers()
+                .stream().map(AnonymousMember::getNickname).collect(Collectors.toList());
         category = project.getCategory();
         deployAddress = project.getDeployAddress();
         gitAddress = project.getGitAddress();
