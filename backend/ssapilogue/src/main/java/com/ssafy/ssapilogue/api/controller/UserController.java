@@ -38,6 +38,7 @@ public class UserController {
         }
         catch(Exception e) {
             e.printStackTrace();
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             System.out.println("error");
         }
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
@@ -47,13 +48,12 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserReqDto loginUserReqDto) {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
-        if (userRepository.findByEmail(loginUserReqDto.getEmail()) == null) {
-            throw new NoSuchElementException();
-        }
         try {
             userService.login(loginUserReqDto);
+            httpStatus = HttpStatus.OK;
         } catch (Exception e) {
             e.printStackTrace();
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }

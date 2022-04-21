@@ -31,9 +31,9 @@ public class UserServiceImpl implements UserService{
                 .greeting(signupUserReqDto.getGreeting())
                 .image(signupUserReqDto.getImage())
                 .build();
-        user = userRepository.save(user);
+        User save = userRepository.save(user);
 
-        return new SignupUserResDto(user);
+        return new SignupUserResDto(save);
     }
 
     @Override

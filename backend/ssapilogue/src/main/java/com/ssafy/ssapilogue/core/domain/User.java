@@ -6,11 +6,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name="user")
 public class User {
 
     @Id
@@ -32,7 +34,7 @@ public class User {
 
     private String image;
 
-    private int like;
+    private int likes;
 
     @Builder
     public User(String email, String password, String userId, String nickname, String gitId, String greeting, String image) {
@@ -43,6 +45,6 @@ public class User {
         this.gitId = gitId;
         this.greeting = greeting;
         this.image = image;
-        this.like = 0;
+        this.likes = 0;
     }
 }
