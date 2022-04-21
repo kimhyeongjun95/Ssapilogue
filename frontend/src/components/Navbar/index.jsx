@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import './style.scss'
 
 const Navbar = () => {
 
@@ -7,12 +8,12 @@ const Navbar = () => {
   }
 
   return (
-    <>
+    <nav>
       <h1>SSapilogue</h1>
-      <Link to="/signin">
+      <Link className="login" to="/signin">
         <button onClick={Login} >로그인</button>
       </Link>
-    </>
+    </nav>
   )
 }
 export default Navbar;
