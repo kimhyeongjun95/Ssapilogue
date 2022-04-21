@@ -1,17 +1,16 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
+import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
-import com.ssafy.ssapilogue.core.domain.Category;
-import com.ssafy.ssapilogue.core.domain.Project;
-import com.ssafy.ssapilogue.core.domain.TechStack;
-import com.ssafy.ssapilogue.core.repository.ProjectRepository;
-import com.ssafy.ssapilogue.core.repository.TechStackRepository;
+import com.ssafy.ssapilogue.core.domain.*;
+import com.ssafy.ssapilogue.core.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -20,18 +19,31 @@ import java.util.stream.Collectors;
 public class ProjectServiceImpl implements ProjectService{
 
     private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
     private final TechStackRepository techStackRepository;
+    private final ProjectStackRepository projectStackRepository;
+    private final ProjectMemberRepository projectMemberRepository;
+    private final AnonymousMemberRepository anonymousMemberRepository;
 
     // 프로젝트 전체조회
     @Override
-    public List<FindProjectResDto> findProjects(String category) {
+    public List<FindProjectResDto> findProjects(String standard, String category) {
         List<Project> projects = null;
 
-        if (category.equals("전체")) {
-            projects = projectRepository.findAllByOrderByIdDesc();
-        } else {
-            projects = projectRepository.findByCategoryOrderByIdDesc(Category.valueOf(category));
+        if (standard.equals("최신")) {
+            if (category.equals("전체")) {
+                projects = projectRepository.findAllByOrderByIdDesc();
+            } else {
+                projects = projectRepository.findByCategoryOrderByIdDesc(Category.valueOf(category));
+            }
+        } else if (standard.equals("인기")) {
+            if (category.equals("전체")) {
+                projects = projectRepository.findAllByOrderByLikesDesc();
+            } else {
+                projects = projectRepository.findByCategoryOrderByLikesDesc(Category.valueOf(category));
+            }
         }
+
 
         return projects.stream().map(FindProjectResDto::new).collect(Collectors.toList());
     }
@@ -51,16 +63,122 @@ public class ProjectServiceImpl implements ProjectService{
 
         Project saveProject = projectRepository.save(project);
 
-        List<String> techStack = createProjectReqDto.getTechStack();
-        for (String stack : techStack) {
-            TechStack newTechStack = TechStack.builder()
-                    .name(stack)
-                    .project(saveProject)
-                    .build();
-            techStackRepository.save(newTechStack);
+        // 멤버 등록
+        List<String> members = createProjectReqDto.getMember();
+        for (String nickname : members) {
+            Optional<User> findMember = userRepository.findByNickname(nickname);
+
+            if (findMember.isPresent()) {
+                ProjectMember projectMember = ProjectMember.builder()
+                        .project(saveProject)
+                        .user(findMember.get())
+                        .build();
+                projectMemberRepository.save(projectMember);
+            } else {
+                AnonymousMember anonymousMember = AnonymousMember.builder()
+                        .nickname(nickname)
+                        .project(saveProject)
+                        .build();
+                anonymousMemberRepository.save(anonymousMember);
+            }
+        }
+
+        // 기술스택 등록
+        List<String> techStacks = createProjectReqDto.getTechStack();
+        for (String stackName : techStacks) {
+            Optional<TechStack> findTechStack = techStackRepository.findByName(stackName);
+
+            if (findTechStack.isPresent()) {
+                TechStack techStack = findTechStack.get();
+
+                ProjectStack projectStack = ProjectStack.builder()
+                        .project(saveProject)
+                        .techStack(techStack)
+                        .build();
+                projectStackRepository.save(projectStack);
+            } else {
+                TechStack newTechStack = TechStack.builder()
+                        .name(stackName)
+                        .build();
+                TechStack saveTechStack = techStackRepository.save(newTechStack);
+
+                ProjectStack projectStack = ProjectStack.builder()
+                        .project(saveProject)
+                        .techStack(saveTechStack)
+                        .build();
+                projectStackRepository.save(projectStack);
+            }
         }
 
         return saveProject.getId();
+    }
+
+    // 프로젝트 상세조회
+    @Override
+    public FindProjectDetailResDto findProject(Long projectId) {
+        Project project = projectRepository.getById(projectId);
+        project.increaseHits();
+
+        return new FindProjectDetailResDto(project);
+    }
+
+    // 프로젝트 수정
+    @Override
+    public void updateProject(Long projectId, CreateProjectReqDto createProjectReqDto) {
+        Project project = projectRepository.getById(projectId);
+        project.update(createProjectReqDto);
+
+        // 멤버 수정
+        projectMemberRepository.deleteByProject(project);
+        anonymousMemberRepository.deleteByProject(project);
+
+        List<String> members = createProjectReqDto.getMember();
+        for (String nickname : members) {
+            Optional<User> findMember = userRepository.findByNickname(nickname);
+
+            if (findMember.isPresent()) {
+                ProjectMember projectMember = ProjectMember.builder()
+                        .project(project)
+                        .user(findMember.get())
+                        .build();
+                projectMemberRepository.save(projectMember);
+            } else {
+                AnonymousMember anonymousMember = AnonymousMember.builder()
+                        .nickname(nickname)
+                        .project(project)
+                        .build();
+                anonymousMemberRepository.save(anonymousMember);
+            }
+        }
+
+        // 기술스택 수정
+        projectStackRepository.deleteByProject(project);
+
+        List<String> techStacks = createProjectReqDto.getTechStack();
+        for (String stackName : techStacks) {
+            Optional<TechStack> findTechStack = techStackRepository.findByName(stackName);
+
+            if (findTechStack.isPresent()) {
+                TechStack techStack = findTechStack.get();
+
+                ProjectStack projectStack = ProjectStack.builder()
+                        .project(project)
+                        .techStack(techStack)
+                        .build();
+                projectStackRepository.save(projectStack);
+            } else {
+                TechStack newTechStack = TechStack.builder()
+                        .name(stackName)
+                        .build();
+                TechStack saveTechStack = techStackRepository.save(newTechStack);
+
+                ProjectStack projectStack = ProjectStack.builder()
+                        .project(project)
+                        .techStack(saveTechStack)
+                        .build();
+                projectStackRepository.save(projectStack);
+            }
+        }
     }
 
     // 프로젝트 삭제

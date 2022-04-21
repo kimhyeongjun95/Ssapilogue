@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,13 +8,13 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name = "bookmark")
+@Table(name = "project_stack")
 @NoArgsConstructor
-public class Bookmark {
+public class ProjectStack {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bookmark_id")
+    @Column(name = "project_stack_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,6 +22,12 @@ public class Bookmark {
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "stack_id")
+    private TechStack techStack;
+
+    @Builder
+    private ProjectStack(Project project, TechStack techStack) {
+        this.project = project;
+        this.techStack = techStack;
+    }
 }

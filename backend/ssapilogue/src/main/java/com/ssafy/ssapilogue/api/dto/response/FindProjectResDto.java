@@ -2,6 +2,7 @@ package com.ssafy.ssapilogue.api.dto.response;
 
 import com.ssafy.ssapilogue.core.domain.Category;
 import com.ssafy.ssapilogue.core.domain.Project;
+import com.ssafy.ssapilogue.core.domain.ProjectStack;
 import com.ssafy.ssapilogue.core.domain.TechStack;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -49,7 +50,9 @@ public class FindProjectResDto {
         title = project.getTitle();
         introduce = project.getIntroduce();
         category = project.getCategory();
-        techStack = project.getTechStacks().stream().map(TechStack::getName).collect(Collectors.toList());
+        techStack = project.getProjectStacks()
+                .stream().map(ProjectStack::getTechStack).collect(Collectors.toList())
+                .stream().map(TechStack::getName).collect(Collectors.toList());
         thumbnail = project.getThumbnail();
         hits = project.getHits();
     }
