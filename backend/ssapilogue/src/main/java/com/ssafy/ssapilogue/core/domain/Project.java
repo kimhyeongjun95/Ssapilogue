@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,7 +49,7 @@ public class Project {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<TechStack> techStacks = new ArrayList<>();
+    private List<ProjectStack> projectStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ProjectComment> projectComments = new ArrayList<>();
@@ -73,5 +74,16 @@ public class Project {
     // 조회수 증가를 위한 편의 함수
     public void increaseHits() {
         this.hits++;
+    }
+
+    // 프로젝트 수정을 위한 편의 함수
+    public void update(CreateProjectReqDto createProjectReqDto) {
+        this.title = createProjectReqDto.getTitle();
+        this.introduce = createProjectReqDto.getIntroduce();
+        this.category = Category.valueOf(createProjectReqDto.getCategory());
+        this.deployAddress = createProjectReqDto.getDeployAddress();
+        this.gitAddress = createProjectReqDto.getGitAddress();
+        this.thumbnail = createProjectReqDto.getThumbnail();
+        this.readme = createProjectReqDto.getReadme();
     }
 }

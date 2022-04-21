@@ -1,17 +1,21 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
+import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
 import com.ssafy.ssapilogue.core.domain.Category;
 import com.ssafy.ssapilogue.core.domain.Project;
+import com.ssafy.ssapilogue.core.domain.ProjectStack;
 import com.ssafy.ssapilogue.core.domain.TechStack;
 import com.ssafy.ssapilogue.core.repository.ProjectRepository;
+import com.ssafy.ssapilogue.core.repository.ProjectStackRepository;
 import com.ssafy.ssapilogue.core.repository.TechStackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class ProjectServiceImpl implements ProjectService{
 
     private final ProjectRepository projectRepository;
     private final TechStackRepository techStackRepository;
+    private final ProjectStackRepository projectStackRepository;
 
     // 프로젝트 전체조회
     @Override
@@ -51,16 +56,77 @@ public class ProjectServiceImpl implements ProjectService{
 
         Project saveProject = projectRepository.save(project);
 
-        List<String> techStack = createProjectReqDto.getTechStack();
-        for (String stack : techStack) {
-            TechStack newTechStack = TechStack.builder()
-                    .name(stack)
-                    .project(saveProject)
-                    .build();
-            techStackRepository.save(newTechStack);
+        List<String> techStacks = createProjectReqDto.getTechStack();
+        for (String stackName : techStacks) {
+            Optional<TechStack> findTechStack = techStackRepository.findByName(stackName);
+
+            if (findTechStack.isEmpty()) {
+                TechStack newTechStack = TechStack.builder()
+                        .name(stackName)
+                        .build();
+                TechStack saveTechStack = techStackRepository.save(newTechStack);
+
+                ProjectStack projectStack = ProjectStack.builder()
+                        .project(saveProject)
+                        .techStack(saveTechStack)
+                        .build();
+                projectStackRepository.save(projectStack);
+            } else {
+                TechStack techStack = findTechStack.get();
+
+                ProjectStack projectStack = ProjectStack.builder()
+                        .project(saveProject)
+                        .techStack(techStack)
+                        .build();
+                projectStackRepository.save(projectStack);
+            }
         }
 
         return saveProject.getId();
+    }
+
+    // 프로젝트 상세조회
+    @Override
+    public FindProjectDetailResDto findProject(Long projectId) {
+        Project project = projectRepository.getById(projectId);
+        project.increaseHits();
+
+        return new FindProjectDetailResDto(project);
+    }
+
+    // 프로젝트 수정
+    @Override
+    public void updateProject(Long projectId, CreateProjectReqDto createProjectReqDto) {
+        Project project = projectRepository.getById(projectId);
+        project.update(createProjectReqDto);
+
+        projectStackRepository.deleteByProject(project);
+
+        List<String> techStacks = createProjectReqDto.getTechStack();
+        for (String stackName : techStacks) {
+            Optional<TechStack> findTechStack = techStackRepository.findByName(stackName);
+
+            if (findTechStack.isEmpty()) {
+                TechStack newTechStack = TechStack.builder()
+                        .name(stackName)
+                        .build();
+                TechStack saveTechStack = techStackRepository.save(newTechStack);
+
+                ProjectStack projectStack = ProjectStack.builder()
+                        .project(project)
+                        .techStack(saveTechStack)
+                        .build();
+                projectStackRepository.save(projectStack);
+            } else {
+                TechStack techStack = findTechStack.get();
+
+                ProjectStack projectStack = ProjectStack.builder()
+                        .project(project)
+                        .techStack(techStack)
+                        .build();
+                projectStackRepository.save(projectStack);
+            }
+        }
     }
 
     // 프로젝트 삭제
