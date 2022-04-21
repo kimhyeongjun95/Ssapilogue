@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProjectService {
 
-    List<FindProjectResDto> findProjects(String category);
+    List<FindProjectResDto> findProjects(String standard, String category);
     Long createProject(CreateProjectReqDto createProjectReqDto);
     FindProjectDetailResDto findProject(Long projectId);
     void updateProject(Long projectId, CreateProjectReqDto createProjectReqDto);

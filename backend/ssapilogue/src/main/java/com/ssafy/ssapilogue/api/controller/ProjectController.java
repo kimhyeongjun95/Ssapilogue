@@ -27,11 +27,12 @@ public class ProjectController {
     @GetMapping
     @ApiOperation(value = "프로젝트 전체조회", notes = "전체 프로젝트를 조회한다.")
     public ResponseEntity<Map<String, Object>> findProjects(
+            @RequestParam @ApiParam(value = "기준") String standard,
             @RequestParam @ApiParam(value = "카테고리") String category) {
 
         Map<String, Object> result = new HashMap<>();
 
-        List<FindProjectResDto> projectList = projectService.findProjects(category);
+        List<FindProjectResDto> projectList = projectService.findProjects(standard, category);
         result.put("projectList", projectList);
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
