@@ -30,9 +30,8 @@ public class ProjectController {
             @RequestParam @ApiParam(value = "카테고리") String category) {
 
         Map<String, Object> result = new HashMap<>();
-        List<FindProjectResDto> projectList = null;
 
-        projectList = projectService.findProjects(category);
+        List<FindProjectResDto> projectList = projectService.findProjects(category);
         result.put("projectList", projectList);
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
@@ -57,9 +56,8 @@ public class ProjectController {
             @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId) {
 
         Map<String, Object> result = new HashMap<>();
-        FindProjectDetailResDto project = null;
 
-        project = projectService.findProject(projectId);
+        FindProjectDetailResDto project = projectService.findProject(projectId);
         result.put("project", project);
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);

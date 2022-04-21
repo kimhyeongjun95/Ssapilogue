@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -76,13 +77,13 @@ public class Project {
     }
 
     // 프로젝트 수정을 위한 편의 함수
-    public void update(String title, String introduce, Category category, String deployAddress, String gitAddress, String thumbnail, String readme) {
-        this.title = title;
-        this.introduce = introduce;
-        this.category = category;
-        this.deployAddress = deployAddress;
-        this.gitAddress = gitAddress;
-        this.thumbnail = thumbnail;
-        this.readme = readme;
+    public void update(CreateProjectReqDto createProjectReqDto) {
+        this.title = createProjectReqDto.getTitle();
+        this.introduce = createProjectReqDto.getIntroduce();
+        this.category = Category.valueOf(createProjectReqDto.getCategory());
+        this.deployAddress = createProjectReqDto.getDeployAddress();
+        this.gitAddress = createProjectReqDto.getGitAddress();
+        this.thumbnail = createProjectReqDto.getThumbnail();
+        this.readme = createProjectReqDto.getReadme();
     }
 }

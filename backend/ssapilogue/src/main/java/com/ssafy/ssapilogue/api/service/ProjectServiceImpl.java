@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -92,21 +91,42 @@ public class ProjectServiceImpl implements ProjectService{
         Project project = projectRepository.getById(projectId);
         project.increaseHits();
 
-        List<ProjectStack> projectStacks = projectStackRepository.findByProject(project);
-        List<TechStack> techStacks = projectStacks.stream()
-                .map(ProjectStack::getTechStack).collect(Collectors.toList());
-
-        return new FindProjectDetailResDto(project, techStacks);
+        return new FindProjectDetailResDto(project);
     }
 
     // 프로젝트 수정
     @Override
     public void updateProject(Long projectId, CreateProjectReqDto createProjectReqDto) {
         Project project = projectRepository.getById(projectId);
-        project.update(createProjectReqDto.getTitle(), createProjectReqDto.getIntroduce(),
-                Category.valueOf(createProjectReqDto.getCategory()), createProjectReqDto.getDeployAddress(),
-                createProjectReqDto.getGitAddress(), createProjectReqDto.getThumbnail(), createProjectReqDto.getReadme());
+        project.update(createProjectReqDto);
 
+        projectStackRepository.deleteByProject(project);
+
+        List<String> techStacks = createProjectReqDto.getTechStack();
+        for (String stackName : techStacks) {
+            Optional<TechStack> findTechStack = techStackRepository.findByName(stackName);
+
+            if (findTechStack.isEmpty()) {
+                TechStack newTechStack = TechStack.builder()
+                        .name(stackName)
+                        .build();
+                TechStack saveTechStack = techStackRepository.save(newTechStack);
+
+                ProjectStack projectStack = ProjectStack.builder()
+                        .project(project)
+                        .techStack(saveTechStack)
+                        .build();
+                projectStackRepository.save(projectStack);
+            } else {
+                TechStack techStack = findTechStack.get();
+
+                ProjectStack projectStack = ProjectStack.builder()
+                        .project(project)
+                        .techStack(techStack)
+                        .build();
+                projectStackRepository.save(projectStack);
+            }
+        }
     }
 
     // 프로젝트 삭제
