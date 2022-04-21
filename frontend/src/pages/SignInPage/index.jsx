@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import API from "../../api/API";
-// import axios from "axios";
 
 // const store = {
 //   setLocalStorage({ key, val }) {
@@ -27,13 +26,14 @@ const SignInPage = () => {
     });
   };
 
-  const login = () => {
+  const signIn = () => {
     API.post("/api/v4/users/login", {
       login_id: id,
       password: pw,
     })
       .then((res) => {
         console.log(res);
+        // 화면분기
       })
       .catch((err) => {
         console.log(err);
@@ -44,7 +44,7 @@ const SignInPage = () => {
     <div>
       아이디<input name="id" onChange={handleOnChange} value={id}/>
       비밀번호<input name="pw" onChange={handleOnChange} type="password" value={pw}/>
-      <button onClick={login}>로그인</button>
+      <button onClick={signIn}>로그인</button>
     </div>
   )
 }
