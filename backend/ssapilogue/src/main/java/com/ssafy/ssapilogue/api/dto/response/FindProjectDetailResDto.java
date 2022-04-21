@@ -2,6 +2,7 @@ package com.ssafy.ssapilogue.api.dto.response;
 
 import com.ssafy.ssapilogue.core.domain.Category;
 import com.ssafy.ssapilogue.core.domain.Project;
+import com.ssafy.ssapilogue.core.domain.ProjectStack;
 import com.ssafy.ssapilogue.core.domain.TechStack;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -51,10 +52,12 @@ public class FindProjectDetailResDto {
 //    @ApiModelProperty(value = "좋아요 여부", example = "False")
 //    private String isLiked;
 
-    public FindProjectDetailResDto(Project project, List<TechStack> techStacks) {
+    public FindProjectDetailResDto(Project project) {
         projectId = project.getId();
         title = project.getTitle();
-        techStack = techStacks.stream().map(TechStack::getName).collect(Collectors.toList());
+        techStack = project.getProjectStacks()
+                .stream().map(ProjectStack::getTechStack).collect(Collectors.toList())
+                .stream().map(TechStack::getName).collect(Collectors.toList());
         category = project.getCategory();
         deployAddress = project.getDeployAddress();
         gitAddress = project.getGitAddress();
