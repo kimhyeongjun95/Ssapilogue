@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,9 +15,16 @@ public class SurveyOption {
     @Id
     private Long id;
 
-    private Survey survey;
+    private Long surveyId;
 
     private Integer index;
 
     private String content;
+
+    @Builder
+    public SurveyOption(Long surveyId, Integer index, String content) {
+        this.surveyId = surveyId;
+        this.index = index;
+        this.content = content;
+    }
 }
