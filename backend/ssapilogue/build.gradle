@@ -35,7 +35,7 @@ dependencies {
 	annotationProcessor("com.google.guava:guava:29.0-jre")
 
 	// test용 mongodb
-	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.0'
+	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.4.5'
 }
 
 tasks.named('test') {

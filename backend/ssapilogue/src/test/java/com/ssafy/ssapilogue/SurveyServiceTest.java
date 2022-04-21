@@ -16,7 +16,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ContextConfiguration(classes = SsapilogueApplication.class)
 @DataMongoTest
+//@TestPropertySource(properties = "spring.mongodb.embedded.version=3.4.5")
+//@ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @DirtiesContext
 public class SurveyServiceTest {
