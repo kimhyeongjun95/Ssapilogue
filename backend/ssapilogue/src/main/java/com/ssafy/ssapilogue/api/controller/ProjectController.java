@@ -101,7 +101,7 @@ public class ProjectController {
     @ApiOperation(value = "좋아요 등록", notes = "좋아요를 등록한다.")
     public ResponseEntity<Map<String, Object>> createLike(
             @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId,
-            @RequestBody @ApiParam(value = "임시 user id", required = true, example = "string") String userId) {
+            @RequestParam @ApiParam(value = "임시 user id", required = true, example = "string") String userId) {
 
         Map<String, Object> result = new HashMap<>();
 
@@ -115,7 +115,7 @@ public class ProjectController {
     @ApiOperation(value = "좋아요 취소", notes = "좋아요를 취소한다.")
     public ResponseEntity<Map<String, Object>> deleteLike(
             @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId,
-            @RequestBody @ApiParam(value = "임시 user id", required = true, example = "string") String userId) {
+            @RequestParam @ApiParam(value = "임시 user id", required = true, example = "string") String userId) {
 
         Map<String, Object> result = new HashMap<>();
 
@@ -129,7 +129,7 @@ public class ProjectController {
     @ApiOperation(value = "북마크 등록", notes = "북마크를 등록한다.")
     public ResponseEntity<Map<String, Object>> createBookmark(
             @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId,
-            @RequestBody @ApiParam(value = "임시 user id", required = true, example = "string") String userId) {
+            @RequestParam @ApiParam(value = "임시 user id", required = true, example = "string") String userId) {
 
         Map<String, Object> result = new HashMap<>();
 
@@ -143,7 +143,7 @@ public class ProjectController {
     @ApiOperation(value = "북마크 취소", notes = "북마크를 취소한다.")
     public ResponseEntity<Map<String, Object>> deleteBookmark(
             @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId,
-            @RequestBody @ApiParam(value = "임시 user id", required = true, example = "string") String userId) {
+            @RequestParam @ApiParam(value = "임시 user id", required = true, example = "string") String userId) {
 
         Map<String, Object> result = new HashMap<>();
 
