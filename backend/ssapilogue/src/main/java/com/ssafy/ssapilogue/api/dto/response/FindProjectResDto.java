@@ -46,8 +46,8 @@ public class FindProjectResDto {
     @ApiModelProperty(value = "좋아요 수", example = "50")
     private int likeCnt;
 
-//    @ApiModelProperty(value = "댓글 수", example = "20")
-//    private int commentCnt;
+    @ApiModelProperty(value = "댓글 수", example = "20")
+    private int commentCnt;
 
     public FindProjectResDto(Project project, Boolean isBookmarked) {
         projectId = project.getId();
@@ -61,5 +61,6 @@ public class FindProjectResDto {
         this.isBookmarked = isBookmarked;
         hits = project.getHits();
         likeCnt = project.getLikedList().size();
+        commentCnt = project.getProjectComments().size();
     }
 }

@@ -1,6 +1,7 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
+import com.ssafy.ssapilogue.api.dto.response.FindCommentResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
 import com.ssafy.ssapilogue.core.domain.*;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class ProjectServiceImpl implements ProjectService{
     private final AnonymousMemberRepository anonymousMemberRepository;
     private final LikedRepository likedRepository;
     private final BookmarkRepsitory bookmarkRepsitory;
+    private final ProjectCommentRepository projectCommentRepository;
 
     // 프로젝트 전체조회
     @Override
@@ -133,7 +136,6 @@ public class ProjectServiceImpl implements ProjectService{
     public FindProjectDetailResDto findProject(Long projectId, String userId) {
         Project project = projectRepository.getById(projectId);
         User user = userRepository.getById(userId);
-        project.increaseHits();
 
         Optional<Liked> liked = likedRepository.findByUserAndProject(user, project);
         Boolean isLiked = false;
@@ -147,7 +149,18 @@ public class ProjectServiceImpl implements ProjectService{
             isBookmarked = true;
         }
 
-        return new FindProjectDetailResDto(project, isLiked, isBookmarked);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        List<ProjectComment> projectComments = projectCommentRepository.findByProjectOrderByIdDesc(project);
+
+        List<FindCommentResDto> commentList = new ArrayList<>();
+        for (ProjectComment projectComment : projectComments) {
+            FindCommentResDto findCommentResDto = new FindCommentResDto(projectComment);
+            findCommentResDto.setCreatedAt(projectComment.getCreatedAt().format(formatter));
+            commentList.add(findCommentResDto);
+        }
+
+        project.increaseHits();
+        return new FindProjectDetailResDto(project, isLiked, isBookmarked, commentList);
     }
 
     // 프로젝트 수정

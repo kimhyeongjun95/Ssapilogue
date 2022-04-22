@@ -45,8 +45,9 @@ public class ProjectComment {
     private List<ProjectRecomment> projectRecomments = new ArrayList<>();
 
     @Builder
-    public ProjectComment(String content, Project project) {
+    public ProjectComment(String content, Project project, User user) {
         this.content = content;
         this.project = project;
+        this.user = user;
     }
 }
