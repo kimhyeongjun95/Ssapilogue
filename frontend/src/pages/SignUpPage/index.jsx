@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-// import API from "../../api/API";
+import { useLocation } from "react-router-dom";
+import API from "../../api/API";
 
 const SignUpPage = () => {
   
@@ -10,10 +10,8 @@ const SignUpPage = () => {
     github: '',
   });
   const { nickName, greetings, github } = inputs;
-  const navigateState = useNavigate().state;
-  console.log(navigateState);
-  // const { email, pw, userId } = navigateState;
-
+  const locations = useLocation().state;
+  const { email, pw, userId } = locations;
 
   const handleOnChange = (e) => {
     const { value, name } = e.target;
@@ -24,21 +22,20 @@ const SignUpPage = () => {
   };
 
   const signUp = () => {
-    // API.post("api/user", {
-    //   email: email,
-    //   password: pw,
-    //   userId: userId,
-    //   nickName: nickName,
-    //   github: github,
-    //   greeting: greetings,
-    // })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   })
-    console.log(nickName, greetings, github);
+    API.post("api/user", {
+      email: email,
+      password: pw,
+      userId: userId,
+      nickName: nickName,
+      github: github,
+      greeting: greetings,
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   return (
