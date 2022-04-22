@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import API from "../../api/API";
+import { useNavigate } from 'react-router-dom';
 
 // const store = {
 //   setLocalStorage({ key, val }) {
@@ -17,6 +18,7 @@ const SignInPage = () => {
     pw: '',
   });
   const { id, pw } = inputs;
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { value, name } = e.target;
@@ -26,19 +28,20 @@ const SignInPage = () => {
     });
   };
 
-  const signIn = () => {
-    API.post("/api/v4/users/login", {
-      login_id: id,
-      password: pw,
-    })
-      .then((res) => {
+  const signIn = async () => {
+    API.post("/api/v4/users/login", {login_id: id,password: pw,})
+      .then((result) => {
+        console.log(result);
+        const res = API.post("api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
         console.log(res);
-        // 화면분기
-      })
-      .catch((err) => {
-        console.log(err);
+        const direct = res.data.status;
+        if (direct === "NO USER") {
+          navigate("/signup", {email: result.data.email, pw: pw, userId: result.data.id });
+        }
+        console.log("로그인 성공");
       })
   }
+
 
   return (
     <div>
