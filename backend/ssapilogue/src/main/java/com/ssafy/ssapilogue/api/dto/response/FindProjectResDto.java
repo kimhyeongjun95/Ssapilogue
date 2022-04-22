@@ -18,6 +18,9 @@ import java.util.stream.Collectors;
 @ApiModel("FindProjectResDto")
 public class FindProjectResDto {
 
+    @ApiModelProperty(value = "프로젝트 아이디", example = "1")
+    private Long projectId;
+
     @ApiModelProperty(value = "프로젝트 이름", example = "라이키")
     private String title;
 
@@ -34,19 +37,20 @@ public class FindProjectResDto {
     @ApiModelProperty(value = "썸네일 이미지", example = "https://j6ssafy.c104.com/images/xxxxx")
     private String thumbnail;
 
-//    @ApiModelProperty(value = "북마크 여부", example = "False")
-//    private String isBookmarked;
+    @ApiModelProperty(value = "북마크 여부", example = "False")
+    private Boolean isBookmarked;
 
     @ApiModelProperty(value = "조회수", example = "100")
     private int hits;
 
-//    @ApiModelProperty(value = "좋아요 수", example = "50")
-//    private String likeCnt;
-//
-//    @ApiModelProperty(value = "댓글 수", example = "20")
-//    private String commentCnt;
+    @ApiModelProperty(value = "좋아요 수", example = "50")
+    private int likeCnt;
 
-    public FindProjectResDto(Project project) {
+//    @ApiModelProperty(value = "댓글 수", example = "20")
+//    private int commentCnt;
+
+    public FindProjectResDto(Project project, Boolean isBookmarked) {
+        projectId = project.getId();
         title = project.getTitle();
         introduce = project.getIntroduce();
         category = project.getCategory();
@@ -54,6 +58,8 @@ public class FindProjectResDto {
                 .stream().map(ProjectStack::getTechStack).collect(Collectors.toList())
                 .stream().map(TechStack::getName).collect(Collectors.toList());
         thumbnail = project.getThumbnail();
+        this.isBookmarked = isBookmarked;
         hits = project.getHits();
+        likeCnt = project.getLikedList().size();
     }
 }

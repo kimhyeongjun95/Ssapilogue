@@ -46,13 +46,13 @@ public class FindProjectDetailResDto {
     @ApiModelProperty(value = "리드미", example = "라이키 readme 어쩌구")
     private String readme;
 
-//    @ApiModelProperty(value = "북마크 여부", example = "False")
-//    private String isBookmarked;
+    @ApiModelProperty(value = "북마크 여부", example = "False")
+    private Boolean isBookmarked;
 
-//    @ApiModelProperty(value = "좋아요 여부", example = "False")
-//    private String isLiked;
+    @ApiModelProperty(value = "좋아요 여부", example = "False")
+    private Boolean isLiked;
 
-    public FindProjectDetailResDto(Project project) {
+    public FindProjectDetailResDto(Project project, Boolean isLiked, Boolean isBookmarked) {
         projectId = project.getId();
         title = project.getTitle();
         techStack = project.getProjectStacks()
@@ -68,5 +68,7 @@ public class FindProjectDetailResDto {
         gitAddress = project.getGitAddress();
         thumbnail = project.getThumbnail();
         readme = project.getReadme();
+        this.isBookmarked = isBookmarked;
+        this.isLiked = isLiked;
     }
 }
