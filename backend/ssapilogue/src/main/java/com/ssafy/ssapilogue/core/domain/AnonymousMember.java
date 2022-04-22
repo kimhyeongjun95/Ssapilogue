@@ -8,26 +8,24 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name = "bookmark")
+@Table(name = "anonymous_member")
 @NoArgsConstructor
-public class Bookmark {
+public class AnonymousMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bookmark_id")
+    @Column(name = "anonymous_id")
     private Long id;
+
+    private String nickname;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Builder
-    private Bookmark(User user, Project project) {
-        this.user = user;
+    private AnonymousMember(String nickname, Project project) {
+        this.nickname = nickname;
         this.project = project;
     }
 }

@@ -52,6 +52,12 @@ public class Project {
     private List<ProjectStack> projectStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ProjectMember> projectMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<AnonymousMember> anonymousMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ProjectComment> projectComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -59,6 +65,10 @@ public class Project {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Bookmark> bookmarkList = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
     private Project(String title, String introduce, Category category, String deployAddress, String gitAddress, String thumbnail, String readme) {

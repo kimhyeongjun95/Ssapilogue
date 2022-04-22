@@ -1,9 +1,6 @@
 package com.ssafy.ssapilogue.api.dto.response;
 
-import com.ssafy.ssapilogue.core.domain.Category;
-import com.ssafy.ssapilogue.core.domain.Project;
-import com.ssafy.ssapilogue.core.domain.ProjectStack;
-import com.ssafy.ssapilogue.core.domain.TechStack;
+import com.ssafy.ssapilogue.core.domain.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,8 +25,11 @@ public class FindProjectDetailResDto {
     @ApiModelProperty(value = "기술 스택", example = "['ReactNative', 'Spring']")
     private List<String> techStack;
 
-//    @ApiModelProperty(value = "멤버 닉네임", example = "['동균', '현서']")
-//    private List<String> member;
+    @ApiModelProperty(value = "멤버 닉네임", example = "['동균', '현서']")
+    private List<String> member;
+
+    @ApiModelProperty(value = "멤버 닉네임", example = "['형준', '은서']")
+    private List<String> anonymousMember;
 
     @ApiModelProperty(value = "카테고리", example = "자율")
     private Category category;
@@ -46,22 +46,34 @@ public class FindProjectDetailResDto {
     @ApiModelProperty(value = "리드미", example = "라이키 readme 어쩌구")
     private String readme;
 
-//    @ApiModelProperty(value = "북마크 여부", example = "False")
-//    private String isBookmarked;
+    @ApiModelProperty(value = "북마크 여부", example = "False")
+    private Boolean isBookmarked;
 
-//    @ApiModelProperty(value = "좋아요 여부", example = "False")
-//    private String isLiked;
+    @ApiModelProperty(value = "좋아요 여부", example = "False")
+    private Boolean isLiked;
 
-    public FindProjectDetailResDto(Project project) {
+    @ElementCollection
+    @ApiModelProperty(value = "댓글 리스트")
+    private List<FindCommentResDto> comment;
+
+    public FindProjectDetailResDto(Project project, Boolean isLiked, Boolean isBookmarked, List<FindCommentResDto> commentList) {
         projectId = project.getId();
         title = project.getTitle();
         techStack = project.getProjectStacks()
                 .stream().map(ProjectStack::getTechStack).collect(Collectors.toList())
                 .stream().map(TechStack::getName).collect(Collectors.toList());
+        member = project.getProjectMembers()
+                .stream().map(ProjectMember::getUser).collect(Collectors.toList())
+                .stream().map(User::getNickname).collect(Collectors.toList());
+        anonymousMember = project.getAnonymousMembers()
+                .stream().map(AnonymousMember::getNickname).collect(Collectors.toList());
         category = project.getCategory();
         deployAddress = project.getDeployAddress();
         gitAddress = project.getGitAddress();
         thumbnail = project.getThumbnail();
         readme = project.getReadme();
+        this.isBookmarked = isBookmarked;
+        this.isLiked = isLiked;
+        comment = commentList;
     }
 }

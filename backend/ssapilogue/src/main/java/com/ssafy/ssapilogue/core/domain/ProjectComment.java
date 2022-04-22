@@ -37,12 +37,17 @@ public class ProjectComment {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "projectComment", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ProjectRecomment> projectRecomments = new ArrayList<>();
 
     @Builder
-    public ProjectComment(String content, Project project) {
+    public ProjectComment(String content, Project project, User user) {
         this.content = content;
         this.project = project;
+        this.user = user;
     }
 }

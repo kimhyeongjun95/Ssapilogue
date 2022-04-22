@@ -46,6 +46,21 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserIdentity userIdentity;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Project> projects = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ProjectComment> projectComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ProjectMember> projectMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Liked> likedList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Bookmark> bookmarkList = new ArrayList<>();
+
     @Builder
     public User(String email, String password, String userId, String nickname, String username, String github, String greeting, String image) {
         this.email = email;
