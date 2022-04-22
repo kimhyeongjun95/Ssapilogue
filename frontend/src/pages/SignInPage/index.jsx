@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 //     localStorage.setItem(`${key}`, JSON.stringify(val));
 //   },
 //   getLocalStorage(key) {
-// 	  return JSON.parse(localStorage.getItem(`${key}`));
+//      return JSON.parse(localStorage.getItem(`${key}`));
 //   },
 // };
 
@@ -28,20 +28,21 @@ const SignInPage = () => {
     });
   };
 
-  const signIn = async () => {
+  const signIn = () => {
+    console.log("되나?");
     API.post("/api/v4/users/login", {login_id: id,password: pw,})
       .then((result) => {
         console.log(result);
-        const res = API.post("api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
-        console.log(res);
-        const direct = res.data.status;
-        if (direct === "NO USER") {
-          navigate("/signup", {email: result.data.email, pw: pw, userId: result.data.id });
-        }
-        console.log("로그인 성공");
+        API.post("api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
+          .then((res) => {
+            const direct = res.data.status;
+            if (direct === "NO USER") {
+              navigate("/signup", {state: {email: result.data.email, pw: pw, userId: result.data.id }});
+            }
+            console.log("로그인 성공");
+          })
       })
   }
-
 
   return (
     <div>
