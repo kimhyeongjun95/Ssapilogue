@@ -6,14 +6,17 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
+@Table(name="user_info")
 @NoArgsConstructor
 public class UserInfo {
 
-    @Id @NotNull
+    @Id
+    @NotNull
     private String userId;
 
     @NotNull
