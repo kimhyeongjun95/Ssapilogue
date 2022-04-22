@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,11 +25,14 @@ public class ProjectServiceImpl implements ProjectService{
     private final ProjectStackRepository projectStackRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final AnonymousMemberRepository anonymousMemberRepository;
+    private final LikedRepository likedRepository;
+    private final BookmarkRepsitory bookmarkRepsitory;
 
     // 프로젝트 전체조회
     @Override
-    public List<FindProjectResDto> findProjects(String standard, String category) {
+    public List<FindProjectResDto> findProjects(String standard, String category, String userId) {
         List<Project> projects = null;
+        User user = userRepository.getById(userId);
 
         if (standard.equals("최신")) {
             if (category.equals("전체")) {
@@ -44,8 +48,19 @@ public class ProjectServiceImpl implements ProjectService{
             }
         }
 
+        List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
+        for (Project project : projects) {
+            Optional<Bookmark> bookmark = bookmarkRepsitory.findByUserAndProject(user, project);
 
-        return projects.stream().map(FindProjectResDto::new).collect(Collectors.toList());
+            Boolean isBookmarked = false;
+            if (bookmark.isPresent()) {
+                isBookmarked = true;
+            }
+
+            findProjectResDtos.add(new FindProjectResDto(project, isBookmarked));
+        }
+
+        return findProjectResDtos;
     }
 
     // 프로젝트 등록
@@ -115,11 +130,24 @@ public class ProjectServiceImpl implements ProjectService{
 
     // 프로젝트 상세조회
     @Override
-    public FindProjectDetailResDto findProject(Long projectId) {
+    public FindProjectDetailResDto findProject(Long projectId, String userId) {
         Project project = projectRepository.getById(projectId);
+        User user = userRepository.getById(userId);
         project.increaseHits();
 
-        return new FindProjectDetailResDto(project);
+        Optional<Liked> liked = likedRepository.findByUserAndProject(user, project);
+        Boolean isLiked = false;
+        if (liked.isPresent()) {
+            isLiked = true;
+        }
+
+        Optional<Bookmark> bookmark = bookmarkRepsitory.findByUserAndProject(user, project);
+        Boolean isBookmarked = false;
+        if (bookmark.isPresent()) {
+            isBookmarked = true;
+        }
+
+        return new FindProjectDetailResDto(project, isLiked, isBookmarked);
     }
 
     // 프로젝트 수정
