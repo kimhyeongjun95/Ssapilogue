@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,4 +22,11 @@ public class Review {
     private Integer index;
 
     private String content;
+
+    @Builder
+    public Review(String id, Integer index, String content) {
+        this.id = id;
+        this.index = index;
+        this.content = content;
+    }
 }
