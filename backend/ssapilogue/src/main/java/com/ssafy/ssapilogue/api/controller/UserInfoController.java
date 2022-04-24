@@ -2,6 +2,8 @@ package com.ssafy.ssapilogue.api.controller;
 
 import com.ssafy.ssapilogue.core.domain.UserInfo;
 import com.ssafy.ssapilogue.core.repository.UserInfoRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -19,6 +21,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+@Api(tags = "UserInfo", value = "유저정보 API")
 @RestController
 @RequiredArgsConstructor
 public class UserInfoController {
@@ -26,6 +29,7 @@ public class UserInfoController {
     private final UserInfoRepository userInfoRepository;
 
     @GetMapping("/userinfo")
+    @ApiOperation(value = "회원정보 저장", notes = "회원 정보 전체를 DB에 저장한다.")
     public List<UserInfo> getUserInfo() throws ParseException {
 
         List<String> userIdList = new ArrayList<>();
@@ -42,9 +46,10 @@ public class UserInfoController {
 
             RestTemplate restTemplate = new RestTemplate();
 
+            // 토큰 새로 발급받아서 수정하기
             RequestEntity<Void> req = RequestEntity
                     .get(uri)
-                    .header("authorization", "Bearer 7ma7ftyh9pb6bm5hqpo6wey4co")
+                    .header("authorization", "Bearer zs1hreyx3jdzpdesfeksz4ezzw")
                     .build();
 
             ResponseEntity<String> result = restTemplate.exchange(req, String.class);
@@ -70,6 +75,7 @@ public class UserInfoController {
 
             RestTemplate userRestTemplate = new RestTemplate();
 
+            // 토큰 새로 발급받아서 수정하기
             RequestEntity<Void> userReq = RequestEntity
                     .get(uri)
                     .header("authorization", "Bearer 7ma7ftyh9pb6bm5hqpo6wey4co")

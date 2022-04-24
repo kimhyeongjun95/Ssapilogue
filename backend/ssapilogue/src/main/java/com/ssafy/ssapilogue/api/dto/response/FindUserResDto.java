@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@ApiModel("SignupUserResDto")
-public class SignupUserResDto {
+@ApiModel("FindUserResDto")
+public class FindUserResDto {
 
     private String email;
 
@@ -17,12 +17,12 @@ public class SignupUserResDto {
 
     private String github;
 
-    private UserIdentity userIdentity;
+    private String greeting;
 
-    public SignupUserResDto(User user) {
+    public FindUserResDto(User user) {
         email = user.getEmail();
         nickname = user.getNickname();
         github = user.getGithub();
-        userIdentity = user.getUserIdentity();
+        greeting = user.getGreeting();
     }
 }
