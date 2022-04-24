@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,10 @@ public class Bookmark {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Builder
+    private Bookmark(User user, Project project) {
+        this.user = user;
+        this.project = project;
+    }
 }
