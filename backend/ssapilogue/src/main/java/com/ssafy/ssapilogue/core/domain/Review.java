@@ -34,6 +34,14 @@ public class Review {
         this.content = content;
     }
 
+    public void saveIndex(Integer index) {
+        this.index = index;
+    }
+
+    public void saveContent(String content) {
+        this.content = content;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

@@ -16,16 +16,13 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public Long createReview(Long projectId, CreateReviewReqDto createReviewReqDto) {
-        Review review = new Review();
+        Review review = Review.builder()
+                .build();
 
         if (createReviewReqDto.getIndex() != null) {
-            review = Review.builder()
-                    .index(createReviewReqDto.getIndex())
-                    .build();
+            review.saveIndex(createReviewReqDto.getIndex());
         } else if (createReviewReqDto.getContent() != null) {
-            review = Review.builder()
-                    .content(createReviewReqDto.getContent())
-                    .build();
+            review.saveContent(createReviewReqDto.getContent());
         }
 
         Review saveReview = reviewRepository.save(review);
