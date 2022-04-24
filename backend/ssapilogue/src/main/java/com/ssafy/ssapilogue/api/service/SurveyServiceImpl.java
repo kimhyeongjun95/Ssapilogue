@@ -8,7 +8,6 @@ import com.ssafy.ssapilogue.core.domain.Survey;
 import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.domain.SurveyType;
 import com.ssafy.ssapilogue.core.repository.ProjectRepository;
-import com.ssafy.ssapilogue.core.repository.SurveyOptionRepository;
 import com.ssafy.ssapilogue.core.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ public class SurveyServiceImpl implements SurveyService {
 
     private final ProjectRepository projectRepository;
     private final SurveyRepository surveyRepository;
-    private final SurveyOptionRepository surveyOptionRepository;
 
     private final SurveyOptionService surveyOptionService;
 
