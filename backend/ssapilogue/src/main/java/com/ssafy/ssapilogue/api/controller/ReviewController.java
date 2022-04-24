@@ -28,7 +28,7 @@ public class ReviewController {
             @RequestBody @ApiParam(value = "리뷰 정보", required = true) CreateReviewReqDto createReviewReqDto) {
         Map<String, Object> result = new HashMap<>();
 
-        String reviewId = reviewService.createReview(projectId, createReviewReqDto);
+        Long reviewId = reviewService.createReview(projectId, createReviewReqDto);
         result.put("reviewId", reviewId);
         result.put("status", "SUCESS");
 

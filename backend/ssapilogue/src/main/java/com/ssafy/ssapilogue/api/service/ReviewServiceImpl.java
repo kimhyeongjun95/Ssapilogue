@@ -15,7 +15,7 @@ public class ReviewServiceImpl implements ReviewService{
     private final ReviewRepository reviewRepository;
 
     @Override
-    public String createReview(Long projectId, CreateReviewReqDto createReviewReqDto) {
+    public Long createReview(Long projectId, CreateReviewReqDto createReviewReqDto) {
         Review review = new Review();
 
         if (createReviewReqDto.getIndex() != null) {
