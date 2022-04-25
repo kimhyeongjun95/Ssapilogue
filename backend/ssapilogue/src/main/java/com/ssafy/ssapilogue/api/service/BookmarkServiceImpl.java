@@ -20,8 +20,8 @@ public class BookmarkServiceImpl implements BookmarkService{
     private final ProjectRepository projectRepository;
 
     @Override
-    public void createBookmark(String userId, Long projectId) {
-        User user = userRepository.getById(userId);
+    public void createBookmark(String userEmail, Long projectId) {
+        User user = userRepository.findByEmail(userEmail);
         Project project = projectRepository.getById(projectId);
         Bookmark bookmark = Bookmark.builder()
                 .user(user)
@@ -31,8 +31,8 @@ public class BookmarkServiceImpl implements BookmarkService{
     }
 
     @Override
-    public void deleteBookmark(String userId, Long projectId) {
-        User user = userRepository.getById(userId);
+    public void deleteBookmark(String userEmail, Long projectId) {
+        User user = userRepository.findByEmail(userEmail);
         Project project = projectRepository.getById(projectId);
         bookmarkRepsitory.deleteByUserAndProject(user, project);
     }

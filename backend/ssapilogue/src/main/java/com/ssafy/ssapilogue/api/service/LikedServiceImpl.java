@@ -20,8 +20,8 @@ public class LikedServiceImpl implements LikedService{
     private final ProjectRepository projectRepository;
 
     @Override
-    public void createLiked(String userId, Long projectId) {
-        User user = userRepository.getById(userId);
+    public void createLiked(String userEmail, Long projectId) {
+        User user = userRepository.findByEmail(userEmail);
         Project project = projectRepository.getById(projectId);
         Liked liked = Liked.builder()
                 .user(user)
@@ -31,8 +31,8 @@ public class LikedServiceImpl implements LikedService{
     }
 
     @Override
-    public void deleteLiked(String userId, Long projectId) {
-        User user = userRepository.getById(userId);
+    public void deleteLiked(String userEmail, Long projectId) {
+        User user = userRepository.findByEmail(userEmail);
         Project project = projectRepository.getById(projectId);
         likedRepository.deleteByUserAndProject(user, project);
     }

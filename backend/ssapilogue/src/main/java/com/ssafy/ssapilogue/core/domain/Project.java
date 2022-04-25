@@ -71,7 +71,7 @@ public class Project {
     private User user;
 
     @Builder
-    private Project(String title, String introduce, Category category, String deployAddress, String gitAddress, String thumbnail, String readme) {
+    private Project(String title, String introduce, Category category, String deployAddress, String gitAddress, String thumbnail, String readme, User user) {
         this.title = title;
         this.introduce = introduce;
         this.category = category;
@@ -79,6 +79,7 @@ public class Project {
         this.gitAddress = gitAddress;
         this.thumbnail = thumbnail;
         this.readme = readme;
+        this.user = user;
     }
 
     // 조회수 증가를 위한 편의 함수
