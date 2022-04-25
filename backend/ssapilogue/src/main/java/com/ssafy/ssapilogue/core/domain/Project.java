@@ -82,6 +82,11 @@ public class Project {
         this.user = user;
     }
 
+    // 프로젝트 이미지 수정을 위한 편의 함수
+    public void updateImg(String image) {
+        this.thumbnail = image;
+    }
+
     // 조회수 증가를 위한 편의 함수
     public void increaseHits() {
         this.hits++;

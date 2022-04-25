@@ -42,7 +42,7 @@ public class CreateProjectReqDto {
     @ApiModelProperty(value = "깃 주소", required = true, example = "https://gitlab.com/ssapilouge")
     private String gitAddress;
 
-    @ApiModelProperty(value = "썸네일 이미지", example = "https://j6ssafy.c104.com/images/xxxxx")
+    @ApiModelProperty(value = "썸네일 이미지", example = "980d76cb-d82b-4fd9-baa9-fa013adc5f06_개발짤.jpg")
     private String thumbnail;
 
     @NotNull

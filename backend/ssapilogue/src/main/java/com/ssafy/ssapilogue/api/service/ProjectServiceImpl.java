@@ -7,14 +7,19 @@ import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
 import com.ssafy.ssapilogue.core.domain.*;
 import com.ssafy.ssapilogue.core.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -30,6 +35,9 @@ public class ProjectServiceImpl implements ProjectService{
     private final LikedRepository likedRepository;
     private final BookmarkRepsitory bookmarkRepsitory;
     private final ProjectCommentRepository projectCommentRepository;
+
+    @Value("${projectImg.path}")
+    private String uploadFolder;
 
     // 프로젝트 전체조회
     @Override
@@ -232,5 +240,23 @@ public class ProjectServiceImpl implements ProjectService{
         if (project.getUser().getEmail().equals(userEmail)) {
             projectRepository.deleteById(projectId);
         }
+    }
+
+    // 이미지 업로드
+    @Override
+    public String uploadImage(MultipartFile multipartFile, String userEmail) {
+        User user = userRepository.findByEmail(userEmail);
+        String imageFileName = UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename();
+        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+
+        if (multipartFile.getSize() != 0) {
+            try {
+                Files.write(imageFilePath, multipartFile.getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return "http://k6c104.p.ssafy.io/images/projectImg/" + imageFileName;
     }
 }
