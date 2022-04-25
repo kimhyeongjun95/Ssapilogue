@@ -33,9 +33,9 @@ public class ProjectServiceImpl implements ProjectService{
 
     // 프로젝트 전체조회
     @Override
-    public List<FindProjectResDto> findProjects(String standard, String category, String userId) {
+    public List<FindProjectResDto> findProjects(String standard, String category, String userEmail) {
         List<Project> projects = null;
-        User user = userRepository.getById(userId);
+        User user = userRepository.findByEmail(userEmail);
 
         if (standard.equals("최신")) {
             if (category.equals("전체")) {
@@ -68,7 +68,9 @@ public class ProjectServiceImpl implements ProjectService{
 
     // 프로젝트 등록
     @Override
-    public Long createProject(CreateProjectReqDto createProjectReqDto) {
+    public Long createProject(CreateProjectReqDto createProjectReqDto, String userEmail) {
+        User user = userRepository.findByEmail(userEmail);
+
         Project project = Project.builder()
                 .title(createProjectReqDto.getTitle())
                 .introduce(createProjectReqDto.getIntroduce())
@@ -77,6 +79,7 @@ public class ProjectServiceImpl implements ProjectService{
                 .gitAddress(createProjectReqDto.getGitAddress())
                 .thumbnail(createProjectReqDto.getThumbnail())
                 .readme(createProjectReqDto.getReadme())
+                .user(user)
                 .build();
 
         Project saveProject = projectRepository.save(project);
@@ -133,9 +136,9 @@ public class ProjectServiceImpl implements ProjectService{
 
     // 프로젝트 상세조회
     @Override
-    public FindProjectDetailResDto findProject(Long projectId, String userId) {
+    public FindProjectDetailResDto findProject(Long projectId, String userEmail) {
         Project project = projectRepository.getById(projectId);
-        User user = userRepository.getById(userId);
+        User user = userRepository.findByEmail(userEmail);
 
         Optional<Liked> liked = likedRepository.findByUserAndProject(user, project);
         Boolean isLiked = false;
@@ -224,7 +227,10 @@ public class ProjectServiceImpl implements ProjectService{
 
     // 프로젝트 삭제
     @Override
-    public void deleteProject(Long projectId) {
-        projectRepository.deleteById(projectId);
+    public void deleteProject(Long projectId, String userEmail) {
+        Project project = projectRepository.getById(projectId);
+        if (project.getUser().getEmail().equals(userEmail)) {
+            projectRepository.deleteById(projectId);
+        }
     }
 }
