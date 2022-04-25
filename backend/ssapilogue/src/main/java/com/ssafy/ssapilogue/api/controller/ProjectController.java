@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -180,5 +181,29 @@ public class ProjectController {
         result.put("status", "SUCCESS");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/image")
+    @ApiOperation(value = "프로젝트 이미지 업로드", notes = "프로젝트 이미지를 업로드한다.")
+    public ResponseEntity<Map<String, Object>> updateImage(
+            @RequestPart @ApiParam(value = "이미지 파일", required = true) MultipartFile file,
+            HttpServletRequest request) {
+
+        Map<String, Object> result = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        String token = jwtTokenProvider.resolveToken(request);
+        String userEmail = jwtTokenProvider.getUserEmail(token);
+
+        try {
+            String imageUrl = projectService.uploadImage(file, userEmail);
+            httpStatus = HttpStatus.OK;
+            result.put("imageUrl", imageUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            result.put("status", "SERVER ERROR");
+        }
+        return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 }
