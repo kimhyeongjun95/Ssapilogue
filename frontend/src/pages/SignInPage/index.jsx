@@ -38,6 +38,7 @@ const SignInPage = () => {
             const direct = res.data.status;
             if (direct === "NO USER") {
               navigate("/signup", {state: {email: result.data.email, pw: pw, userId: result.data.id }});
+              return;
             }
             console.log("로그인 성공");
           })
