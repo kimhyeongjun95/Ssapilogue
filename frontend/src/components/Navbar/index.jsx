@@ -15,7 +15,9 @@ const Navbar = () => {
 
   return (
     <nav>
-      <h1>SSapilogue</h1>
+      <Link className="home" to="/">
+        <h1>SSapilogue</h1>
+      </Link>
       <Link className="login" to="/signin">
         <button onClick={Login} >로그인</button>
       </Link>
