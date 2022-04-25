@@ -6,6 +6,7 @@ import com.ssafy.ssapilogue.api.dto.request.UpdateUserReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindUserResDto;
 import com.ssafy.ssapilogue.api.dto.response.SignupUserResDto;
 import com.ssafy.ssapilogue.core.domain.User;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -17,5 +18,7 @@ public interface UserService {
 
     void deleteUser(String userId);
 
-    FindUserResDto findUserProfile(String userId);
+    FindUserResDto findUserProfile(String email);
+
+    void updateImage(String email, MultipartFile multipartFile);
 }

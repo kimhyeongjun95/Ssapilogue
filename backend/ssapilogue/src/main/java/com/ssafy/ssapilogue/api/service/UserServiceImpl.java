@@ -10,10 +10,16 @@ import com.ssafy.ssapilogue.core.domain.UserInfo;
 import com.ssafy.ssapilogue.core.repository.UserInfoRepository;
 import com.ssafy.ssapilogue.core.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +28,9 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
     private final UserInfoRepository userInfoRepository;
+
+    @Value("${profileImg.path}")
+    private String uploadFolder;
 
     @Transactional
     @Override
@@ -72,5 +81,26 @@ public class UserServiceImpl implements UserService{
     public FindUserResDto findUserProfile(String email) {
         User findUser = userRepository.findByEmail(email);
         return new FindUserResDto(findUser);
+    }
+
+    @Override
+    public void updateImage(String email, MultipartFile multipartFile) {
+        User user = userRepository.findByEmail(email);
+        String imageFileName = user.getUserId() + "_" + multipartFile.getOriginalFilename();
+        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+
+        if(multipartFile.getSize() != 0) {
+            try {
+                if (user.getImage() != null) {
+                    File file = new File(uploadFolder + user.getImage());
+                    file.delete();
+                }
+                user.updateImg(imageFileName);
+                userRepository.save(user);
+                Files.write(imageFilePath, multipartFile.getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

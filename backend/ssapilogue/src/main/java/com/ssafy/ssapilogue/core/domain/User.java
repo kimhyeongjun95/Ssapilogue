@@ -80,6 +80,10 @@ public class User implements UserDetails {
         this.greeting = greeting;
     }
 
+    public void updateImg(String image) {
+        this.image = image;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();

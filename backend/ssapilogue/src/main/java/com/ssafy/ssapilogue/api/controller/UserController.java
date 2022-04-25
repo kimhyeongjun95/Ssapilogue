@@ -7,24 +7,28 @@ import com.ssafy.ssapilogue.api.dto.response.FindUserResDto;
 import com.ssafy.ssapilogue.api.dto.response.SignupUserResDto;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
 import com.ssafy.ssapilogue.api.service.UserService;
+import com.ssafy.ssapilogue.api.util.MediaUtils;
 import com.ssafy.ssapilogue.core.domain.User;
 import com.ssafy.ssapilogue.core.repository.UserInfoRepository;
-import com.ssafy.ssapilogue.core.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 @Api(tags = "User", value = "유저 API")
 @RestController
@@ -38,6 +42,8 @@ public class UserController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Value("${profileImg.path}")
+    private String uploadPath;
 
     @PostMapping
     @ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
@@ -149,5 +155,58 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
+    @PostMapping("/image")
+    @ApiOperation(value = "프로필 이미지 변경", notes = "회원의 프로필 이미지를 변경한다.")
+    public ResponseEntity<Map<String, Object>> updateImage(
+            @RequestPart @ApiParam(value = "이미지 파일", required = true) MultipartFile file, HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        HttpStatus httpStatus = null;
 
+        String token = jwtTokenProvider.resolveToken(request);
+        String userEmail = jwtTokenProvider.getUserEmail(token);
+
+        try {
+            userService.updateImage(userEmail, file);
+            httpStatus = HttpStatus.OK;
+            result.put("status", "SUCCESS");
+        } catch (Exception e) {
+            e.printStackTrace();
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            result.put("status", "SERVER ERROR");
+        }
+        return new ResponseEntity<Map<String, Object>>(result, httpStatus);
+    }
+
+    @GetMapping(value = "/image")
+    @ApiOperation(value = "프로필 이미지 불러오기", notes = "회원의 프로필 이미지를 불러온다.")
+    public ResponseEntity<byte[]> displayImage(HttpServletRequest request) throws Exception {
+
+        InputStream in = null;
+        ResponseEntity<byte[]> entity = null;
+        String token = jwtTokenProvider.resolveToken(request);
+        String userEmail = jwtTokenProvider.getUserEmail(token);
+        FindUserResDto userProfile = userService.findUserProfile(userEmail);
+        String imageName = userProfile.getImage();
+        try {
+            String formatName = imageName.substring(imageName.lastIndexOf(".")+1);
+            MediaType mType = MediaUtils.getMediaType(formatName);
+            HttpHeaders headers = new HttpHeaders();
+            in = new FileInputStream(uploadPath + imageName);
+
+            if (mType != null) {
+                headers.setContentType(mType);
+            } else {
+                imageName = imageName.substring(imageName.indexOf("_")+1);
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                headers.add("Content-Disposition", "attachment; filename=\"" + new String(imageName.getBytes(StandardCharsets.UTF_8), "ISO-8859-1") + "\"");
+            }
+            entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+        } finally {
+            in.close();
+        }
+        return entity;
+    }
 }
