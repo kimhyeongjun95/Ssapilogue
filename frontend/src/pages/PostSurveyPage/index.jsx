@@ -3,11 +3,11 @@ import './style.scss'
 
 const PostSurvey = () => {
 
-  const [addOption, setAddOption] = useState('주관식');
+  const [option, setOption] = useState('주관식');
   const [surveys, setSurveys] = useState([]); 
 
   const whichSurvey = (e) => {
-    setAddOption(e.target.value);
+    setOption(e.target.value);
   }
 
   const addSubjective = () => {
@@ -38,7 +38,7 @@ const PostSurvey = () => {
   }
 
   const addQuestion = () => {
-    return addOption === "주관식" ? addSubjective() : addMultipleChoice();
+    return option === "주관식" ? addSubjective() : addMultipleChoice();
   }
 
   return (
@@ -53,8 +53,8 @@ const PostSurvey = () => {
       <hr />
       <button onClick={addQuestion}>더하기 버튼</button>
 
-      <button onClick={whichSurvey} value="주관식">주관식</button>
-      <button onClick={whichSurvey} value="객관식">객관식</button>
+      <button className={option === "주관식" ? "btn-on" : null} onClick={whichSurvey} value="주관식">주관식</button>
+      <button className={option === "객관식" ? "btn-on" : null} onClick={whichSurvey} value="객관식">객관식</button>
 
     </div>
   )
