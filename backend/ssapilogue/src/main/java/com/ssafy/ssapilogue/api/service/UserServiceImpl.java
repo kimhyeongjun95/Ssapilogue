@@ -20,6 +20,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public void updateUser(UpdateUserReqDto updateUserReqDto) {
         User user = userRepository.findByEmail(updateUserReqDto.getEmail());
-        user.update(updateUserReqDto.getGithub(), updateUserReqDto.getGreeting());
+        user.update(updateUserReqDto);
     }
 
     @Override
@@ -84,23 +85,19 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void updateImage(String email, MultipartFile multipartFile) {
+    public String updateImage(String email, MultipartFile multipartFile) {
         User user = userRepository.findByEmail(email);
-        String imageFileName = user.getUserId() + "_" + multipartFile.getOriginalFilename();
+        String imageFileName = UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename();
         Path imageFilePath = Paths.get(uploadFolder + imageFileName);
 
         if(multipartFile.getSize() != 0) {
             try {
-                if (user.getImage() != null) {
-                    File file = new File(uploadFolder + user.getImage());
-                    file.delete();
-                }
-                user.updateImg(imageFileName);
-                userRepository.save(user);
                 Files.write(imageFilePath, multipartFile.getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
+        return "http://k6c104.p.ssafy.io/images/profileImg/" + imageFileName;
     }
 }
