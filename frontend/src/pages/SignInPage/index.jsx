@@ -29,11 +29,10 @@ const SignInPage = () => {
   };
 
   const signIn = () => {
-    console.log("되나?");
     API.post("/api/v4/users/login", {login_id: id,password: pw,})
       .then((result) => {
         console.log(result);
-        API.post("api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
+        API.post("/api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
           .then((res) => {
             const direct = res.data.status;
             if (direct === "NO USER") {
