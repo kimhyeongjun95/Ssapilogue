@@ -13,18 +13,15 @@ import javax.persistence.Id;
 public class SurveyOption {
 
     @Id
-    private Long id;
+    private String id;
 
-    private Long surveyId;
-
-    private Integer index;
+    private String surveyId;
 
     private String content;
 
     @Builder
-    public SurveyOption(Long surveyId, Integer index, String content) {
+    public SurveyOption(String surveyId, String content) {
         this.surveyId = surveyId;
-        this.index = index;
         this.content = content;
     }
 }

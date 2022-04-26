@@ -6,19 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("CreateSurveyOptionReqDto")
-public class CreateSurveyOptionReqDto {
+@ApiModel("CreateReviewReqDto")
+public class CreateReviewReqDto {
 
-    @NotNull
-    @ApiModelProperty(value = "옵션 번호", required = true, example = "1")
+    @ApiModelProperty(value = "객관식 선택 문항 번호", example = "1")
     private Integer index;
 
-    @NotNull
-    @ApiModelProperty(value = "옵션 내용", required = true, example = "매우 만족")
+    @ApiModelProperty(value = "주관식 답안", example = "매우 유용했습니다.")
     private String content;
 }
