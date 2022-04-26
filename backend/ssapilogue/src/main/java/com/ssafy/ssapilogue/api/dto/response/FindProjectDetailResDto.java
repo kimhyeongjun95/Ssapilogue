@@ -53,10 +53,17 @@ public class FindProjectDetailResDto {
     private Boolean isLiked;
 
     @ElementCollection
+    @ApiModelProperty(value = "다른 프로젝트 리스트")
+    private List<FindProjectResDto> anotherProjects;
+
+    @ApiModelProperty(value = "댓글 수", example = "20")
+    private int commentCnt;
+
+    @ElementCollection
     @ApiModelProperty(value = "댓글 리스트")
     private List<FindCommentResDto> comment;
 
-    public FindProjectDetailResDto(Project project, Boolean isLiked, Boolean isBookmarked, List<FindCommentResDto> commentList) {
+    public FindProjectDetailResDto(Project project, Boolean isLiked, Boolean isBookmarked, List<FindProjectResDto> findProjectResDtos, List<FindCommentResDto> commentList) {
         projectId = project.getId();
         title = project.getTitle();
         techStack = project.getProjectStacks()
@@ -74,6 +81,8 @@ public class FindProjectDetailResDto {
         readme = project.getReadme();
         this.isBookmarked = isBookmarked;
         this.isLiked = isLiked;
+        anotherProjects = findProjectResDtos;
+        commentCnt = commentList.size();
         comment = commentList;
     }
 }

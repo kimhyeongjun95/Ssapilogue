@@ -1,6 +1,5 @@
 package com.ssafy.ssapilogue.api.service;
 
-import com.ssafy.ssapilogue.api.dto.request.CreateSurveyOptionReqDto;
 import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.repository.SurveyOptionRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +14,10 @@ public class SurveyOptionServiceImpl implements SurveyOptionService{
     private final SurveyOptionRepository surveyOptionRepository;
 
     @Override
-    public SurveyOption createSurveyOption(Long surveyId, CreateSurveyOptionReqDto createSurveyOptionReqDto) {
+    public SurveyOption createSurveyOption(String surveyId, String content) {
         SurveyOption surveyOption = SurveyOption.builder()
                 .surveyId(surveyId)
-                .index(createSurveyOptionReqDto.getIndex())
-                .content(createSurveyOptionReqDto.getContent())
+                .content(content)
                 .build();
 
         SurveyOption saveSurveyOption = surveyOptionRepository.save(surveyOption);
@@ -28,7 +26,7 @@ public class SurveyOptionServiceImpl implements SurveyOptionService{
     }
 
     @Override
-    public void deleteSurveyOption(Long surveyOptionId) {
+    public void deleteSurveyOption(String surveyOptionId) {
         surveyOptionRepository.deleteById(surveyOptionId);
     }
 }
