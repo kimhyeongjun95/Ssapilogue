@@ -160,6 +160,19 @@ public class ProjectServiceImpl implements ProjectService{
             isBookmarked = true;
         }
 
+        List<Project> anotherProjects = projectRepository.findByCategoryOrderByRandom(project.getCategory().toString(), projectId);
+        List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
+        for (Project anotherProject : anotherProjects) {
+            Optional<Bookmark> anotherBookmark = bookmarkRepsitory.findByUserAndProject(user, anotherProject);
+
+            Boolean isAnotherBookmarked = false;
+            if (anotherBookmark.isPresent()) {
+                isAnotherBookmarked = true;
+            }
+
+            findProjectResDtos.add(new FindProjectResDto(anotherProject, isAnotherBookmarked));
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         List<ProjectComment> projectComments = projectCommentRepository.findByProjectOrderByIdDesc(project);
 
@@ -171,7 +184,7 @@ public class ProjectServiceImpl implements ProjectService{
         }
 
         project.increaseHits();
-        return new FindProjectDetailResDto(project, isLiked, isBookmarked, commentList);
+        return new FindProjectDetailResDto(project, isLiked, isBookmarked, findProjectResDtos ,commentList);
     }
 
     // 프로젝트 수정
