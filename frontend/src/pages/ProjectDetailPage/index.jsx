@@ -45,6 +45,7 @@ const DetailPage = () => {
     </div>
   })
 
+
   const stackBox = stack.map((item) => {
     return <Button variant="contained" style={{margin:"0.3%", marginRight:"1%", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
       
@@ -56,6 +57,7 @@ const DetailPage = () => {
     >{item}
     </Button>
   })
+  
   return (
     
     <div>
@@ -107,7 +109,6 @@ const DetailPage = () => {
       <div className="comment-div">
         <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
         <div>
-
           <p><textarea className="comment-box" maxLength={340}></textarea></p>
           <input type="submit" value="Submit" />
         </div>
