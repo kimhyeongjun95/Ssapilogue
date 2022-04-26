@@ -250,7 +250,9 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     public void deleteProject(Long projectId, String userEmail) {
         Project project = projectRepository.getById(projectId);
+        int likeCnt = project.getLikedList().size();
         if (project.getUser().getEmail().equals(userEmail)) {
+            project.getUser().changeLikes(-likeCnt);
             projectRepository.deleteById(projectId);
         }
     }

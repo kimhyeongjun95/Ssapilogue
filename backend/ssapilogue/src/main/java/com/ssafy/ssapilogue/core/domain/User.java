@@ -86,6 +86,11 @@ public class User implements UserDetails {
         this.image = image;
     }
 
+    // 좋아요 수 변동을 위한 편의 함수
+    public void changeLikes(int cnt) {
+        this.likes = this.likes + cnt;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
