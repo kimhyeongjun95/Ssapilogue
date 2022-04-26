@@ -28,20 +28,16 @@ const SignInPage = () => {
     });
   };
 
-  const signIn = () => {
-    API.post("/api/v4/users/login", {login_id: id,password: pw,})
-      .then((result) => {
-        console.log(result);
-        API.post("/api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
-          .then((res) => {
-            const direct = res.data.status;
-            if (direct === "NO USER") {
-              navigate("/signup", {state: {email: result.data.email, pw: pw, userId: result.data.id }});
-              return;
-            }
-            console.log("로그인 성공");
-          })
-      })
+  const signIn = async () => {
+    const result = await API.post("/api/v4/users/login", {login_id: id,password: pw,})
+    console.log(result);
+    const res = await API.post("/api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
+    console.log(res);
+    const direct = res.data.status
+    if (direct === "NO USER") {
+      navigate("/signup", {state: {email: result.data.email, pw: pw, userId: result.data.id }});
+      return;
+    } 
   }
 
   return (
