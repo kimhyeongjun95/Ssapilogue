@@ -1,3 +1,4 @@
+$blue : #3396F4;
 
 .survey {
   display: flex;
@@ -7,8 +8,16 @@
 }
 
 hr {
-  
   margin-block-start: 1.5em;
   margin-block-end: 1.5em;
   width: 80%;
+}
+
+.btn-on {
+  background-color: $blue;
+}
+
+.delete {
+  width: 5%;
+  height: 5%;
 }
