@@ -28,6 +28,8 @@ public class LikedServiceImpl implements LikedService{
                 .project(project)
                 .build();
         likedRepository.save(liked);
+
+        project.getUser().changeLikes(1);
     }
 
     @Override
@@ -35,5 +37,7 @@ public class LikedServiceImpl implements LikedService{
         User user = userRepository.findByEmail(userEmail);
         Project project = projectRepository.getById(projectId);
         likedRepository.deleteByUserAndProject(user, project);
+
+        project.getUser().changeLikes(-1);
     }
 }
