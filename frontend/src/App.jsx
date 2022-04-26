@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './App.scss'
 import Routes from './pages/Routes';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -8,7 +8,9 @@ function App() {
   return (
     <>
       <Navbar />
-      <Routes />
+      <div className="body">
+        <Routes />
+      </div>
       <Footer />
     </>
   );

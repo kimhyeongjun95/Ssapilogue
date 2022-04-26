@@ -5,6 +5,7 @@ import Select from "@mui/material/Select";
 
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
+import { Link } from 'react-router-dom';
 
 const PostProjectPage = () => {
   // 상태관리
@@ -218,7 +219,9 @@ const PostProjectPage = () => {
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
           <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
-          <Button size="large" variant="contained"> 다음단계 </Button>
+          <Link to="/project/survey">
+            <Button size="large" variant="contained"> 다음단계 </Button>
+          </Link>
         </div>
 
        

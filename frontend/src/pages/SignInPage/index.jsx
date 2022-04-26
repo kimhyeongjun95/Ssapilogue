@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import API from "../../api/API";
-// import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 // const store = {
 //   setLocalStorage({ key, val }) {
 //     localStorage.setItem(`${key}`, JSON.stringify(val));
 //   },
 //   getLocalStorage(key) {
-// 	  return JSON.parse(localStorage.getItem(`${key}`));
+//      return JSON.parse(localStorage.getItem(`${key}`));
 //   },
 // };
 
@@ -18,6 +18,7 @@ const SignInPage = () => {
     pw: '',
   });
   const { id, pw } = inputs;
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { value, name } = e.target;
@@ -27,16 +28,20 @@ const SignInPage = () => {
     });
   };
 
-  const login = () => {
-    API.post("/api/v4/users/login", {
-      login_id: id,
-      password: pw,
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
+  const signIn = () => {
+    console.log("되나?");
+    API.post("/api/v4/users/login", {login_id: id,password: pw,})
+      .then((result) => {
+        console.log(result);
+        API.post("api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
+          .then((res) => {
+            const direct = res.data.status;
+            if (direct === "NO USER") {
+              navigate("/signup", {state: {email: result.data.email, pw: pw, userId: result.data.id }});
+              return;
+            }
+            console.log("로그인 성공");
+          })
       })
   }
 
@@ -44,7 +49,7 @@ const SignInPage = () => {
     <div>
       아이디<input name="id" onChange={handleOnChange} value={id}/>
       비밀번호<input name="pw" onChange={handleOnChange} type="password" value={pw}/>
-      <button onClick={login}>로그인</button>
+      <button onClick={signIn}>로그인</button>
     </div>
   )
 }
