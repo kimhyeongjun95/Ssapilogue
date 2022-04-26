@@ -63,7 +63,6 @@ const PostSurvey = () => {
     <div className="survey">
 
       <h2>설문조사를 등록해 주세요!</h2>
-
       <button>기본 폼 가져오기</button>
 
       {surveys}
