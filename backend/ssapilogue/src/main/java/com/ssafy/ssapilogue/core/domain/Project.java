@@ -29,6 +29,7 @@ public class Project {
 
     private String introduce;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     private String deployAddress;
