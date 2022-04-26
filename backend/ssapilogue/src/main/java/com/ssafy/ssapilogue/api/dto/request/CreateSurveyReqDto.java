@@ -14,10 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @ApiModel("CreateSurveyReqDto")
 public class CreateSurveyReqDto {
-    
-    @NotNull
-    @ApiModelProperty(value = "프로젝트 id", required = true, example = "1")
-    private Long projectId;
 
     @NotNull
     @ApiModelProperty(value = "설문조사 제목", required = true, example = "싸필로그가 유용했나요?")
@@ -28,5 +24,5 @@ public class CreateSurveyReqDto {
     private String surveyType;
 
     @ApiModelProperty(value = "객관식 설문조사 옵션")
-    private List<CreateSurveyOptionReqDto> surveyOptions;
+    private List<String> surveyOptions;
 }

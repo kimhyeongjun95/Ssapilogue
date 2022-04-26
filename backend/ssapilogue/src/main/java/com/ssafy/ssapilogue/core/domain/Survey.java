@@ -3,10 +3,10 @@ package com.ssafy.ssapilogue.core.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.List;
 
 @Document(collection = "survey")
@@ -14,33 +14,26 @@ import java.util.List;
 @NoArgsConstructor
 public class Survey {
 
-    @Transient // 영속성 필드에서 제외
-    public static final String SEQUENCE_NAME = "survey_sequence";
-
     @Id
-    private Long id;
+    private String id;
 
-    private Project project;
+    private Long projectId;
 
     private String title;
 
     private SurveyType surveyType;
 
+    @DBRef
     List<SurveyOption> surveyOptions;
 
     @Builder
-    public Survey(Project project, String title, SurveyType surveyType, List<SurveyOption> surveyOptions) {
-        this.project = project;
+    public Survey(Long projectId, String title, SurveyType surveyType) {
+        this.projectId = projectId;
         this.title = title;
         this.surveyType = surveyType;
-        this.surveyOptions = surveyOptions;
     }
 
-    public void addSurveyOptions(List surveyOptions) {
+    public void addSurveyOptions(List<SurveyOption> surveyOptions) {
         this.surveyOptions = surveyOptions;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

@@ -36,14 +36,15 @@ public class SurveyController {
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/{projectId}")
     @ApiOperation(value = "설문조사 문항 등록", notes = "새로운 설문조사 문항을 등록한다.")
     public ResponseEntity<Map<String, Object>> createSurvey(
-            @RequestBody @ApiParam(value = "설문조사 정보", required = true) CreateSurveyReqDto createSurveyReqDto) {
+            @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId,
+            @RequestBody @ApiParam(value = "설문조사 정보", required = true) List<CreateSurveyReqDto> createSurveyReqDtos) {
         Map<String, Object> result = new HashMap<>();
 
-        Long surveyId = surveyService.createSurvey(createSurveyReqDto);
-        result.put("surveyId", surveyId);
+        List<String> surveyIds = surveyService.createSurvey(projectId, createSurveyReqDtos);
+        result.put("surveyIds", surveyIds);
         result.put("status", "SUCCESS");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.CREATED);
@@ -52,7 +53,7 @@ public class SurveyController {
     @DeleteMapping("/{surveyId}")
     @ApiOperation(value = "설문조사 문항 삭제", notes = "설문조사 문항을 삭제한다.")
     public ResponseEntity<Map<String, Object>> deleteSurvey(
-            @PathVariable @ApiParam(value = "설문조사 id", required = true, example = "1") Long surveyId) {
+            @PathVariable @ApiParam(value = "설문조사 id", required = true, example = "626751b5e139e25c17d1ec8a") String surveyId) {
         Map<String, Object> result = new HashMap<>();
 
         surveyService.deleteSurvey(surveyId);

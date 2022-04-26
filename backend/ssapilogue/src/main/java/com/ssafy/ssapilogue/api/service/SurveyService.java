@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface SurveyService {
     List<FindSurveyResDto> findSurveys(Long projectId);
-    Long createSurvey(CreateSurveyReqDto createSurveyReqDto);
-    void deleteSurvey(Long surveyId);
+    List<String> createSurvey(Long projectId, List<CreateSurveyReqDto> createSurveyReqDtos);
+    void deleteSurvey(String surveyId);
 }

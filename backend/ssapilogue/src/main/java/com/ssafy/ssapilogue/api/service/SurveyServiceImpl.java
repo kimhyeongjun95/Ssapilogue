@@ -1,13 +1,10 @@
 package com.ssafy.ssapilogue.api.service;
 
-import com.ssafy.ssapilogue.api.dto.request.CreateSurveyOptionReqDto;
 import com.ssafy.ssapilogue.api.dto.request.CreateSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
-import com.ssafy.ssapilogue.core.domain.Project;
 import com.ssafy.ssapilogue.core.domain.Survey;
 import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.domain.SurveyType;
-import com.ssafy.ssapilogue.core.repository.ProjectRepository;
 import com.ssafy.ssapilogue.core.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +19,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class SurveyServiceImpl implements SurveyService {
 
-    private final ProjectRepository projectRepository;
     private final SurveyRepository surveyRepository;
 
     private final SurveyOptionService surveyOptionService;
@@ -36,35 +32,37 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public Long createSurvey(CreateSurveyReqDto createSurveyReqDto) {
-        Project project = projectRepository.findById(createSurveyReqDto.getProjectId())
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 프로젝트입니다."));
+    public List<String> createSurvey(Long projectId, List<CreateSurveyReqDto> createSurveyReqDtos) {
+        List<String> surveyIds = new ArrayList<>();
 
-        Survey survey = Survey.builder()
-                .project(project)
-                .title(createSurveyReqDto.getTitle())
-                .surveyType(SurveyType.valueOf(createSurveyReqDto.getSurveyType()))
-                .build();
+        for (CreateSurveyReqDto createSurveyReqDto : createSurveyReqDtos) {
+            Survey survey = Survey.builder()
+                    .projectId(projectId)
+                    .title(createSurveyReqDto.getTitle())
+                    .surveyType(SurveyType.valueOf(createSurveyReqDto.getSurveyType()))
+                    .build();
 
-        Survey saveSurvey = surveyRepository.save(survey);
+            Survey saveSurvey = surveyRepository.save(survey);
 
-        // 객관식인 경우, SurveyOption 추가
-        if (saveSurvey.getSurveyType() == SurveyType.객관식) {
-            List<SurveyOption> surveyOptions = new ArrayList<>();
+            // 객관식인 경우, SurveyOption 추가
+            if (saveSurvey.getSurveyType() == SurveyType.객관식) {
+                List<SurveyOption> surveyOptions = new ArrayList<>();
 
-            for (CreateSurveyOptionReqDto createSurveyOptionReqDto : createSurveyReqDto.getSurveyOptions()) {
-                SurveyOption surveyOption = surveyOptionService.createSurveyOption(saveSurvey.getId(), createSurveyOptionReqDto);
-                surveyOptions.add(surveyOption);
+                for (String content : createSurveyReqDto.getSurveyOptions()) {
+                    SurveyOption surveyOption = surveyOptionService.createSurveyOption(saveSurvey.getId(), content);
+                    surveyOptions.add(surveyOption);
+                }
+
+                saveSurvey.addSurveyOptions(surveyOptions);
+                surveyRepository.save(saveSurvey);
             }
-
-            saveSurvey.addSurveyOptions(surveyOptions);
+            surveyIds.add(saveSurvey.getId());
         }
-
-        return saveSurvey.getId();
+        return surveyIds;
     }
 
     @Override
-    public void deleteSurvey(Long surveyId) {
+    public void deleteSurvey(String surveyId) {
         // 객관식인 경우, SurveyOption 삭제
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 설문조사입니다."));
