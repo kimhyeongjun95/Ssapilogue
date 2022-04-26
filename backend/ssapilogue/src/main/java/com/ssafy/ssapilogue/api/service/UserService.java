@@ -20,5 +20,5 @@ public interface UserService {
 
     FindUserResDto findUserProfile(String email);
 
-    void updateImage(String email, MultipartFile multipartFile);
+    String updateImage(String email, MultipartFile multipartFile);
 }

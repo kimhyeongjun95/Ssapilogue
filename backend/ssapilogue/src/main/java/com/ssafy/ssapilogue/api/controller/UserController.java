@@ -156,7 +156,7 @@ public class UserController {
     }
 
     @PostMapping("/image")
-    @ApiOperation(value = "프로필 이미지 변경", notes = "회원의 프로필 이미지를 변경한다.")
+    @ApiOperation(value = "프로필 이미지 업로드", notes = "프로필 이미지를 업로드한다.")
     public ResponseEntity<Map<String, Object>> updateImage(
             @RequestPart @ApiParam(value = "이미지 파일", required = true) MultipartFile file, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
@@ -166,47 +166,14 @@ public class UserController {
         String userEmail = jwtTokenProvider.getUserEmail(token);
 
         try {
-            userService.updateImage(userEmail, file);
+            String imageUrl = userService.updateImage(userEmail, file);
             httpStatus = HttpStatus.OK;
-            result.put("status", "SUCCESS");
+            result.put("imageUrl", imageUrl);
         } catch (Exception e) {
             e.printStackTrace();
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             result.put("status", "SERVER ERROR");
         }
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
-    }
-
-    @GetMapping(value = "/image")
-    @ApiOperation(value = "프로필 이미지 불러오기", notes = "회원의 프로필 이미지를 불러온다.")
-    public ResponseEntity<byte[]> displayImage(HttpServletRequest request) throws Exception {
-
-        InputStream in = null;
-        ResponseEntity<byte[]> entity = null;
-        String token = jwtTokenProvider.resolveToken(request);
-        String userEmail = jwtTokenProvider.getUserEmail(token);
-        FindUserResDto userProfile = userService.findUserProfile(userEmail);
-        String imageName = userProfile.getImage();
-        try {
-            String formatName = imageName.substring(imageName.lastIndexOf(".")+1);
-            MediaType mType = MediaUtils.getMediaType(formatName);
-            HttpHeaders headers = new HttpHeaders();
-            in = new FileInputStream(uploadPath + imageName);
-
-            if (mType != null) {
-                headers.setContentType(mType);
-            } else {
-                imageName = imageName.substring(imageName.indexOf("_")+1);
-                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-                headers.add("Content-Disposition", "attachment; filename=\"" + new String(imageName.getBytes(StandardCharsets.UTF_8), "ISO-8859-1") + "\"");
-            }
-            entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
-        } finally {
-            in.close();
-        }
-        return entity;
     }
 }

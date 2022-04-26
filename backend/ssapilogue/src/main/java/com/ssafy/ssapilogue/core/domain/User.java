@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import com.ssafy.ssapilogue.api.dto.request.UpdateUserReqDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -75,9 +76,10 @@ public class User implements UserDetails {
         this.userIdentity = UserIdentity.ROLE_USER;
     }
 
-    public void update(String github, String greeting) {
-        this.github = github;
-        this.greeting = greeting;
+    public void update(UpdateUserReqDto updateUserReqDto) {
+        this.github = updateUserReqDto.getGithub();
+        this.greeting = updateUserReqDto.getGreeting();
+        this.image = updateUserReqDto.getImage();
     }
 
     public void updateImg(String image) {
