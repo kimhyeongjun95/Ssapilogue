@@ -5,8 +5,8 @@ import constructionPic from "../../assets/construction.png"
 import projectPeoplePic from "../../assets/proejectPeople.png"
 import gitRepo from "../../assets/git.png"
 import google from "../../assets/Google.png"
-
 import {Button} from "@mui/material"
+
 
 const DetailPage = () => {
   let category = '자율'
@@ -30,6 +30,7 @@ const DetailPage = () => {
       "createdAt" : "2022-04-26"
     }
   ]
+
 
   const commentBox = comment.map((item) => {
     return <div className="box-div">
