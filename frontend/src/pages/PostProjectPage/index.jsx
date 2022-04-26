@@ -24,10 +24,6 @@ const PostProjectPage = () => {
   const [phashtag, setpHashtag] = useState('')
 
   // 라벨링
-  const onChangeHashtag = (event) => {
-    setHashtag(event.target.value)
-  }
-  
   const plusHashtag = (e) => {
     if (e.key === "Enter") {
       if (hashtag) {
@@ -194,7 +190,7 @@ const PostProjectPage = () => {
       <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
 
         <h2 style={{width:"40%", textAlign:"center"}}>프로젝트를 등록해주세요</h2>
-        <a style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh"}}> * 는 필수항목입니다.</a>
+        <p style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh"}}> * 는 필수항목입니다.</p>
         {questionType("* 프로젝트 이름",title,setTitle,1)}
         {chooseType()}
         {questionType("배포주소", bepo, setBepo)}
@@ -206,7 +202,7 @@ const PostProjectPage = () => {
         <button style={uploadButton} onClick={onCickImageUpload}>썸네일 업로드</button>
         { (thumbnail) ?
           <div style={{marginTop:"2vh"}}>
-            <img src={thumbnailUrl} style={{height:"20vh",width:"35vh"}} />
+            <img src={thumbnailUrl} style={{height:"20vh",width:"35vh"}} alt="thumbnail" />
           </div>
           :
           null
