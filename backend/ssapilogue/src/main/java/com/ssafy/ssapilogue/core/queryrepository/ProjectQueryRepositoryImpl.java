@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -34,6 +35,26 @@ public class ProjectQueryRepositoryImpl implements ProjectQueryRepository{
                 .setParameter(1, category);
 
         List<Project> projects = query.getResultList();
+        return projects;
+    }
+
+    @Override
+    public List<Project> findByCategoryOrderByRandom(String category, Long projectId) {
+        Query query = em.createNativeQuery("select p.project_id, p.title, p.introduce, p.category, p.deploy_address, p.git_address, p.thumbnail, p.readme, p.hits, p.created_at, p.updated_at, p.user_id from project as p "
+                + "where p.category = ? order by rand() limit 4", Project.class)
+                .setParameter(1, category);
+
+        List<Project> tempProjects = query.getResultList();
+        List<Project> projects = new ArrayList<>();
+        for (Project project : tempProjects) {
+            if (!project.getId().equals(projectId)) {
+                projects.add(project);
+            }
+            if (projects.size() == 3) {
+                break;
+            }
+        }
+
         return projects;
     }
 }
