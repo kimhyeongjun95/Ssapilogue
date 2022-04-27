@@ -8,6 +8,15 @@ module.exports = function (app) {
         proxyReq.setHeader('Origin','http://localhost:3000')
       },
       changeOrigin : true
+    }),
+
+    createProxyMiddleware('/api/', {
+      target: 'http://k6c104.p.ssafy.io',
+      onProxyReq(proxyReq, req, res) {
+        proxyReq.setHeader('Origin','http://localhost:3000')
+      },
+      changeOrigin : true
     })
+    
   );
 }
