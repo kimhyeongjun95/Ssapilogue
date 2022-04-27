@@ -7,19 +7,25 @@ import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
 import com.ssafy.ssapilogue.core.domain.*;
 import com.ssafy.ssapilogue.core.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -89,6 +95,42 @@ public class ProjectServiceImpl implements ProjectService{
                 .readme(createProjectReqDto.getReadme())
                 .user(user)
                 .build();
+
+        if (createProjectReqDto.getReadmeCheck() == 0) {
+            try {
+                String gitAddress = createProjectReqDto.getGitAddress();
+                int idx = gitAddress.indexOf("github.com");
+                String gitRepo = gitAddress.substring(idx+10);
+
+                URI uri = UriComponentsBuilder
+                        .fromUriString("https://api.github.com/repos")
+                        .path(gitRepo + "/readme")
+                        .build()
+                        .toUri();
+
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+
+                JSONParser parser = new JSONParser();
+                JSONObject obj = (JSONObject) parser.parse(response.getBody());
+                String content = obj.get("content").toString();
+                content = content.replace("\n","");
+
+                byte[] decoded = Base64.getDecoder().decode(content);
+                String readmeContent = new String(decoded, StandardCharsets.UTF_8);
+
+                String absolutePath = "https://github.com/" + gitRepo + "/raw/master/";
+                while (readmeContent.contains("(README.assets")) {
+                    int relativeIdx = readmeContent.indexOf("(README.assets");
+                    String tempContent = readmeContent.substring(0, relativeIdx+1) + absolutePath + readmeContent.substring(relativeIdx+1);
+                    readmeContent = tempContent;
+                }
+
+                project.updateReadme(readmeContent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         Project saveProject = projectRepository.save(project);
 
