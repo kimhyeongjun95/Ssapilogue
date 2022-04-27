@@ -1,0 +1,43 @@
+.profile-div {
+  margin-left: auto;
+  margin-right: auto;
+  width: 55vw;
+  height: 35vh;
+  background-color: #BFE8FF;
+  border-radius: 20px;
+}
+.introduce-div {
+  margin-top: 5vh;
+  margin-left: 2vw;
+}
+.profile-box {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+.img-div {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom:3vh;
+}
+.card-div {
+  display: flex;
+  flex-direction : row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.profile-pic {
+  border-radius: 70%;
+  object-fit: cover;
+  width: 70%;
+  height: 70%;
+}
+.my-project-div {
+  margin-top : 5%;
+}
+.my-post-h {
+  text-align: center;
+}
