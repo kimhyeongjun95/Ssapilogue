@@ -183,6 +183,23 @@ public class ProjectController {
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 
+    @PutMapping("/{projectId}/readme")
+    @ApiOperation(value = "리드미 갱신", notes = "리드미를 갱신한다.")
+    public ResponseEntity<Map<String, Object>> updateReadme(
+            @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId,
+            HttpServletRequest request) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        String token = jwtTokenProvider.resolveToken(request);
+        String userEmail = jwtTokenProvider.getUserEmail(token);
+
+        projectService.updateReadme(projectId);
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
     @PostMapping("/image")
     @ApiOperation(value = "프로젝트 이미지 업로드", notes = "프로젝트 이미지를 업로드한다.")
     public ResponseEntity<Map<String, Object>> updateImage(

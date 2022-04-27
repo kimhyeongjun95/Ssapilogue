@@ -299,6 +299,44 @@ public class ProjectServiceImpl implements ProjectService{
         }
     }
 
+    @Override
+    public void updateReadme(Long projectId) {
+        Project project = projectRepository.getById(projectId);
+        try {
+            String gitAddress = project.getGitAddress();
+            int idx = gitAddress.indexOf("github.com");
+            String gitRepo = gitAddress.substring(idx+10);
+
+            URI uri = UriComponentsBuilder
+                    .fromUriString("https://api.github.com/repos")
+                    .path(gitRepo + "/readme")
+                    .build()
+                    .toUri();
+
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(response.getBody());
+            String content = obj.get("content").toString();
+            content = content.replace("\n","");
+
+            byte[] decoded = Base64.getDecoder().decode(content);
+            String readmeContent = new String(decoded, StandardCharsets.UTF_8);
+
+            String absolutePath = "https://github.com/" + gitRepo + "/raw/master/";
+            while (readmeContent.contains("(README.assets")) {
+                int relativeIdx = readmeContent.indexOf("(README.assets");
+                String tempContent = readmeContent.substring(0, relativeIdx+1) + absolutePath + readmeContent.substring(relativeIdx+1);
+                readmeContent = tempContent;
+            }
+
+            project.updateReadme(readmeContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // 이미지 업로드
     @Override
     public String uploadImage(MultipartFile multipartFile, String userEmail) {
