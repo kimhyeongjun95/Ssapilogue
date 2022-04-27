@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import API from "../../api/API";
+import store from "../../utils/store";
 
 const SignUpPage = () => {
   
@@ -12,6 +13,7 @@ const SignUpPage = () => {
   const { nickName, greetings, github } = inputs;
   const locations = useLocation().state;
   const { email, pw, userId } = locations;
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { value, name } = e.target;
@@ -31,11 +33,16 @@ const SignUpPage = () => {
       greeting: greetings,
     })
       .then((res) => {
-        console.log(res);
+        if (res.data.message === "success") {
+          const token = res.data.token;
+          store.setToken(token);
+          navigate("/");
+          return;
+        }
       })
       .catch((err) => {
-        console.log(err);
-      })
+        throw err;
+      });
   }
 
   return (
@@ -46,6 +53,7 @@ const SignUpPage = () => {
       소개말<input name="greetings" onChange={handleOnChange} value={greetings}/>
       Github<input name="github" onChange={handleOnChange} value={github}/>
       <button onClick={signUp}>회원가입</button>
+      
     </>
   )
 }
