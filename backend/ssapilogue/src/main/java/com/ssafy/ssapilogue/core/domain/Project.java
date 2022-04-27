@@ -38,6 +38,7 @@ public class Project {
 
     private String thumbnail;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String readme;
 
     private int hits;
@@ -86,6 +87,11 @@ public class Project {
     // 프로젝트 이미지 수정을 위한 편의 함수
     public void updateImg(String image) {
         this.thumbnail = image;
+    }
+
+    // 프로젝트 리드미 수정을 위한 편의 함수
+    public void updateReadme(String readmeContent) {
+        this.readme = readmeContent;
     }
 
     // 조회수 증가를 위한 편의 함수

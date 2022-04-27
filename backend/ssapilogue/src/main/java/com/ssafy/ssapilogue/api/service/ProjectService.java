@@ -14,5 +14,6 @@ public interface ProjectService {
     FindProjectDetailResDto findProject(Long projectId, String userEmail);
     void updateProject(Long projectId, CreateProjectReqDto createProjectReqDto);
     void deleteProject(Long projectId, String userEmail);
+    void updateReadme(Long projectId);
     String uploadImage(MultipartFile file, String userEmail);
 }
