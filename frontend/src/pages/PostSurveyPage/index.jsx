@@ -25,7 +25,7 @@ const PostSurvey = () => {
     setSurveys([...surveys,
       <div data-category-name="sub">
         <img src={trash} onClick={deleteSurvey} alt="trash" />
-        <input placeholder="질문 제목을 입력해주세요." />
+        <input placeholder="질문 제목을 입력해주세요."  />
         <input type="text" placeholder="주관식 답변" />
         <br />
       </div>
@@ -36,8 +36,8 @@ const PostSurvey = () => {
     setSurveys([...surveys,
       <div>
         <img src={trash} onClick={deleteSurvey} alt="trash" />
-        <h3>질문 제목을 입력해주세요.</h3>
         <li>
+          <input className="multiple-question" placeholder="질문 제목을 입력해주세요." />
           <button onClick={addChoice}>객관식 추가</button>
         </li>
       </div>
@@ -59,11 +59,15 @@ const PostSurvey = () => {
     e.target.closest("li").append(box);
   }
 
+  const tracker = () => {
+    console.log(surveys);
+  }
+
   return (
     <div className="survey">
 
       <h2>설문조사를 등록해 주세요!</h2>
-      <button>기본 폼 가져오기</button>
+      <button onClick={tracker}>기본 폼 가져오기</button>
 
       {surveys}
 
