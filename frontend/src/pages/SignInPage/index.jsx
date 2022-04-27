@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import API from "../../api/API";
 import { useNavigate } from 'react-router-dom';
+import store from "../../utils/store";
 
 const SignInPage = () => {
 
@@ -31,8 +32,7 @@ const SignInPage = () => {
       } 
       if (direct === "SUCCESS") {
         const token = res.data.token;
-        API.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        localStorage.setItem("jwt", `Bearer ${token}`)
+        store.setToken(token);
         navigate("/")
         return;
       }
