@@ -11,15 +11,8 @@ import com.ssafy.ssapilogue.core.repository.ProjectRepository;
 import com.ssafy.ssapilogue.core.repository.SurveyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -28,12 +21,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//@ContextConfiguration(classes = SsapilogueApplication.class)
-//@DataMongoTest
-////@TestPropertySource(properties = "spring.mongodb.embedded.version=3.4.5")
-////@ActiveProfiles("test")
-//@ExtendWith(SpringExtension.class)
-//@DirtiesContext
 @SpringBootTest
 @Transactional
 public class SurveyServiceTest {
@@ -56,20 +43,28 @@ public class SurveyServiceTest {
 
     @Test
     public void findSurveysTest() {
-        Long projectId = savedProject.getId();
+        Survey survey1 = Survey.builder()
+                .projectId(savedProject.getId())
+                .title("싸필로그에 대해 한줄평을 남겨주세요.")
+                .surveyType(SurveyType.주관식)
+                .build();
+        surveyRepository.save(survey1);
 
-        List<CreateSurveyReqDto> createSurveyReqDtos = new ArrayList<>();
+        Survey survey2 = Survey.builder()
+                .projectId(savedProject.getId())
+                .title("싸필로그의 장점은 무엇인가요?")
+                .surveyType(SurveyType.주관식)
+                .build();
+        surveyRepository.save(survey2);
 
-        CreateSurveyReqDto surveyReqDto1 = new CreateSurveyReqDto("싸필로그에 대해 한줄평을 남겨주세요.", "주관식", null);
-        createSurveyReqDtos.add(surveyReqDto1);
-        CreateSurveyReqDto surveyReqDto2 = new CreateSurveyReqDto("싸필로그의 장점은 무엇인가요?", "주관식", null);
-        createSurveyReqDtos.add(surveyReqDto2);
+        System.out.println(savedProject.getId());
+        List<FindSurveyResDto> result = surveyService.findSurveys(savedProject.getId());
 
-        surveyService.createSurvey(projectId, createSurveyReqDtos);
+        for (FindSurveyResDto findSurveyResDto : result) {
+            System.out.println(findSurveyResDto.getTitle());
+        }
 
-        List<FindSurveyResDto> resDtoList = surveyService.findSurveys(projectId);
-
-        assertThat(resDtoList.size()).isEqualTo(2);
+        assertThat(result.size()).isEqualTo(2);
     }
 
     @Test
@@ -97,24 +92,24 @@ public class SurveyServiceTest {
         Optional<Survey> survey2 = surveyRepository.findById(surveyIds.get(1));
         assertThat(survey2.get().getTitle()).isEqualTo("싸필로그에 대해 한줄평을 남겨주세요.");
         assertThat(survey2.get().getSurveyType()).isEqualTo(SurveyType.주관식);
-        assertThat(survey2.get().getSurveyOptions().size()).isEqualTo(0);
     }
 
     @Test
     public void deleteSurveyTest() {
-        List<CreateSurveyReqDto> createSurveyReqDtos = new ArrayList<>();
-        CreateSurveyReqDto surveyReqDto = new CreateSurveyReqDto("싸필로그에 대해 한줄평을 남겨주세요.", "주관식", null);
-        createSurveyReqDtos.add(surveyReqDto);
+        Survey survey = Survey.builder()
+                .projectId(savedProject.getId())
+                .title("싸필로그에 대해 한줄평을 남겨주세요.")
+                .surveyType(SurveyType.주관식)
+                .build();
+        Survey savedSurvey = surveyRepository.save(survey);
 
-        List<String> surveyIds = surveyService.createSurvey(savedProject.getId(), createSurveyReqDtos);
+        surveyService.deleteSurvey(savedSurvey.getId());
 
-        surveyService.deleteSurvey(surveyIds.get(0));
-
-        Optional<Survey> findSurvey = surveyRepository.findById(surveyIds.get(0));
+        Optional<Survey> findSurvey = surveyRepository.findById(savedSurvey.getId());
         assertThat(findSurvey.isPresent()).isEqualTo(false);
     }
 
-    private Project createProject() {
+    private void createProject() {
         Project project = Project.builder()
                 .title("싸필로그")
                 .introduce("당신의 프로젝트를 홍보해드립니다.")
@@ -123,6 +118,5 @@ public class SurveyServiceTest {
                 .build();
 
         savedProject = projectRepository.save(project);
-        return savedProject;
     }
 }
