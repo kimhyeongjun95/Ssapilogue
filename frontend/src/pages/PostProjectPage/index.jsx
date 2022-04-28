@@ -16,7 +16,12 @@ const PostProjectPage = () => {
   const [intro, setIntro] = useState('')
   const [thumbnail, setThumnail] = useState('')
   const [thumbnailUrl, setThumnailUrl] = useState('')
- 
+  const [markdown, setMarkdown] = useState('')
+  const [readmeCheck, setReadmeCheck] = useState('')
+  const editorRef = React.createRef();
+
+  
+
   // 기술스택 //
   const [hashbox, setHashbox] = useState([])
   const [hashtag, setHashtag] = useState('')
@@ -67,8 +72,14 @@ const PostProjectPage = () => {
     />
   })
   //
- 
-  // 사지 전달 인풋
+
+  const onChangeIntroFunction = () => {
+    const marktext = editorRef.current.getInstance().getMarkdown()
+    console.log(marktext);
+    setMarkdown(marktext)
+  };
+
+  // 사진 전달 인풋
   const imageInput = useRef();
  
   const onCickImageUpload = () => {
@@ -178,14 +189,18 @@ const PostProjectPage = () => {
         label="* 분류"
         onChange={handleChange}
       >
-        <MenuItem value={"Common"}>공통</MenuItem>
-        <MenuItem value={"Special"}>특화</MenuItem>
-        <MenuItem value={"Free"}>자율</MenuItem>
-        <MenuItem value={"Toy"}>토이</MenuItem>
+        <MenuItem value={"공통"}>공통</MenuItem>
+        <MenuItem value={"특화"}>특화</MenuItem>
+        <MenuItem value={"자율"}>자율</MenuItem>
+        <MenuItem value={"토이"}>토이</MenuItem>
       </Select>
     </FormControl>
   }
 
+  const mkChange = (e) => {
+    setReadmeCheck(e.target.value)
+    console.log(readmeCheck)
+  }
   return (
     <>
       <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
@@ -208,12 +223,18 @@ const PostProjectPage = () => {
           :
           null
         }
+        <div>
+          <input type="radio" name="theme" value="owntype" onChange={mkChange} />직접 입력하기
+          <input type="radio" name="theme" value="github" onChange={mkChange}/>github에서 가져오기
+        </div>
         {questionType("*소개", intro, setIntro,1)}
         <div style={{marginTop:"2%",width:"40%"}}>
           <Editor
             height="40vh"
             placeholder='마크다운을 붙여주세요.'
-
+            onChange={onChangeIntroFunction}
+            ref={editorRef}
+            
           />
         </div>
 
