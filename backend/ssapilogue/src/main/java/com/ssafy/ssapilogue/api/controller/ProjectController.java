@@ -40,11 +40,16 @@ public class ProjectController {
             HttpServletRequest request) {
 
         Map<String, Object> result = new HashMap<>();
+        List<FindProjectResDto> projectList = null;
 
         String token = jwtTokenProvider.resolveToken(request);
-        String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (token == null) {
+            projectList = projectService.findProjects(standard, category, "");
+        } else {
+            String userEmail = jwtTokenProvider.getUserEmail(token);
+            projectList = projectService.findProjects(standard, category, userEmail);
+        }
 
-        List<FindProjectResDto> projectList = projectService.findProjects(standard, category, userEmail);
         result.put("projectList", projectList);
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
@@ -222,5 +227,27 @@ public class ProjectController {
             result.put("status", "SERVER ERROR");
         }
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
+    }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "프로젝트 검색", notes = "프로젝트를 검색한다.")
+    public ResponseEntity<Map<String, Object>> searchProjects(
+            @RequestParam @ApiParam(value = "검색어") String keyword,
+            HttpServletRequest request) {
+
+        Map<String, Object> result = new HashMap<>();
+        List<FindProjectResDto> projectList = null;
+
+        String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) {
+            projectList = projectService.searchProjects(keyword, "");
+        } else {
+            String userEmail = jwtTokenProvider.getUserEmail(token);
+            projectList = projectService.searchProjects(keyword, userEmail);
+        }
+
+        result.put("projectList", projectList);
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 }

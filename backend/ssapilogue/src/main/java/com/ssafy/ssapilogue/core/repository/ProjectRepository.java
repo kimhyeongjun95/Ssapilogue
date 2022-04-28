@@ -4,6 +4,7 @@ import com.ssafy.ssapilogue.core.domain.Category;
 import com.ssafy.ssapilogue.core.domain.Project;
 import com.ssafy.ssapilogue.core.queryrepository.ProjectQueryRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface ProjectRepository extends JpaRepository<Project, Long>, Project
 
     List<Project> findAllByOrderByIdDesc();
     List<Project> findByCategoryOrderByIdDesc(Category category);
+    List<Project> findByTitleContainingOrderByIdDesc(@Param("keyword") String keyword);
 }

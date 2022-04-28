@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public class ProjectServiceTest {
     private void createUser() {
         User user = User.builder()
                 .email("khyunchoi@naver.com")
-                .password("Skhyunchoi@naver.com6")
+                .password(BCrypt.hashpw("Skhyunchoi@naver.com6", BCrypt.gensalt()))
                 .userId("97uwojff7jri78dimcnb953bna")
                 .nickname("최강현[광주_1반_C104]팀원")
                 .username("khyunchoi")
