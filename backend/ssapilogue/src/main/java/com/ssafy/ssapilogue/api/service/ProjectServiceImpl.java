@@ -47,7 +47,6 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     public List<FindProjectResDto> findProjects(String standard, String category, String userEmail) {
         List<Project> projects = null;
-        User user = userRepository.findByEmail(userEmail);
 
         if (standard.equals("최신")) {
             if (category.equals("전체")) {
@@ -64,15 +63,22 @@ public class ProjectServiceImpl implements ProjectService{
         }
 
         List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
-        for (Project project : projects) {
-            Optional<Bookmark> bookmark = bookmarkRepsitory.findByUserAndProject(user, project);
-
-            Boolean isBookmarked = false;
-            if (bookmark.isPresent()) {
-                isBookmarked = true;
+        if (userEmail.isEmpty()) {
+            for (Project project : projects) {
+                findProjectResDtos.add(new FindProjectResDto(project, false));
             }
+        } else {
+            User user = userRepository.findByEmail(userEmail);
+            for (Project project : projects) {
+                Optional<Bookmark> bookmark = bookmarkRepsitory.findByUserAndProject(user, project);
 
-            findProjectResDtos.add(new FindProjectResDto(project, isBookmarked));
+                Boolean isBookmarked = false;
+                if (bookmark.isPresent()) {
+                    isBookmarked = true;
+                }
+
+                findProjectResDtos.add(new FindProjectResDto(project, isBookmarked));
+            }
         }
 
         return findProjectResDtos;
@@ -351,5 +357,31 @@ public class ProjectServiceImpl implements ProjectService{
         }
 
         return "http://k6c104.p.ssafy.io/images/projectImg/" + imageFileName;
+    }
+
+    @Override
+    public List<FindProjectResDto> searchProjects(String keyword, String userEmail) {
+        List<Project> projects = projectRepository.findByTitleContainingOrderByIdDesc(keyword);
+
+        List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
+        if (userEmail.isEmpty()) {
+            for (Project project : projects) {
+                findProjectResDtos.add(new FindProjectResDto(project, false));
+            }
+        } else {
+            User user = userRepository.findByEmail(userEmail);
+            for (Project project : projects) {
+                Optional<Bookmark> bookmark = bookmarkRepsitory.findByUserAndProject(user, project);
+
+                Boolean isBookmarked = false;
+                if (bookmark.isPresent()) {
+                    isBookmarked = true;
+                }
+
+                findProjectResDtos.add(new FindProjectResDto(project, isBookmarked));
+            }
+        }
+
+        return findProjectResDtos;
     }
 }
