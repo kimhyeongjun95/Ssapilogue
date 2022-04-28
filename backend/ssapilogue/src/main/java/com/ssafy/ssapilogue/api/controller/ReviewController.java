@@ -51,8 +51,8 @@ public class ReviewController {
         String userEmail = jwtTokenProvider.getUserEmail(token);
 
         List<String> reviewIds = reviewService.createReview(userEmail, createReviewReqDtos);
-        result.put("reviewId", reviewIds);
-        result.put("status", "SUCESS");
+        result.put("reviewIds", reviewIds);
+        result.put("status", "SUCCESS");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.CREATED);
     }
