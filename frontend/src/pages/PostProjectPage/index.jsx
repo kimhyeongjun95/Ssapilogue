@@ -20,8 +20,6 @@ const PostProjectPage = () => {
   const [readmeCheck, setReadmeCheck] = useState('')
   const editorRef = React.createRef();
 
-  
-
   // 기술스택 //
   const [hashbox, setHashbox] = useState([])
   const [hashtag, setHashtag] = useState('')
