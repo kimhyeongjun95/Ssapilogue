@@ -2,9 +2,11 @@ import React,{useState} from "react";
 import { Card,CardContent,CardMedia,Typography,CardActionArea } from "@mui/material"
 import "./style.scss"
 import profilePic from "../../assets/profileDefault.jpg"
+import detailImage from "../../assets/detailImage.png"
 
 const ProfilePage = () => {
   const [i,setI] = useState(2)
+  const [bmi, setBmi] = useState(2)
   
 
   const user = {
@@ -217,6 +219,9 @@ const ProfilePage = () => {
     ]
   }
   const [myproject, setMyproject] = useState(user["projects"].slice(0,3))
+  
+  const [mybmProject, setMybmProject] = useState(user["bookmarkList"].slice(0,3))
+
   const myp = myproject.map((item,key) => {
     return <Card style={{width: "24%", margin:"1%"}} sx={{ maxWidth: "35%" }}>
       <CardActionArea>
@@ -237,10 +242,39 @@ const ProfilePage = () => {
       </CardActionArea>
     </Card>
   })
+
+  const bmyp = mybmProject.map((item) => {
+    return <Card style={{width: "24%", margin:"1%"}} sx={{ maxWidth: "35%" }}>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          height="140"
+          image={detailImage}
+          alt="green iguana"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {item.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {item.introduce}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  })
+
   const power = () => {
-    setI(i+1)
+    
     setMyproject(user["projects"].slice(0,3*i))
+    setI(i+1)
     console.log(myproject)
+    console.log(mybmProject)
+  }
+
+  const bmpower = () => {
+    setMybmProject(user["bookmarkList"].slice(0,3*bmi))
+    setBmi(bmi+1)
   }
   
   return (
@@ -269,6 +303,19 @@ const ProfilePage = () => {
           
             null
             : <button onClick={power}>더보기</button>
+        }
+      </div>
+
+      <div className="my-project-div">
+        <h2 className= "my-post-h">내가 북마크한 프로젝트</h2>
+        <div className="card-div">
+          {bmyp}
+        </div>
+        {
+          mybmProject.length === user["bookmarList"]?.length ?
+          
+            null
+            : <button onClick={bmpower}>더보기</button>
         }
       </div>
     </div>
