@@ -42,4 +42,16 @@ public class BugReportCommentController {
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{bugCoId}")
+    @ApiOperation(value = "버그 리포트 댓글 삭제", notes = "버그 리포트 댓글을 삭제한다.")
+    public ResponseEntity<Map<String, Object>> deleteBugReportComment(
+            @PathVariable @ApiParam(value = "버그 리포트 댓글 id", required = true, example = "1") Long bugCoId){
+        Map<String, Object> result = new HashMap<>();
+
+        bugReportCommentService.deleteBugReportComment(bugCoId);
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
 }

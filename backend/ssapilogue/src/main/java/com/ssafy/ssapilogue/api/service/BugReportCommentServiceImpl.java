@@ -38,4 +38,9 @@ public class BugReportCommentServiceImpl implements BugReportCommentService{
         BugReportComment saveBugReportComment = bugReportCommentRepository.save(bugReportComment);
         return saveBugReportComment.getId();
     }
+
+    @Override
+    public void deleteBugReportComment(Long bugCoId) {
+        bugReportCommentRepository.deleteById(bugCoId);
+    }
 }
