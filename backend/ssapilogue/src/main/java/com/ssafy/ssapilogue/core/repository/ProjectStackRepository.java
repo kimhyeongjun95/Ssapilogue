@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProjectStackRepository extends JpaRepository<ProjectStack, Long> {
+
     List<ProjectStack> findByTechStack(TechStack techStack);
     void deleteByProject(Project project);
 }
