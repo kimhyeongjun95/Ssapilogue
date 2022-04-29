@@ -3,6 +3,7 @@ package com.ssafy.ssapilogue.api.controller;
 import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindProjectTitleResDto;
 import com.ssafy.ssapilogue.api.service.BookmarkService;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
 import com.ssafy.ssapilogue.api.service.LikedService;
@@ -229,7 +230,7 @@ public class ProjectController {
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
-    @GetMapping("/search/title")
+    @GetMapping("/search")
     @ApiOperation(value = "제목으로 프로젝트 검색", notes = "제목으로 프로젝트를 검색한다.")
     public ResponseEntity<Map<String, Object>> searchProjectsByTitle(
             @RequestParam @ApiParam(value = "검색어") String keyword,
@@ -251,46 +252,15 @@ public class ProjectController {
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/search/tech-stack")
-    @ApiOperation(value = "기술스택으로 프로젝트 검색", notes = "기술스택으로 프로젝트를 검색한다.")
-    public ResponseEntity<Map<String, Object>> searchProjectsByTechStack(
-            @RequestParam @ApiParam(value = "검색어") String keyword,
-            HttpServletRequest request) {
+    @GetMapping("/search/title")
+    @ApiOperation(value = "프로젝트 제목 자동완성", notes = "프로젝트 제목을 검색한다.")
+    public ResponseEntity<Map<String, Object>> searchProjectTitles(
+            @RequestParam @ApiParam(value = "검색어") String keyword) {
 
         Map<String, Object> result = new HashMap<>();
-        List<FindProjectResDto> projectList = null;
 
-        String token = jwtTokenProvider.resolveToken(request);
-        if (token == null) {
-            projectList = projectService.searchProjectsByTechStack(keyword, "");
-        } else {
-            String userEmail = jwtTokenProvider.getUserEmail(token);
-            projectList = projectService.searchProjectsByTechStack(keyword, userEmail);
-        }
-
-        result.put("projectList", projectList);
-
-        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
-    }
-
-    @GetMapping("/search/tech-stack/specific")
-    @ApiOperation(value = "정확한 기술스택으로 프로젝트 검색", notes = "정확한 기술스택으로 프로젝트를 검색한다.")
-    public ResponseEntity<Map<String, Object>> searchProjectsByTechStackSpecific(
-            @RequestParam @ApiParam(value = "검색어") String keyword,
-            HttpServletRequest request) {
-
-        Map<String, Object> result = new HashMap<>();
-        List<FindProjectResDto> projectList = null;
-
-        String token = jwtTokenProvider.resolveToken(request);
-        if (token == null) {
-            projectList = projectService.searchProjectsByTechStackSpecific(keyword, "");
-        } else {
-            String userEmail = jwtTokenProvider.getUserEmail(token);
-            projectList = projectService.searchProjectsByTechStackSpecific(keyword, userEmail);
-        }
-
-        result.put("projectList", projectList);
+        List<FindProjectTitleResDto> searchList = projectService.searchProjectTitles(keyword);
+        result.put("searchList", searchList);
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
