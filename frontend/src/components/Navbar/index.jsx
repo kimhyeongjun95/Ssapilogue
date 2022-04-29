@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import './style.scss'
 import Default from '../../assets/default.png'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const Navbar = () => {
 
@@ -9,15 +9,31 @@ const Navbar = () => {
   const toggleHandler = () => {
     setShow(!show);
   }
+
+  
   const Login = () => {
     console.log('hi')
   }
+
+  const signInCheck = () => {
+    // token 값 있으면 
+    console.log("로그아웃")
+  }
+
+  const signOut = () => {
+    console.log("로그아웃")
+  }
+
+  useEffect(() => {
+    signInCheck();
+  }, [])
 
   return (
     <nav>
       <Link className="home" to="/">
         <h1>SSapilogue</h1>
       </Link>
+      
       <Link className="login" to="/signin">
         <button onClick={Login} >로그인</button>
       </Link>
@@ -45,7 +61,7 @@ const Navbar = () => {
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_logout">
-                <button>로그아웃</button>
+                <button onClick={signOut}>로그아웃</button>
               </div>   
             </div>
             
