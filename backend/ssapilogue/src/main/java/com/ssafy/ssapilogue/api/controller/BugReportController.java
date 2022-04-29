@@ -57,4 +57,10 @@ public class BugReportController {
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.CREATED);
     }
+
+    @GetMapping("/{bugId}")
+    @ApiOperation(value = "버그 리포트 상세 조회", notes = "버그 리포트를 조회한다.")
+    public ResponseEntity<Map<String, Object>> findBugReportDetail() {
+        return null;
+    }
 }
