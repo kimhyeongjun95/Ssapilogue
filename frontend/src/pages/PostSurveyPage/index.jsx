@@ -58,7 +58,6 @@ const PostSurvey = () => {
     ask.addEventListener("keydown", (e) => {
       choiceHandleInput(e, idx, count);
     })
-
     let deleteBtn = document.createElement('img')
     deleteBtn.src = cross;
     deleteBtn.className = "delete";
