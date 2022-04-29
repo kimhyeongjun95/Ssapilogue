@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
-import MultipleQuestions from "../../components/Survey/MultipleQuestion";
 
 const PostSurvey = () => {
 
@@ -17,11 +16,17 @@ const PostSurvey = () => {
     return option === "주관식" ? addSubjective() : addMultipleChoice();
   }
 
-  const deleteSurvey = (e, idx) => {
-    console.log(idx);
+  const deleteSurvey = (idx) => {
     const values = [...inputs];
     values.splice(idx, 1);
     setInputs(values);
+  }
+
+  const deleteChoice = (e, idx, optIdx) => {
+    e.target.closest("li").remove();
+    const list = [...inputs]
+    list[idx]["surveyOptions"][optIdx] = '';
+    setInputs(list);
   }
 
   const addSubjective = () => {
@@ -29,27 +34,42 @@ const PostSurvey = () => {
   }
 
   const addMultipleChoice = () => {
-    setInputs([...inputs, { title: '', type: "객관식", surveyOptions: [], }])
+    setInputs([...inputs, { title: '', type: "객관식", surveyOptions: [], count: 0 }])
   }
 
-  // const addChoice = (e) => {
-  //   let box = document.createElement('div');
-  //   let toAsk = document.createElement('input');
-  //   let deleteBtn = document.createElement('img')
-  //   setInputs([...inputs, { surveyOptions: '' }]);
-  //   toAsk.placeholder = "객관식 답변";
-  //   toAsk.name = "surveyOptions"
-  //   toAsk.value = inputs.surveyOptions;
-  //   deleteBtn.src = cross;
-  //   deleteBtn.className = "delete";
-  //   deleteBtn.addEventListener("click", (e) => {
-  //     deleteSurvey(e);
-  //   })
-  //   box.appendChild(deleteBtn);
-  //   box.appendChild(toAsk);
-  //   e.target.closest("li").append(box);
-  // }
-  
+  // 추가 로직
+  // 1. div children으로 추가하기
+  // 2. input에 name, value 값 넣기
+  // 3. input에 event(choiceHandleInput)로 e, idx, count값 넘겨주기
+
+  // 삭제 로직
+  // 1. 가까운 input div 삭제하기
+  // 2. list[idx][name][optIdx] = "";
+
+  const addChoice = (e, idx) => {
+    const list = [...inputs]
+    list[idx]["count"] += 1; // count를 늘려 다음 input 지정
+    const count = list[idx]["count"];
+    list[idx].surveyOptions[count] = '';
+    let ask = document.createElement("input");
+    ask.value = list[idx].surveyOptions[count];
+    ask.placeholder = "객관식 답변";
+    ask.name = "surveyOptions";
+    ask.addEventListener("keydown", (e) => {
+      choiceHandleInput(e, idx, count);
+    })
+
+    let deleteBtn = document.createElement('img')
+    deleteBtn.src = cross;
+    deleteBtn.className = "delete";
+    deleteBtn.addEventListener("click", (e) => {
+      deleteChoice(e, idx, count);
+    })
+    let cover = document.createElement("li");
+    cover.appendChild(ask);
+    cover.append(deleteBtn);
+    e.target.closest("div").appendChild(cover);
+  }
 
   const tracker = () => {
     console.log(inputs);
@@ -60,7 +80,6 @@ const PostSurvey = () => {
     const list = [...inputs];
     list[idx][name] = value;
     setInputs(list);
-    console.log(inputs);
   }
 
   const choiceHandleInput = (e, idx, optIdx) => {
@@ -68,7 +87,6 @@ const PostSurvey = () => {
     const list = [...inputs];
     list[idx][name][optIdx] = value;
     setInputs(list);
-    console.log(inputs);
   }
 
   return (
@@ -91,36 +109,19 @@ const PostSurvey = () => {
             <></> 
             : 
             <>
-              <input
-                placeholder = "객관식 답변" 
-                name="surveyOptions"
-                value={input.surveyOptions[0]}
-                onChange={e => choiceHandleInput(e, idx, 0)}
-              />
-              <input
-                placeholder = "객관식 답변" 
-                name="surveyOptions"
-                value={input.surveyOptions[1]}
-                onChange={e => choiceHandleInput(e, idx, 1)}
-              />
-              <input
-                placeholder = "객관식 답변" 
-                name="surveyOptions"
-                value={input.surveyOptions[2]}
-                onChange={e => choiceHandleInput(e, idx, 2)}
-              />
-              <input
-                placeholder = "객관식 답변" 
-                name="surveyOptions"
-                value={input.surveyOptions[3]}
-                onChange={e => choiceHandleInput(e, idx, 3)}
-              />
-              <input
-                placeholder = "객관식 답변" 
-                name="surveyOptions"
-                value={input.surveyOptions[4]}
-                onChange={e => choiceHandleInput(e, idx, 4)}
-              />
+              <div className="choice-input">
+                <button onClick={e => addChoice(e, idx)}>추가</button>
+
+                <li>
+                  <input
+                    placeholder="객관식 답변" 
+                    name="surveyOptions"
+                    value={input.surveyOptions[0]}
+                    onChange={e => choiceHandleInput(e, idx, 0)}
+                  />
+                </li>
+
+              </div>
               <img className="delete" src={cross} alt="cross" onClick={deleteSurvey} />
             </>
           }
