@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
+// import API from '../../assets/API';
 
 const PostSurvey = () => {
 
   const [option, setOption] = useState('주관식');
   const [inputs, setInputs] = useState([])
+
+  const { title } = useLocation();
 
   const whichSurvey = (e) => {
     setOption(e.target.value);
@@ -37,18 +41,9 @@ const PostSurvey = () => {
     setInputs([...inputs, { title: '', type: "객관식", surveyOptions: [], count: 0 }])
   }
 
-  // 추가 로직
-  // 1. div children으로 추가하기
-  // 2. input에 name, value 값 넣기
-  // 3. input에 event(choiceHandleInput)로 e, idx, count값 넘겨주기
-
-  // 삭제 로직
-  // 1. 가까운 input div 삭제하기
-  // 2. list[idx][name][optIdx] = "";
-
   const addChoice = (e, idx) => {
     const list = [...inputs]
-    list[idx]["count"] += 1; // count를 늘려 다음 input 지정
+    list[idx]["count"] += 1;
     const count = list[idx]["count"];
     list[idx].surveyOptions[count] = '';
     let ask = document.createElement("input");
@@ -86,6 +81,10 @@ const PostSurvey = () => {
     const list = [...inputs];
     list[idx][name][optIdx] = value;
     setInputs(list);
+  }
+
+  const submitSurvey = () => {
+    console.log(title);
   }
 
   return (
@@ -132,6 +131,8 @@ const PostSurvey = () => {
 
       <button className={option === "주관식" ? "btn-on" : null} onClick={whichSurvey} value="주관식">주관식</button>
       <button className={option === "객관식" ? "btn-on" : null} onClick={whichSurvey} value="객관식">객관식</button>
+
+      <button onClick={submitSurvey}>완료</button>
 
     </div>
   )
