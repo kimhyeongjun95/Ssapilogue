@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -303,6 +304,7 @@ public class ProjectServiceImpl implements ProjectService{
         }
     }
 
+    // 리드미 갱신
     @Override
     public void updateReadme(Long projectId) {
         Project project = projectRepository.getById(projectId);
@@ -359,9 +361,73 @@ public class ProjectServiceImpl implements ProjectService{
         return "http://k6c104.p.ssafy.io/images/projectImg/" + imageFileName;
     }
 
+    // 제목으로 프로젝트 검색
     @Override
-    public List<FindProjectResDto> searchProjects(String keyword, String userEmail) {
+    public List<FindProjectResDto> searchProjectsByTitle(String keyword, String userEmail) {
         List<Project> projects = projectRepository.findByTitleContainingOrderByIdDesc(keyword);
+
+        List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
+        if (userEmail.isEmpty()) {
+            for (Project project : projects) {
+                findProjectResDtos.add(new FindProjectResDto(project, false));
+            }
+        } else {
+            User user = userRepository.findByEmail(userEmail);
+            for (Project project : projects) {
+                Optional<Bookmark> bookmark = bookmarkRepsitory.findByUserAndProject(user, project);
+
+                Boolean isBookmarked = false;
+                if (bookmark.isPresent()) {
+                    isBookmarked = true;
+                }
+
+                findProjectResDtos.add(new FindProjectResDto(project, isBookmarked));
+            }
+        }
+
+        return findProjectResDtos;
+    }
+
+    // 기술스택으로 프로젝트 검색
+    @Override
+    public List<FindProjectResDto> searchProjectsByTechStack(String keyword, String userEmail) {
+        List<TechStack> techStacks = techStackRepository.findByNameContaining(keyword);
+
+        List<ProjectStack> projectStacks = new ArrayList<>();
+        for (TechStack techStack : techStacks) {
+            projectStacks.addAll(projectStackRepository.findByTechStack(techStack));
+        }
+
+        List<Project> projects = projectStacks.stream().map(ProjectStack::getProject).collect(Collectors.toList());
+
+        List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
+        if (userEmail.isEmpty()) {
+            for (Project project : projects) {
+                findProjectResDtos.add(new FindProjectResDto(project, false));
+            }
+        } else {
+            User user = userRepository.findByEmail(userEmail);
+            for (Project project : projects) {
+                Optional<Bookmark> bookmark = bookmarkRepsitory.findByUserAndProject(user, project);
+
+                Boolean isBookmarked = false;
+                if (bookmark.isPresent()) {
+                    isBookmarked = true;
+                }
+
+                findProjectResDtos.add(new FindProjectResDto(project, isBookmarked));
+            }
+        }
+
+        return findProjectResDtos;
+    }
+
+    // 정확한 기술스택으로 프로젝트 검색
+    @Override
+    public List<FindProjectResDto> searchProjectsByTechStackSpecific(String keyword, String userEmail) {
+        TechStack techStack = techStackRepository.findByName(keyword).get();
+        List<ProjectStack> projectStacks = projectStackRepository.findByTechStack(techStack);
+        List<Project> projects = projectStacks.stream().map(ProjectStack::getProject).collect(Collectors.toList());
 
         List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
         if (userEmail.isEmpty()) {

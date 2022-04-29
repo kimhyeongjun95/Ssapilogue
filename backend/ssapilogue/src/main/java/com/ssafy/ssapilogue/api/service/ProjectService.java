@@ -16,5 +16,7 @@ public interface ProjectService {
     void deleteProject(Long projectId, String userEmail);
     void updateReadme(Long projectId);
     String uploadImage(MultipartFile file, String userEmail);
-    List<FindProjectResDto> searchProjects(String keyword, String userEmail);
+    List<FindProjectResDto> searchProjectsByTitle(String keyword, String userEmail);
+    List<FindProjectResDto> searchProjectsByTechStack(String keyword, String userEmail);
+    List<FindProjectResDto> searchProjectsByTechStackSpecific(String keyword, String userEmail);
 }

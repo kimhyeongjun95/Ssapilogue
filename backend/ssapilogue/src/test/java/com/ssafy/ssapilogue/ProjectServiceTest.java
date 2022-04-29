@@ -79,7 +79,7 @@ public class ProjectServiceTest {
 
         // then
         assertThat(projectDetailResDto.getProjectId()).isEqualTo(projectId);
-        assertThat(projectMemberRepository.findByProject(project).size()).isEqualTo(2);
+        assertThat(projectMemberRepository.findByProject(project).size()).isEqualTo(1);
     }
 
     private void createUser() {
