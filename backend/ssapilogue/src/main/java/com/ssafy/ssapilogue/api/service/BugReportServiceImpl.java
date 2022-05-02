@@ -96,4 +96,9 @@ public class BugReportServiceImpl implements BugReportService{
 
         bugReport.update(createBugReportReqDto);
     }
+
+    @Override
+    public void deleteBugReport(Long bugId) {
+        bugReportRepository.deleteById(bugId);
+    }
 }
