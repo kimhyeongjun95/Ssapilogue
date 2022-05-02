@@ -86,7 +86,7 @@ public class BugReportController {
     }
 
     @DeleteMapping("/{bugId}")
-    @ApiOperation(value = "버그 리포트 수정", notes = "버그 리포트를 수정한다.")
+    @ApiOperation(value = "버그 리포트 삭제", notes = "버그 리포트를 삭제한다.")
     public ResponseEntity<Map<String, Object>> deleteBugReport(
             @PathVariable @ApiParam(value = "버그 리포트 id", required = true, example = "1") Long bugId) {
         Map<String, Object> result = new HashMap<>();
