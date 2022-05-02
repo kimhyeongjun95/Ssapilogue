@@ -9,5 +9,4 @@ import java.util.List;
 public interface UserInfoRepository extends JpaRepository<UserInfo, String> {
 
     UserInfo findByUserId(String userId);
-    List<UserInfo> findByNicknameContaining(@Param("keyword") String keyword);
 }

@@ -14,10 +14,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -107,6 +104,18 @@ public class UserInfoController {
             }
         }
         return userInfoRepository.findAll();
+    }
+
+    @PostMapping()
+    @ApiOperation(value = "자모음 분리", notes = "자모음을 분리한다.")
+    public ResponseEntity<Map<String, Object>> splitUserInfo() {
+
+        Map<String, Object> result = new HashMap<>();
+
+        userInfoService.splitUserInfo();
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 
     @GetMapping("/search")
