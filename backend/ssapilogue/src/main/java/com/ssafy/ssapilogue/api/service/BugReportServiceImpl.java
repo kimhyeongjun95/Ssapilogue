@@ -88,4 +88,12 @@ public class BugReportServiceImpl implements BugReportService{
 
         return new FindBugReportDetailResDto(bugReport, user, createdAt, comments);
     }
+
+    @Override
+    public void updateBugReport(Long bugId, CreateBugReportReqDto createBugReportReqDto) {
+        BugReport bugReport = bugReportRepository.findById(bugId)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 버그 리포트입니다."));
+
+        bugReport.update(createBugReportReqDto);
+    }
 }

@@ -10,4 +10,5 @@ public interface BugReportService {
     List<FindBugReportResDto> findBugReports(Long projectId);
     Long createBugReport(Long projectId, String userEmail, CreateBugReportReqDto createBugReportReqDto);
     FindBugReportDetailResDto findBugReportDetail(Long bugId);
+    void updateBugReport(Long bugId, CreateBugReportReqDto createBugReportReqDto);
 }
