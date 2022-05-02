@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.core.domain;
 
+import com.ssafy.ssapilogue.api.dto.request.CreateBugReportReqDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,5 +52,10 @@ public class BugReport {
         this.title = title;
         this.content = content;
         this.is_solved = is_solved;
+    }
+
+    public void update(CreateBugReportReqDto createBugReportReqDto) {
+        this.title = createBugReportReqDto.getTitle();
+        this.content = createBugReportReqDto.getContent();
     }
 }
