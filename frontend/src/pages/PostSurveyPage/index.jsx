@@ -37,18 +37,9 @@ const PostSurvey = () => {
     setInputs([...inputs, { title: '', type: "객관식", surveyOptions: [], count: 0 }])
   }
 
-  // 추가 로직
-  // 1. div children으로 추가하기
-  // 2. input에 name, value 값 넣기
-  // 3. input에 event(choiceHandleInput)로 e, idx, count값 넘겨주기
-
-  // 삭제 로직
-  // 1. 가까운 input div 삭제하기
-  // 2. list[idx][name][optIdx] = "";
-
   const addChoice = (e, idx) => {
     const list = [...inputs]
-    list[idx]["count"] += 1; // count를 늘려 다음 input 지정
+    list[idx]["count"] += 1; 
     const count = list[idx]["count"];
     list[idx].surveyOptions[count] = '';
     let ask = document.createElement("input");
@@ -138,4 +129,3 @@ const PostSurvey = () => {
 }
 
 export default PostSurvey;
-// div 삭제되면 inputs도 tracking 해야함.
