@@ -5,6 +5,7 @@ const store = {
     if (token === "") {
       localStorage.setItem("jwt", "");
       window.location.replace("/")
+      API.defaults.headers.common['Authorization'] = "";
       return;
     }
 	  API.defaults.headers.common['Authorization'] = `Bearer ${token}`;

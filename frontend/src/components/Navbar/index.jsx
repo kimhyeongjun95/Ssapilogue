@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom"
-import './style.scss'
-import Default from '../../assets/default.png'
 import { useEffect, useState } from "react"
 import store from "../../utils/store"
+import { useNavigate } from "react-router-dom"
+import './style.scss'
+import Default from '../../assets/default.png'
 
 const Navbar = () => {
 
   const [authorized, setAuthorized] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+  const navigate = useNavigate();
 
   const toggleHandler = () => {
     setDropDown(!dropDown);
@@ -19,6 +21,10 @@ const Navbar = () => {
 
   const signOut = () => {
     store.setToken("");
+  }
+
+  const goProfile = () => {
+    navigate("/profile")
   }
 
   useEffect(() => {
@@ -48,7 +54,7 @@ const Navbar = () => {
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_myprofile">
-                <button>프로필</button>
+                <button onClick={goProfile}>프로필</button>
               </div>
             </div>
 
