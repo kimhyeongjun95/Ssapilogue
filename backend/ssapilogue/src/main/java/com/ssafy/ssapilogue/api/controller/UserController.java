@@ -1,15 +1,18 @@
 package com.ssafy.ssapilogue.api.controller;
 
+import com.ssafy.ssapilogue.api.config.JwtProperties;
 import com.ssafy.ssapilogue.api.dto.request.LoginUserReqDto;
 import com.ssafy.ssapilogue.api.dto.request.SignupUserReqDto;
 import com.ssafy.ssapilogue.api.dto.request.UpdateUserReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindUserResDto;
+import com.ssafy.ssapilogue.api.dto.response.LoginUserResDto;
 import com.ssafy.ssapilogue.api.dto.response.SignupUserResDto;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
 import com.ssafy.ssapilogue.api.service.UserService;
 import com.ssafy.ssapilogue.api.util.MediaUtils;
 import com.ssafy.ssapilogue.core.domain.User;
 import com.ssafy.ssapilogue.core.repository.UserInfoRepository;
+import com.ssafy.ssapilogue.core.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,9 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +42,8 @@ public class UserController {
 
     private final UserInfoRepository userInfoRepository;
 
+    private final UserRepository userRepository;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     @Value("${profileImg.path}")
@@ -52,7 +56,12 @@ public class UserController {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
         try {
-            SignupUserResDto signupUserResDto = userService.signup(signupUserReqDto);
+            User user = userService.signup(signupUserReqDto);
+            String refreshToken = jwtTokenProvider.createRefreshToken(signupUserReqDto.getEmail());
+            result.put("refresh-token", refreshToken);
+            user.changeRefreshToken(refreshToken);
+            userRepository.save(user);
+            SignupUserResDto signupUserResDto = new SignupUserResDto(user);
             result.put("userinfo", signupUserResDto);
             httpStatus = HttpStatus.OK;
             result.put("message", "success");
@@ -86,12 +95,17 @@ public class UserController {
             result.put("status", "SUCCESS");
             String token = jwtTokenProvider.createToken(loginUser.getEmail(), loginUser.getUserIdentity());
             result.put("token", token);
+            String refreshToken = jwtTokenProvider.createRefreshToken(loginUserReqDto.getEmail());
+            result.put("refresh-token", refreshToken);
+            loginUser.changeRefreshToken(refreshToken);
+            userRepository.save(loginUser);
         } catch (NullPointerException e) {
             httpStatus = HttpStatus.OK;
             result.put("status", "NO USER");
         } catch (RuntimeException e) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             result.put("status", "SEVER ERROR");
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -175,5 +189,12 @@ public class UserController {
             result.put("status", "SERVER ERROR");
         }
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
+    }
+
+    @GetMapping("/refreshToken")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
+        String newToken = userService.issueNewToken(refreshToken);
+        response.addHeader(JwtProperties.HEADER_STRING, newToken);
     }
 }
