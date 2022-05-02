@@ -4,9 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -24,6 +22,9 @@ public class UserInfo {
 
     @NotNull
     private String username;
+
+    @OneToOne(mappedBy = "userInfo", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private UserInfoSplit userInfoSplit;
 
     @Builder
     public UserInfo(String userId, String nickname, String username) {

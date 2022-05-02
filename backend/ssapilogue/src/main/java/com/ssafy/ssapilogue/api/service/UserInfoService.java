@@ -4,5 +4,6 @@ import java.util.List;
 
 public interface UserInfoService {
 
+    void splitUserInfo();
     List<String> searchUserInfos(String keyword);
 }
