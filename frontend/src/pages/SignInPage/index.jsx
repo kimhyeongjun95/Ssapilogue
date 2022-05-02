@@ -32,7 +32,7 @@ const SignInPage = () => {
       if (direct === "SUCCESS") {
         const token = res.data.token;
         store.setToken(token);
-        navigate("/")
+        window.location.replace("/")
         return;
       }
     } catch (e) {

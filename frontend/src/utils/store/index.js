@@ -7,7 +7,11 @@ const store = {
   },
   getToken() {
     const token = localStorage.getItem("jwt")
-	  return API.defaults.headers.common['Authorization'] = `Bearer ${token}`
+	  API.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    if (token) {
+      return true;
+    }
+    return false;
   },
 }
 
