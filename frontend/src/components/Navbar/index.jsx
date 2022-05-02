@@ -8,12 +8,17 @@ const Navbar = () => {
 
   const [authorized, setAuthorized] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+
   const toggleHandler = () => {
     setDropDown(!dropDown);
   }
 
   const signInCheck = () => {
     store.getToken() ? setAuthorized(true) : setAuthorized(false);
+  }
+
+  const signOut = () => {
+    store.setToken("");
   }
 
   useEffect(() => {
@@ -55,7 +60,7 @@ const Navbar = () => {
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_logout">
-                <button>로그아웃</button>
+                <button onClick={signOut}>로그아웃</button>
               </div>   
             </div>
             
