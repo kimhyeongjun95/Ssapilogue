@@ -1,7 +1,8 @@
 package com.ssafy.ssapilogue.api.controller;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateBugReportReqDto;
-import com.ssafy.ssapilogue.api.dto.response.FindBugReportDto;
+import com.ssafy.ssapilogue.api.dto.response.FindBugReportDetailResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindBugReportResDto;
 import com.ssafy.ssapilogue.api.service.BugReportService;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
 import io.swagger.annotations.Api;
@@ -33,7 +34,7 @@ public class BugReportController {
             @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId){
         Map<String, Object> result = new HashMap<>();
 
-        List<FindBugReportDto> bugList = bugReportService.findBugReports(projectId);
+        List<FindBugReportResDto> bugList = bugReportService.findBugReports(projectId);
         result.put("bugList", bugList);
         result.put("status", "SUCCESS");
 
@@ -58,9 +59,16 @@ public class BugReportController {
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{bugId}")
+    @GetMapping("/detail/{bugId}")
     @ApiOperation(value = "버그 리포트 상세 조회", notes = "버그 리포트를 조회한다.")
-    public ResponseEntity<Map<String, Object>> findBugReportDetail() {
-        return null;
+    public ResponseEntity<Map<String, Object>> findBugReportDetail(
+            @PathVariable @ApiParam(value = "버그 리포트 id", required = true, example = "1") Long bugId) {
+        Map<String, Object> result = new HashMap<>();
+
+        FindBugReportDetailResDto bugReport = bugReportService.findBugReportDetail(bugId);
+        result.put("bugReport", bugReport);
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 }
