@@ -199,6 +199,9 @@ const PostProjectPage = () => {
     setReadmeCheck(e.target.value)
     console.log(readmeCheck)
   }
+
+
+
   return (
     <>
       <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
@@ -238,7 +241,9 @@ const PostProjectPage = () => {
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
           <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
-          <Link to="/project/survey">
+          <Link 
+            to="/project/survey"
+          >
             <Button size="large" variant="contained"> 다음단계 </Button>
           </Link>
         </div>
