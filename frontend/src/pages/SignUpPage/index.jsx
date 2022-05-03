@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import API from "../../api/API";
 import store from "../../utils/store";
 
@@ -13,7 +13,6 @@ const SignUpPage = () => {
   const { nickName, greetings, github } = inputs;
   const locations = useLocation().state;
   const { email, pw, userId } = locations;
-  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { value, name } = e.target;
@@ -36,7 +35,7 @@ const SignUpPage = () => {
         if (res.data.message === "success") {
           const token = res.data.token;
           store.setToken(token);
-          navigate("/");
+          window.location.replace("/");
           return;
         }
       })
