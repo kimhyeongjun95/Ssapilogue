@@ -88,7 +88,6 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
         }
 
-        String splitNickname = sb.toString();
-        return splitNickname;
+        return sb.toString();
     }
 }
