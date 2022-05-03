@@ -99,7 +99,7 @@ const PostSurvey = () => {
       console.log(thumbnail)
       console.log(readmeCheck)
       console.log(markdown)
-      const res = await API.post("/api/project",{
+      const projectResult = await API.post("/api/project",{
         title: title,
         introudce: intro,
         category: various,
@@ -108,10 +108,11 @@ const PostSurvey = () => {
         depolyAddress: bepo,
         gitAddress: repo,
         thumbnail: thumbnail,
-        readmeCheck: readmeCheck,
+        readmeCheck: 1,
         readme: markdown,
       })
-      console.log(res);
+      console.log(projectResult);
+      // const surveyResult = await API.post(`/api/project/${projectResult.data.}`) 
     } catch (e) {
       throw e;
     }
