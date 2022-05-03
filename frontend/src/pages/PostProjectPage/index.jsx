@@ -243,6 +243,18 @@ const PostProjectPage = () => {
           <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
           <Link 
             to="/project/survey"
+            state={{
+              title: title,
+              intro: intro,
+              various: various,
+              phashbox: phashbox,
+              hashbox: hashbox,
+              bepo: bepo,
+              repo: repo,
+              thumbnail: thumbnail,
+              readmeCheck: readmeCheck,
+              markdown: markdown
+            }}
           >
             <Button size="large" variant="contained"> 다음단계 </Button>
           </Link>

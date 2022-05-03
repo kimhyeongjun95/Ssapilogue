@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useLocation } from 'react-router-dom';
+import API from "../../api/API";
+import store from "../../utils/store";
 import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
@@ -7,6 +10,9 @@ const PostSurvey = () => {
 
   const [option, setOption] = useState('주관식');
   const [inputs, setInputs] = useState([])
+  const locations = useLocation().state;
+  const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
+
 
   const whichSurvey = (e) => {
     setOption(e.target.value);
@@ -79,6 +85,23 @@ const PostSurvey = () => {
     setInputs(list);
   }
 
+  const submit = async () => {
+    store.getToken();
+    const res = await API.post("/api/project",{
+      title: title,
+      introudce: intro,
+      category: various,
+      memeber: phashbox,
+      techStack: hashbox,
+      depolyAddress: bepo,
+      gitAddress: repo,
+      thumbnail: thumbnail,
+      readmeCheck: readmeCheck,
+      readme: markdown,
+    })
+    console.log(res);
+  }
+
   return (
     <div className="survey">
 
@@ -123,6 +146,9 @@ const PostSurvey = () => {
 
       <button className={option === "주관식" ? "btn-on" : null} onClick={whichSurvey} value="주관식">주관식</button>
       <button className={option === "객관식" ? "btn-on" : null} onClick={whichSurvey} value="객관식">객관식</button>
+
+      <button onClick={submit}>등록</button>
+      <button>취소</button>
 
     </div>
   )
