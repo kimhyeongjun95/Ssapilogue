@@ -17,7 +17,7 @@ const PostProjectPage = () => {
   const [thumbnail, setThumnail] = useState('')
   const [thumbnailUrl, setThumnailUrl] = useState('')
   const [markdown, setMarkdown] = useState('')
-  const [readmeCheck, setReadmeCheck] = useState('')
+  const [readmeCheck, setReadmeCheck] = useState('1');
   const editorRef = React.createRef();
 
   // 기술스택 //
@@ -197,8 +197,9 @@ const PostProjectPage = () => {
 
   const mkChange = (e) => {
     setReadmeCheck(e.target.value)
-    console.log(readmeCheck)
+    console.log(typeof e.target.value)
   }
+
   return (
     <>
       <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
@@ -222,29 +223,39 @@ const PostProjectPage = () => {
           null
         }
         <div>
-          <input type="radio" name="theme" value="owntype" onChange={mkChange} />직접 입력하기
-          <input type="radio" name="theme" value="github" onChange={mkChange}/>github에서 가져오기
+          <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />직접 입력하기
+          <input type="radio" checked={readmeCheck === "0"} name="theme" value={"0"} onChange={mkChange}/>github에서 가져오기
         </div>
         {questionType("*소개", intro, setIntro,1)}
-        <div style={{marginTop:"2%",width:"40%"}}>
-          <Editor
-            height="40vh"
-            placeholder='마크다운을 붙여주세요.'
-            onChange={onChangeIntroFunction}
-            ref={editorRef}
-            
-          />
-        </div>
+        { (readmeCheck === "1") ?
+          <div style={{marginTop:"2%",width:"40%"}}>
+            <Editor
+              height="40vh"
+              placeholder='마크다운을 붙여주세요.'
+              onChange={onChangeIntroFunction}
+              ref={editorRef}
+              
+            /> 
+          </div>
+          : null
+        }
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
           <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
-          <Link
-            // to = {"/project/survey"}
-            // state = {{
-            //   title: title,
-            //   introduce: introduce,
-            //   repo: repo,
-            // }}
+          <Link 
+            to="/project/survey"
+            state={{
+              title: title,
+              intro: intro,
+              various: various,
+              phashbox: phashbox,
+              hashbox: hashbox,
+              bepo: bepo,
+              repo: repo,
+              thumbnail: thumbnail,
+              readmeCheck: readmeCheck,
+              markdown: markdown
+            }}
           >
             <Button size="large" variant="contained"> 다음단계 </Button>
           </Link>

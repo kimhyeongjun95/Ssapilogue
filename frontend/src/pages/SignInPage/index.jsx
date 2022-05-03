@@ -22,6 +22,7 @@ const SignInPage = () => {
 
   const signIn = async () => {
     try {
+      store.setToken("");
       const result = await API.post("/api/v4/users/login", {login_id: id,password: pw,})
       const res = await API.post("/api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
       const direct = res.data.status;
@@ -32,10 +33,11 @@ const SignInPage = () => {
       if (direct === "SUCCESS") {
         const token = res.data.token;
         store.setToken(token);
-        navigate("/")
+        window.location.replace("/")
         return;
       }
     } catch (e) {
+      console.log(e);
       throw e;
     }
   }
