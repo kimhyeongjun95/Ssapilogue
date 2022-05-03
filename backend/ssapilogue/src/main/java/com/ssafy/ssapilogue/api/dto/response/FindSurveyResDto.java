@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -15,9 +16,15 @@ import java.util.List;
 @ApiModel("FindSurveyResDto")
 public class FindSurveyResDto {
 
+    @NotNull
+    @ApiModelProperty(value = "설문조사 id")
+    private String surveyId;
+
+    @NotNull
     @ApiModelProperty(value = "설문조사 제목", example = "싸필로그가 유용했나요?")
     private String title;
 
+    @NotNull
     @ApiModelProperty(value = "설문조사 타입", example = "객관식")
     private SurveyType surveyType;
 
@@ -25,6 +32,7 @@ public class FindSurveyResDto {
     private List<SurveyOption> surveyOptions;
 
     public FindSurveyResDto(Survey survey) {
+        surveyId = survey.getId();
         title = survey.getTitle();
         surveyType = survey.getSurveyType();
         surveyOptions = survey.getSurveyOptions();
