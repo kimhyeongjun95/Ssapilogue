@@ -86,20 +86,35 @@ const PostSurvey = () => {
   }
 
   const submit = async () => {
-    store.getToken();
-    const res = await API.post("/api/project",{
-      title: title,
-      introudce: intro,
-      category: various,
-      memeber: phashbox,
-      techStack: hashbox,
-      depolyAddress: bepo,
-      gitAddress: repo,
-      thumbnail: thumbnail,
-      readmeCheck: readmeCheck,
-      readme: markdown,
-    })
-    console.log(res);
+    try {
+      store.getToken();
+      console.log("---before send---")
+      console.log(title)
+      console.log(intro)
+      console.log(various)
+      console.log(phashbox)
+      console.log(hashbox)
+      console.log(bepo)
+      console.log(repo)
+      console.log(thumbnail)
+      console.log(readmeCheck)
+      console.log(markdown)
+      const res = await API.post("/api/project",{
+        title: title,
+        introudce: intro,
+        category: various,
+        memeber: phashbox,
+        techStack: hashbox,
+        depolyAddress: bepo,
+        gitAddress: repo,
+        thumbnail: thumbnail,
+        readmeCheck: readmeCheck,
+        readme: markdown,
+      })
+      console.log(res);
+    } catch (e) {
+      throw e;
+    }
   }
 
   return (

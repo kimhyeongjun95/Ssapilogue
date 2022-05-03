@@ -20,7 +20,7 @@ const Navbar = () => {
   }
 
   const signOut = () => {
-    store.setToken("");
+    store.setToken("logout");
   }
 
   const goProfile = () => {

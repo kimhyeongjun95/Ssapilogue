@@ -4,8 +4,13 @@ const store = {
   setToken(token) {
     if (token === "") {
       localStorage.setItem("jwt", "");
+      delete API.defaults.headers.common['Authorization'];
+      return;
+    }
+    if (token === "logout") {
+      localStorage.setItem("jwt", "");
+      delete API.defaults.headers.common['Authorization'];
       window.location.replace("/")
-      API.defaults.headers.common['Authorization'] = "";
       return;
     }
 	  API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -13,7 +18,7 @@ const store = {
   },
   getToken() {
     const token = localStorage.getItem("jwt");
-	  API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+	  API.defaults.headers.common['Authorization'] = `${token}`;
     if (token) {
       return true;
     }
