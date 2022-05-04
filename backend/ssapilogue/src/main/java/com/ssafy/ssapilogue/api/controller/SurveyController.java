@@ -1,7 +1,7 @@
 package com.ssafy.ssapilogue.api.controller;
 
-import com.ssafy.ssapilogue.api.dto.request.CreateSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.request.CreateSurveysReqDto;
+import com.ssafy.ssapilogue.api.dto.response.FindDefaultSurveyResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.api.service.SurveyService;
 import io.swagger.annotations.Api;
@@ -58,6 +58,19 @@ public class SurveyController {
         Map<String, Object> result = new HashMap<>();
 
         surveyService.deleteSurvey(surveyId);
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/default/{projectTitle}")
+    @ApiOperation(value = "기본 설문조사 문항 조회", notes = "기본 설문조사 문항을 조회한다.")
+    public ResponseEntity<Map<String, Object>> defaultSurvey(
+            @PathVariable @ApiParam(value = "프로젝트 제목", required = true, example = "싸필로그") String projectTitle) {
+        Map<String, Object> result = new HashMap<>();
+
+        List<FindDefaultSurveyResDto> defaultSurvey = surveyService.defaultSurvey(projectTitle);
+        result.put("defaultSurvey", defaultSurvey);
         result.put("status", "SUCCESS");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
