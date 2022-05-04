@@ -1,4 +1,3 @@
-import react from "react"
 import TextField from "@mui/material/TextField";
 
 function questionType( { InputTitle,inputValue ,inputSetValue, pilsu }){

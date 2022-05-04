@@ -9,6 +9,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import { Link } from 'react-router-dom';
 
+
 const PostProjectPage = () => {
   // 상태관리
   const [title, setTitle] = useState('')

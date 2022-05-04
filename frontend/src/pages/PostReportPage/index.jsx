@@ -3,9 +3,14 @@ import Question from "../../components/Input/question"
 import { Editor } from '@toast-ui/react-editor';
 import {Button} from "@mui/material"
 import "./style.scss"
-import { useNavigate } from "react-router-dom";
+import store from "../../utils/store";
+import { useNavigate, useLocation } from "react-router-dom";
+import API from "../../api/API";
 
 const PostReviewPage = () => {
+  const locations = useLocation().state;
+  const { projectId } = locations;
+  
   let navigate = useNavigate();
 
   const editorRef = React.createRef();
@@ -18,10 +23,18 @@ const PostReviewPage = () => {
     setMarkdown(marktext)
   };
 
-  const postReport= () => {
-    
-    console.log("post")
-    navigate('post/1')
+  const postReport= async() => {
+    try{
+      store.getToken()
+      const postReport = await API.post(`/api/bug/${projectId}`, {
+        title: val,
+        content : markdown
+      })
+      navigate('/')
+    } catch (e) {
+      throw e;
+    }
+
   }
   return (
     <div className="main-div">
