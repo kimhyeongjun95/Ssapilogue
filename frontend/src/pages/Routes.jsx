@@ -29,11 +29,11 @@ const Routes = () => {
       <Route path="/project/:projectId/editsurvey" element={<EditSurveyPage />} />
 
       {/* review에 객관식 주관식 nesting 예정 */}
-      <Route path="/review" element={<ReviewPage />} />
+      <Route path="/project/:projectId/review" element={<ReviewPage />} />
 
-      <Route path="/report" element={<ReportPage />} />
-      <Route path="/report/post" element={<PostReportPage />} />
-      <Route path="/report/:reportId" element={<ReportDetailPage />} />
+      <Route path="/project/:projectId/report" element={<ReportPage />} />
+      <Route path="/project/:projectId/report/post" element={<PostReportPage />} />
+      <Route path="/project/:projectId/report/:reportId" element={<ReportDetailPage />} />
 
     </ReactRouterRoutes>
   )
