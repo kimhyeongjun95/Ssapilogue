@@ -1,6 +1,7 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateSurveyReqDto;
+import com.ssafy.ssapilogue.api.dto.response.FindDefaultSurveyResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.core.domain.Survey;
 import com.ssafy.ssapilogue.core.domain.SurveyOption;
@@ -74,5 +75,39 @@ public class SurveyServiceImpl implements SurveyService {
         }
 
         surveyRepository.deleteById(surveyId);
+    }
+
+    @Override
+    public List<FindDefaultSurveyResDto> defaultSurvey(String projectTitle) {
+        List<FindDefaultSurveyResDto> defaultSurvey = new ArrayList<>();
+
+        // 완성도
+        List<String> option1 = new ArrayList<>();
+        option1.add("100%");
+        option1.add("80%");
+        option1.add("60%");
+        option1.add("40%");
+        option1.add("20%");
+        defaultSurvey.add(new FindDefaultSurveyResDto(projectTitle, "의 완성도는 어느 정도라고 생각하시나요?", "객관식", option1));
+
+        // UI
+        List<String> option2 = new ArrayList<>();
+        option2.add("그렇다");
+        option2.add("그런편이다");
+        option2.add("보통이다");
+        option2.add("그렇지 않다");
+        option2.add("전혀 그렇지 않다");
+        defaultSurvey.add(new FindDefaultSurveyResDto(projectTitle, "의 UI(User Interface)에 만족하셨나요?", "객관식", option2));
+
+        // 기능 작동
+        defaultSurvey.add(new FindDefaultSurveyResDto(projectTitle, "의 기능은 문제없이 잘 작동한다고 생각하시나요?", "객관식", option2));
+
+        // 사용성
+        defaultSurvey.add(new FindDefaultSurveyResDto(projectTitle, "가 정식으로 서비스된다면 계속 사용할 의향이 있으신가요?", "객관식", option2));
+
+        // 자유 의견
+        defaultSurvey.add(new FindDefaultSurveyResDto(projectTitle, "에 대해 자유롭게 의견을 남겨주세요!", "주관식", null));
+
+        return defaultSurvey;
     }
 }
