@@ -9,6 +9,7 @@ import PostSurveyPage from './PostSurveyPage'
 import EditSurveyPage from './EditSurveyPage'
 import ProjectDetailPage from './ProjectDetailPage'
 import ReviewPage from './ReviewPage'
+import PostReviewPage from './PostReviewPage'
 import ReportPage from './ReportPage'
 import PostReportPage from './PostReportPage'
 import ReportDetailPage from './ReportDetailPage'
@@ -29,11 +30,12 @@ const Routes = () => {
       <Route path="/project/:projectId/editsurvey" element={<EditSurveyPage />} />
 
       {/* review에 객관식 주관식 nesting 예정 */}
-      <Route path="/review" element={<ReviewPage />} />
+      <Route path="/project/:projectId/review" element={<ReviewPage />} />
+      <Route path="/project/:projectId/review/post" element={<PostReviewPage />} />
 
-      <Route path="/report" element={<ReportPage />} />
-      <Route path="/report/post" element={<PostReportPage />} />
-      <Route path="/report/:reportId" element={<ReportDetailPage />} />
+      <Route path="/project/:projectId/report" element={<ReportPage />} />
+      <Route path="/project/:projectId/report/post" element={<PostReportPage />} />
+      <Route path="/project/:projectId/report/:reportId" element={<ReportDetailPage />} />
 
     </ReactRouterRoutes>
   )

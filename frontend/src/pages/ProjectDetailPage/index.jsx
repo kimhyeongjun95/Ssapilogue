@@ -1,4 +1,5 @@
-import React, {useEffect} from "react";
+import React from "react";
+import { Link, useParams } from "react-router-dom";
 import detailImage from "../../assets//detailImage.png"
 import "./style.scss"
 import constructionPic from "../../assets/construction.png"
@@ -6,12 +7,10 @@ import projectPeoplePic from "../../assets/proejectPeople.png"
 import gitRepo from "../../assets/git.png"
 import google from "../../assets/Google.png"
 import {Button} from "@mui/material"
-import { Link,useParams } from "react-router-dom"
 
 
 const DetailPage = () => {
-  const id = useParams()
-
+  const id = useParams().projectId;
   let category = '자율'
   let title = '라이키와 함께 자전거 여행을 떠나보세요!  나의 라이딩 메이트, RIKEY'
   let stack = ['react-native','react','spring','엔진엑스','Unity','Unity']
@@ -103,6 +102,11 @@ const DetailPage = () => {
           <img className="icon" src={google} alt="google" />
           Demo Site
         </a>
+        <Link 
+          to={`/project/${id}/report/post`}
+        >
+          <button>리뷰 / 버그 작성</button>
+        </Link>
       </div>
 
       <div style={{height: "100vh", marginLeft:"25%"}}>
