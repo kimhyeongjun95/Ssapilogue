@@ -1,12 +1,19 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
+import API from "../../api/API";
+import store from "../../utils/store";
 import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
+// import API from '../../assets/API';
 
 const PostSurvey = () => {
 
   const [option, setOption] = useState('주관식');
   const [inputs, setInputs] = useState([])
+  const locations = useLocation().state;
+  const navigate = useNavigate();
+  const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
 
   const whichSurvey = (e) => {
     setOption(e.target.value);
@@ -30,11 +37,11 @@ const PostSurvey = () => {
   }
 
   const addSubjective = () => {
-    setInputs([...inputs, { title:'', type: "주관식" }])
+    setInputs([...inputs, { title:'', surveyType: "주관식" }])
   }
 
   const addMultipleChoice = () => {
-    setInputs([...inputs, { title: '', type: "객관식", surveyOptions: [], count: 0 }])
+    setInputs([...inputs, { title: '', surveyType: "객관식", surveyOptions: [], count: 0 }])
   }
 
   const addChoice = (e, idx) => {
@@ -79,6 +86,31 @@ const PostSurvey = () => {
     setInputs(list);
   }
 
+  const submit = async () => {
+    try {
+      store.getToken();
+      const projectResult = await API.post("/api/project",{
+        title: title,
+        introudce: intro,
+        category: various,
+        member: phashbox,
+        techStack: hashbox,
+        depolyAddress: bepo,
+        gitAddress: repo,
+        thumbnail: thumbnail,
+        readmeCheck: readmeCheck,
+        readme: markdown,
+      })
+      const projectId = projectResult.data.projectId;
+      await API.post(`/api/survey/${projectId}`, {
+        createSurveyReqDtos: inputs
+      }) 
+      navigate(`/project/${projectId}`)
+    } catch (e) {
+      throw e;
+    }
+  }
+
   return (
     <div className="survey">
 
@@ -95,7 +127,7 @@ const PostSurvey = () => {
           />
           <img src={trash} onClick={e => deleteSurvey(e, idx)} alt="trash" />
 
-          {input.type === "주관식" ?
+          {input.surveyType === "주관식" ?
             <></> 
             : 
             <>
@@ -123,6 +155,9 @@ const PostSurvey = () => {
 
       <button className={option === "주관식" ? "btn-on" : null} onClick={whichSurvey} value="주관식">주관식</button>
       <button className={option === "객관식" ? "btn-on" : null} onClick={whichSurvey} value="객관식">객관식</button>
+
+      <button onClick={submit}>등록</button>
+      <button>취소</button>
 
     </div>
   )
