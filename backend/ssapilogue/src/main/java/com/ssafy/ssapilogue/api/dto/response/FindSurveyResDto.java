@@ -25,12 +25,12 @@ public class FindSurveyResDto {
     private SurveyType surveyType;
 
     @ApiModelProperty(value = "객관식 질문 옵션")
-    private List<SurveyOption> surveyOptions;
+    private List<FindSurveyOptionResDto> surveyOptions;
 
-    public FindSurveyResDto(Survey survey) {
+    public FindSurveyResDto(Survey survey, List<FindSurveyOptionResDto> surveyOptions) {
         surveyId = survey.getId();
         title = survey.getTitle();
         surveyType = survey.getSurveyType();
-        surveyOptions = survey.getSurveyOptions();
+        this.surveyOptions = surveyOptions;
     }
 }

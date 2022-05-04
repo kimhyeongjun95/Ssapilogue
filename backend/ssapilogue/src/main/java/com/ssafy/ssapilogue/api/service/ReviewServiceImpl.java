@@ -36,7 +36,7 @@ public class ReviewServiceImpl implements ReviewService{
         List<FindReviewResDto> findReviewResDtos = new ArrayList<>();
         Integer index = 1;
 
-        List<Survey> surveys = surveyRepository.findAllByProjectIdOrderById(projectId);
+        List<Survey> surveys = surveyRepository.findAllByProjectId(projectId);
         for (Survey survey : surveys) {
             String surveyTitle = survey.getTitle();
 

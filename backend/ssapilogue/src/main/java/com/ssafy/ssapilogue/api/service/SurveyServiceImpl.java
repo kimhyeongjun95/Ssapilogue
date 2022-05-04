@@ -2,10 +2,12 @@ package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindDefaultSurveyResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindSurveyOptionResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.core.domain.Survey;
 import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.domain.SurveyType;
+import com.ssafy.ssapilogue.core.repository.SurveyOptionRepository;
 import com.ssafy.ssapilogue.core.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -22,14 +23,27 @@ public class SurveyServiceImpl implements SurveyService {
 
     private final SurveyRepository surveyRepository;
 
+    private final SurveyOptionRepository surveyOptionRepository;
+
     private final SurveyOptionService surveyOptionService;
 
     @Override
     public List<FindSurveyResDto> findSurveys(Long projectId) {
-        List<Survey> surveys = surveyRepository.findAllByProjectIdOrderById(projectId);
-        return surveys.stream()
-                .map(FindSurveyResDto::new)
-                .collect(Collectors.toList());
+        List<FindSurveyResDto> surveyList = new ArrayList<>();
+
+        List<Survey> surveys = surveyRepository.findAllByProjectId(projectId);
+        for (Survey survey : surveys) {
+            List<FindSurveyOptionResDto> surveyOptionList = new ArrayList<>();
+
+            List<SurveyOption> surveyOptions = surveyOptionRepository.findAllBySurveyId(survey.getId());
+            for (SurveyOption surveyOption : surveyOptions) {
+                surveyOptionList.add(new FindSurveyOptionResDto(surveyOption));
+            }
+
+            surveyList.add(new FindSurveyResDto(survey, surveyOptionList));
+        }
+
+        return surveyList;
     }
 
     @Override
