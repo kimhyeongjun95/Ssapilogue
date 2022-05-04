@@ -2,12 +2,14 @@ package com.ssafy.ssapilogue.api.dto.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @ApiModel("SignupUserReqDto")
 public class SignupUserReqDto {
