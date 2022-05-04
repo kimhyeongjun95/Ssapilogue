@@ -59,13 +59,7 @@ const ReportPage = () => {
       console.log(bgdiv)
     }
     
-    const sico = (e) => {
-      if (e.target.checked === true){
-        e.target.checked = false
-      }else{
-        console.log("폴스")
-      }
-    }
+
     return <div className={bgdiv}>
       <div className="menu-solved">
         <input type="checkbox" defaultChecked={pio} size="big"></input>
