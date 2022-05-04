@@ -50,19 +50,17 @@ const PostReviewPage = () => {
             <>
               <h2>
                 {review.title}
-                <input type="text" name="" id="" />
               </h2>
-              {console.log(review.title)}
+              <input type="text" name="" id="" value={review.surveyId} />
             </>
             :
             <>
               {review.title}
               {review.surveyOptions.map((option, idx) => (
-                <>
-                  <div>
-                    {option.content}
-                  </div>
-                </>
+                <div key={idx}>
+                  {option.content}
+                  <input type="radio" name={option.surveyId} value={option.id}/>
+                </div>
               ))}
             </>
           } 
