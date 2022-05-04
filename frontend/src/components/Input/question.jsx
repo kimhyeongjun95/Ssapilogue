@@ -1,13 +1,14 @@
 import TextField from "@mui/material/TextField";
+import "./style.scss"
 
 function questionType( { InputTitle,inputValue ,inputSetValue, pilsu }){
   const handleChange = (event) => {
     inputSetValue(event.target.value);
   };
   if (pilsu){
-    return <div style={{width: "40%"}}>
-      <div>
-        <p style={{marginBottom : "1%"}}> {InputTitle} </p>
+    return <div className="main-div">
+      <div className="input-div">
+        <p className="p-style"> {InputTitle} </p>
         <TextField
           style={{width:"100%"}}
           size = "small"
@@ -20,9 +21,9 @@ function questionType( { InputTitle,inputValue ,inputSetValue, pilsu }){
       </div>
     </div>
   }else{
-    return <div style={{width: "40%"}}>
-      <div>
-        <p style={{marginBottom : "1%"}}> {InputTitle} </p>
+    return <div className="main-div">
+      <div className="input-div">
+        <p className="p-style"> {InputTitle} </p>
         <TextField
           style={{width:"100%"}}
           size = "small"
