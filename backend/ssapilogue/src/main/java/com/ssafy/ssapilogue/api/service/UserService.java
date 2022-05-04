@@ -17,7 +17,7 @@ public interface UserService {
 
     User login(LoginUserReqDto loginUserReqDto) throws Exception;
 
-    void updateUser(UpdateUserReqDto updateUserReqDto);
+    void updateUser(User user, UpdateUserReqDto updateUserReqDto);
 
     void deleteUser(String userId);
 

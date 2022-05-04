@@ -55,6 +55,11 @@ public class UserController {
             @RequestBody @ApiParam(value = "회원가입 유저 정보", required = true) SignupUserReqDto signupUserReqDto) throws Exception {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
+        if (userRepository.findByUserId(signupUserReqDto.getUserId()) != null) {
+            httpStatus = HttpStatus.CONFLICT;
+            result.put("message", "이미 존재하는 회원입니다.");
+            return new ResponseEntity<Map<String, Object>>(result, httpStatus);
+        }
         try {
             User user = userService.signup(signupUserReqDto);
             String refreshToken = jwtTokenProvider.createRefreshToken(signupUserReqDto.getEmail());
@@ -112,14 +117,19 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
+
+
     @PutMapping
     @ApiOperation(value = "회원정보 수정", notes = "회원정보를 수정한다.")
     public ResponseEntity<Map<String, Object>> updateUser(
-            @RequestBody @ApiParam(value = "회원정보 수정", required = true) UpdateUserReqDto updateUserReqDto) {
+            @RequestBody @ApiParam(value = "회원정보 수정", required = true) HttpServletRequest request, UpdateUserReqDto updateUserReqDto) {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
+        String token = jwtTokenProvider.resolveToken(request);
+        String userEmail = jwtTokenProvider.getUserEmail(token);
         try {
-            userService.updateUser(updateUserReqDto);
+            User user = userRepository.findByEmail(userEmail);
+            userService.updateUser(user, updateUserReqDto);
             httpStatus = HttpStatus.OK;
             result.put("status", "SUCCESS");
         } catch (Exception e) {

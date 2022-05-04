@@ -30,6 +30,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
@@ -43,7 +44,6 @@ public class UserServiceImpl implements UserService{
     @Value("${profileImg.path}")
     private String uploadFolder;
 
-    @Transactional
     @Override
     public User signup(SignupUserReqDto signupUserReqDto) {
         UserInfo userInfo = userInfoRepository.findByUserId(signupUserReqDto.getUserId());
@@ -80,9 +80,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    @Transactional
-    public void updateUser(UpdateUserReqDto updateUserReqDto) {
-        User user = userRepository.findByEmail(updateUserReqDto.getEmail());
+    public void updateUser(User user, UpdateUserReqDto updateUserReqDto) {
         user.update(updateUserReqDto);
     }
 

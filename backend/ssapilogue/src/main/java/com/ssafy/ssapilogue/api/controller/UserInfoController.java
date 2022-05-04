@@ -36,74 +36,13 @@ public class UserInfoController {
 
     @GetMapping
     @ApiOperation(value = "회원정보 저장", notes = "회원 정보 전체를 DB에 저장한다.")
-    public List<UserInfo> getUserInfo() throws ParseException {
+    public ResponseEntity<Map<String, Object>> getUserInfo() throws ParseException {
+        Map<String, Object> result = new HashMap<>();
 
-        List<String> userIdList = new ArrayList<>();
-        for (int i = 1; i < 5; i++) {
+        userInfoService.getUserInfo();
+        result.put("status", "SUCCESS");
 
-            URI uri = UriComponentsBuilder
-                    .fromUriString("https://meeting.ssafy.com")
-                    .path("/api/v4/channels/tu7uoyka9jfx3cthbo9uscospo/members")
-                    .queryParam("per_page", 200)
-                    .queryParam("page", i)
-                    .encode()
-                    .build()
-                    .toUri();
-
-            RestTemplate restTemplate = new RestTemplate();
-
-            // 토큰 새로 발급받아서 수정하기
-            RequestEntity<Void> req = RequestEntity
-                    .get(uri)
-                    .header("authorization", "Bearer zs1hreyx3jdzpdesfeksz4ezzw")
-                    .build();
-
-            ResponseEntity<String> result = restTemplate.exchange(req, String.class);
-
-            JSONParser parser = new JSONParser();
-            Object obj = parser.parse(result.getBody());
-            JSONArray jsonArray = (JSONArray) obj;
-
-            for (int j = 0; j < jsonArray.size(); j++) {
-                JSONObject jsonObject = (JSONObject) jsonArray.get(j);
-                userIdList.add(jsonObject.get("user_id").toString());
-            }
-        }
-
-        for (int k = 0; k < userIdList.size(); k++) {
-            URI uri = UriComponentsBuilder
-                    .fromUriString("https://meeting.ssafy.com")
-                    .path("/api/v4/users/")
-                    .path(userIdList.get(k))
-                    .encode()
-                    .build()
-                    .toUri();
-
-            RestTemplate userRestTemplate = new RestTemplate();
-
-            // 토큰 새로 발급받아서 수정하기
-            RequestEntity<Void> userReq = RequestEntity
-                    .get(uri)
-                    .header("authorization", "Bearer 7ma7ftyh9pb6bm5hqpo6wey4co")
-                    .build();
-
-            ResponseEntity<String> result = userRestTemplate.exchange(userReq, String.class);
-
-            JSONParser jsonParser = new JSONParser();
-            Object object = jsonParser.parse(result.getBody());
-            JSONObject jsonObject = (JSONObject) object;
-
-            UserInfo userInfo = UserInfo.builder()
-                            .userId(jsonObject.get("id").toString())
-                            .nickname(jsonObject.get("nickname").toString())
-                            .username(jsonObject.get("username").toString())
-                            .build();
-
-            if (userInfoRepository.findByUserId(userInfo.getUserId()) == null) {
-                userInfoRepository.save(userInfo);
-            }
-        }
-        return userInfoRepository.findAll();
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 
     @PostMapping()
