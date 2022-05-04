@@ -64,8 +64,10 @@ public class SurveyServiceImpl implements SurveyService {
                 List<SurveyOption> surveyOptions = new ArrayList<>();
 
                 for (String content : createSurveyReqDto.getSurveyOptions()) {
-                    SurveyOption surveyOption = surveyOptionService.createSurveyOption(saveSurvey.getId(), content);
-                    surveyOptions.add(surveyOption);
+                    if (content != null) {
+                        SurveyOption surveyOption = surveyOptionService.createSurveyOption(saveSurvey.getId(), content);
+                        surveyOptions.add(surveyOption);
+                    }
                 }
 
                 saveSurvey.addSurveyOptions(surveyOptions);
