@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
-import { useLocation } from "react-router-dom";
-=======
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import API from "../../api/API";
 import store from "../../utils/store";
->>>>>>> 88ec8a4816571a59678c6f400897fa2d51f51596
 import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
@@ -16,10 +12,8 @@ const PostSurvey = () => {
   const [option, setOption] = useState('주관식');
   const [inputs, setInputs] = useState([])
   const locations = useLocation().state;
+  const navigate = useNavigate();
   const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
-
-
-  const { title } = useLocation();
 
   const whichSurvey = (e) => {
     setOption(e.target.value);
@@ -43,20 +37,16 @@ const PostSurvey = () => {
   }
 
   const addSubjective = () => {
-    setInputs([...inputs, { title:'', type: "주관식" }])
+    setInputs([...inputs, { title:'', surveyType: "주관식" }])
   }
 
   const addMultipleChoice = () => {
-    setInputs([...inputs, { title: '', type: "객관식", surveyOptions: [], count: 0 }])
+    setInputs([...inputs, { title: '', surveyType: "객관식", surveyOptions: [], count: 0 }])
   }
 
   const addChoice = (e, idx) => {
     const list = [...inputs]
-<<<<<<< HEAD
-    list[idx]["count"] += 1;
-=======
     list[idx]["count"] += 1; 
->>>>>>> 88ec8a4816571a59678c6f400897fa2d51f51596
     const count = list[idx]["count"];
     list[idx].surveyOptions[count] = '';
     let ask = document.createElement("input");
@@ -99,31 +89,23 @@ const PostSurvey = () => {
   const submit = async () => {
     try {
       store.getToken();
-      console.log("---before send---")
-      console.log(title)
-      console.log(intro)
-      console.log(various)
-      console.log(phashbox)
-      console.log(hashbox)
-      console.log(bepo)
-      console.log(repo)
-      console.log(thumbnail)
-      console.log(readmeCheck)
-      console.log(markdown)
       const projectResult = await API.post("/api/project",{
         title: title,
         introudce: intro,
         category: various,
-        memeber: phashbox,
+        member: phashbox,
         techStack: hashbox,
         depolyAddress: bepo,
         gitAddress: repo,
         thumbnail: thumbnail,
-        readmeCheck: 1,
+        readmeCheck: readmeCheck,
         readme: markdown,
       })
-      console.log(projectResult);
-      // const surveyResult = await API.post(`/api/project/${projectResult.data.}`) 
+      const projectId = projectResult.data.projectId;
+      await API.post(`/api/survey/${projectId}`, {
+        createSurveyReqDtos: inputs
+      }) 
+      navigate(`/project/${projectId}`)
     } catch (e) {
       throw e;
     }
@@ -145,7 +127,7 @@ const PostSurvey = () => {
           />
           <img src={trash} onClick={e => deleteSurvey(e, idx)} alt="trash" />
 
-          {input.type === "주관식" ?
+          {input.surveyType === "주관식" ?
             <></> 
             : 
             <>
@@ -174,12 +156,8 @@ const PostSurvey = () => {
       <button className={option === "주관식" ? "btn-on" : null} onClick={whichSurvey} value="주관식">주관식</button>
       <button className={option === "객관식" ? "btn-on" : null} onClick={whichSurvey} value="객관식">객관식</button>
 
-<<<<<<< HEAD
-      <button onClick={submitSurvey}>완료</button>
-=======
       <button onClick={submit}>등록</button>
       <button>취소</button>
->>>>>>> 88ec8a4816571a59678c6f400897fa2d51f51596
 
     </div>
   )
