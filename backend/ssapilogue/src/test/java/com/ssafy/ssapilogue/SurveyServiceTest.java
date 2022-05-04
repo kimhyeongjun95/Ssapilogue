@@ -1,6 +1,7 @@
 package com.ssafy.ssapilogue;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateSurveyReqDto;
+import com.ssafy.ssapilogue.api.dto.response.FindDefaultSurveyResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.api.service.SurveyService;
 import com.ssafy.ssapilogue.core.domain.Category;
@@ -57,13 +58,7 @@ public class SurveyServiceTest {
                 .build();
         surveyRepository.save(survey2);
 
-        System.out.println(savedProject.getId());
         List<FindSurveyResDto> result = surveyService.findSurveys(savedProject.getId());
-
-        for (FindSurveyResDto findSurveyResDto : result) {
-            System.out.println(findSurveyResDto.getTitle());
-        }
-
         assertThat(result.size()).isEqualTo(2);
     }
 
@@ -107,6 +102,12 @@ public class SurveyServiceTest {
 
         Optional<Survey> findSurvey = surveyRepository.findById(savedSurvey.getId());
         assertThat(findSurvey.isPresent()).isEqualTo(false);
+    }
+
+    @Test
+    public void defaultSurveyTest() {
+        List<FindDefaultSurveyResDto> result = surveyService.defaultSurvey(savedProject.getTitle());
+        assertThat(result.size()).isEqualTo(5);
     }
 
     private void createProject() {
