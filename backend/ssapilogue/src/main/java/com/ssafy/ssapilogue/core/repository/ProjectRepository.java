@@ -12,5 +12,5 @@ public interface ProjectRepository extends JpaRepository<Project, Long>, Project
 
     List<Project> findAllByOrderByIdDesc();
     List<Project> findByCategoryOrderByIdDesc(Category category);
-    List<Project> findByTitleContainingOrderByIdDesc(@Param("keyword") String keyword);
+    List<Project> findBySplitTitleContainingOrderByIdDesc(@Param("keyword") String keyword);
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel("FindBugReportDto")
-public class FindBugReportDto {
+public class FindBugReportResDto {
 
     @ApiModelProperty(value = "버그 리포트 아이디", example = "1")
     private Long bugId;
@@ -34,7 +34,7 @@ public class FindBugReportDto {
     @ApiModelProperty(value = "버그 리포트 작성일", example = "2022-02-01 23:59")
     private String createAt;
 
-    public FindBugReportDto(BugReport bugReport, String createAt) {
+    public FindBugReportResDto(BugReport bugReport, String createAt) {
         bugId = bugReport.getId();
         nickname = bugReport.getUser().getNickname();
         profileImage = bugReport.getUser().getImage();

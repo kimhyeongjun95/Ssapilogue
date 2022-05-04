@@ -40,7 +40,7 @@ public class ProjectQueryRepositoryImpl implements ProjectQueryRepository{
 
     @Override
     public List<Project> findByCategoryOrderByRandom(String category, Long projectId) {
-        Query query = em.createNativeQuery("select p.project_id, p.title, p.introduce, p.category, p.deploy_address, p.git_address, p.thumbnail, p.readme, p.hits, p.created_at, p.updated_at, p.user_id from project as p "
+        Query query = em.createNativeQuery("select p.project_id, p.title, p.split_title, p.introduce, p.category, p.deploy_address, p.git_address, p.thumbnail, p.readme, p.hits, p.created_at, p.updated_at, p.user_id from project as p "
                 + "where p.category = ? order by rand() limit 4", Project.class)
                 .setParameter(1, category);
 
