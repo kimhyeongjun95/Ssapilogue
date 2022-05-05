@@ -36,7 +36,7 @@ public class BugReport {
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
-    private Boolean is_solved;
+    private Boolean isSolved;
 
     @CreatedDate
     @Column(updatable = false)
@@ -46,12 +46,12 @@ public class BugReport {
     private LocalDateTime updatedAt;
 
     @Builder
-    public BugReport(Project project, User user, String title, String content, Boolean is_solved) {
+    public BugReport(Project project, User user, String title, String content, Boolean isSolved) {
         this.project = project;
         this.user = user;
         this.title = title;
         this.content = content;
-        this.is_solved = is_solved;
+        this.isSolved = isSolved;
     }
 
     public void update(CreateBugReportReqDto createBugReportReqDto) {

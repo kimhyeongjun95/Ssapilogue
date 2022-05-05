@@ -4,6 +4,7 @@ import com.ssafy.ssapilogue.api.dto.request.CreateBugReportReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindBugReportCommentResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindBugReportDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindBugReportResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindBugReportsResDto;
 import com.ssafy.ssapilogue.core.domain.BugReport;
 import com.ssafy.ssapilogue.core.domain.BugReportComment;
 import com.ssafy.ssapilogue.core.domain.Project;
@@ -34,7 +35,7 @@ public class BugReportServiceImpl implements BugReportService{
     private final BugReportCommentRepository bugReportCommentRepository;
 
     @Override
-    public List<FindBugReportResDto> findBugReports(Long projectId) {
+    public FindBugReportsResDto findBugReports(Long projectId) {
         List<FindBugReportResDto> findBugReportResDtos = new ArrayList<>();
 
         List<BugReport> bugReports = bugReportRepository.findAllByProjectIdOrderById(projectId);
@@ -45,7 +46,10 @@ public class BugReportServiceImpl implements BugReportService{
             findBugReportResDtos.add(new FindBugReportResDto(bugReport, createAt));
         }
 
-        return findBugReportResDtos;
+        Integer solvedCount = bugReportRepository.countAllByProjectIdAndIsSolvedTrue(projectId);
+        Integer unsolvedCount = bugReportRepository.countAllByProjectIdAndIsSolvedFalse(projectId);
+
+        return new FindBugReportsResDto(bugReports.size(), solvedCount, unsolvedCount, findBugReportResDtos);
     }
 
     @Override
@@ -60,7 +64,7 @@ public class BugReportServiceImpl implements BugReportService{
                 .user(user)
                 .title(createBugReportReqDto.getTitle())
                 .content(createBugReportReqDto.getContent())
-                .is_solved(false)
+                .isSolved(false)
                 .build();
 
         BugReport saveBugReport = bugReportRepository.save(bugReport);
