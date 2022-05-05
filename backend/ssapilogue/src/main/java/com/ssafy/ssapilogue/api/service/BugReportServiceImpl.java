@@ -105,4 +105,23 @@ public class BugReportServiceImpl implements BugReportService{
     public void deleteBugReport(Long bugId) {
         bugReportRepository.deleteById(bugId);
     }
+
+    @Override
+    public Boolean solvedBugReport(Long bugId) {
+        BugReport bugReport = bugReportRepository.findById(bugId)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 버그 리포트입니다."));
+
+        Boolean now = bugReport.getIsSolved();
+        Boolean update = true;
+
+        if (now == true) {
+            bugReport.updateSolved(false);
+            update = false;
+        } else {
+            bugReport.updateSolved(true);
+            update = true;
+        }
+
+        return update;
+    }
 }

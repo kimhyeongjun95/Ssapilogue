@@ -10,4 +10,5 @@ public interface BugReportService {
     FindBugReportDetailResDto findBugReportDetail(Long bugId);
     void updateBugReport(Long bugId, CreateBugReportReqDto createBugReportReqDto);
     void deleteBugReport(Long bugId);
+    Boolean solvedBugReport(Long bugId);
 }

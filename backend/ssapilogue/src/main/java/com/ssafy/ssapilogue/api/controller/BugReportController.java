@@ -95,4 +95,17 @@ public class BugReportController {
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
+
+    @PostMapping("solved/{bugId}")
+    @ApiOperation(value = "버그 리포트 해결/미해결 변경", notes = "버그 리포트의 해결 상태를 변경한다.")
+    public ResponseEntity<Map<String, Object>> solvedBugReport(
+            @PathVariable @ApiParam(value = "버그 리포트 id", required = true, example = "1") Long bugId) {
+        Map<String, Object> result = new HashMap<>();
+
+        Boolean isSolved = bugReportService.solvedBugReport(bugId);
+        result.put("isSolved", isSolved);
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.CREATED);
+    }
 }

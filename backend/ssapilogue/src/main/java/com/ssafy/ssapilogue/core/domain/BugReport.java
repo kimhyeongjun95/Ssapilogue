@@ -58,4 +58,8 @@ public class BugReport {
         this.title = createBugReportReqDto.getTitle();
         this.content = createBugReportReqDto.getContent();
     }
+
+    public void updateSolved(Boolean update) {
+        this.isSolved = update;
+    }
 }
