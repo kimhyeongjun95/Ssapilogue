@@ -105,7 +105,11 @@ const DetailPage = () => {
         <Link 
           to={`/project/${id}/report/`}
         >
+<<<<<<< HEAD
+          <button>리뷰 / 버그 리포트</button>
+=======
           <button>버그 리포트</button>
+>>>>>>> 440316e2aa5174170f82d68c99a8f22db8193ff8
         </Link>
       </div>
 
