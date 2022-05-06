@@ -5,6 +5,7 @@ import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.domain.SurveyType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,12 +29,13 @@ public class FindSurveyResDto {
     private List<FindSurveyOptionResDto> surveyOptions;
 
     @ApiModelProperty(value = "Front 사용 Column")
-    private String answer = "";
+    private String answer;
 
-    public FindSurveyResDto(Survey survey, List<FindSurveyOptionResDto> surveyOptions) {
+    public FindSurveyResDto(Survey survey, List<FindSurveyOptionResDto> surveyOptions, String answer) {
         surveyId = survey.getId();
         title = survey.getTitle();
         surveyType = survey.getSurveyType();
         this.surveyOptions = surveyOptions;
+        this.answer = answer;
     }
 }
