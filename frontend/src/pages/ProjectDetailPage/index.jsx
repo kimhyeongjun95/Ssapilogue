@@ -103,9 +103,9 @@ const DetailPage = () => {
           Demo Site
         </a>
         <Link 
-          to={`/project/${id}/report/post`}
+          to={`/project/${id}/report/`}
         >
-          <button>리뷰 / 버그 작성</button>
+          <button>버그 리포트</button>
         </Link>
       </div>
 
