@@ -1,6 +1,8 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateBugReportCommentReqDto;
+import com.ssafy.ssapilogue.api.exception.CustomException;
+import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.core.domain.BugReport;
 import com.ssafy.ssapilogue.core.domain.BugReportComment;
 import com.ssafy.ssapilogue.core.domain.User;
@@ -25,7 +27,7 @@ public class BugReportCommentServiceImpl implements BugReportCommentService{
     @Override
     public Long createBugReportComment(Long bugId, String userEmail, CreateBugReportCommentReqDto createBugReportCommentReqDto) {
         BugReport bugReport = bugReportRepository.findById(bugId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 버그 리포트입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.BUGREPORT_NOT_FOUND));
 
         User user = userRepository.findByEmail(userEmail);
 
