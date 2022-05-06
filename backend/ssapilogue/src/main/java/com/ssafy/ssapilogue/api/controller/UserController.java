@@ -7,12 +7,15 @@ import com.ssafy.ssapilogue.api.dto.request.UpdateUserReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindUserResDto;
 import com.ssafy.ssapilogue.api.dto.response.LoginUserResDto;
 import com.ssafy.ssapilogue.api.dto.response.SignupUserResDto;
+import com.ssafy.ssapilogue.api.exception.CustomException;
+import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
 import com.ssafy.ssapilogue.api.service.UserService;
 import com.ssafy.ssapilogue.api.util.MediaUtils;
 import com.ssafy.ssapilogue.core.domain.User;
 import com.ssafy.ssapilogue.core.repository.UserInfoRepository;
 import com.ssafy.ssapilogue.core.repository.UserRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -55,65 +58,45 @@ public class UserController {
             @RequestBody @ApiParam(value = "회원가입 유저 정보", required = true) SignupUserReqDto signupUserReqDto) throws Exception {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
-        if (userRepository.findByUserId(signupUserReqDto.getUserId()) != null) {
-            httpStatus = HttpStatus.CONFLICT;
-            result.put("message", "이미 존재하는 회원입니다.");
-            return new ResponseEntity<Map<String, Object>>(result, httpStatus);
-        }
-        try {
-            User user = userService.signup(signupUserReqDto);
-            String refreshToken = jwtTokenProvider.createRefreshToken(signupUserReqDto.getEmail());
-            result.put("refresh-token", refreshToken);
-            user.changeRefreshToken(refreshToken);
-            userRepository.save(user);
-            SignupUserResDto signupUserResDto = new SignupUserResDto(user);
-            result.put("userinfo", signupUserResDto);
-            httpStatus = HttpStatus.OK;
-            result.put("message", "success");
-            System.out.println("success");
-            String token = jwtTokenProvider.createToken(signupUserResDto.getEmail(), signupUserResDto.getUserIdentity());
-            result.put("token", token);
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            result.put("message", "error");
-            System.out.println("error");
-        }
+
+        User user = userService.signup(signupUserReqDto);
+
+        httpStatus = HttpStatus.OK;
+        result.put("message", "success");
+
+        SignupUserResDto signupUserResDto = new SignupUserResDto(user);
+        result.put("userinfo", signupUserResDto);
+
+        String token = jwtTokenProvider.createToken(signupUserResDto.getEmail(), signupUserResDto.getUserIdentity());
+        result.put("token", token);
+
+        String refreshToken = jwtTokenProvider.createRefreshToken(signupUserReqDto.getEmail());
+        result.put("refresh-token", refreshToken);
+        user.changeRefreshToken(refreshToken);
+        userRepository.save(user);
+
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
     @PostMapping("/login")
     @ApiOperation(value = "로그인", notes = "로그인을 한다.")
     public ResponseEntity<Map<String, Object>> login(
-            @RequestBody @ApiParam(value = "로그인 유저 정보", required = true) LoginUserReqDto loginUserReqDto) {
+            @RequestBody @ApiParam(value = "로그인 유저 정보", required = true) LoginUserReqDto loginUserReqDto) throws Exception {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
-        if (userInfoRepository.findByUserId(loginUserReqDto.getUserId()) == null) {
-            httpStatus = HttpStatus.NOT_ACCEPTABLE;
-            result.put("message", "ssapilogue를 이용할 수 없습니다.");
-            return new ResponseEntity<Map<String, Object>>(result, httpStatus);
-        }
-        try {
-            User loginUser = userService.login(loginUserReqDto);
-            httpStatus = HttpStatus.OK;
-            result.put("status", "SUCCESS");
-            String token = jwtTokenProvider.createToken(loginUser.getEmail(), loginUser.getUserIdentity());
-            result.put("token", token);
-            String refreshToken = jwtTokenProvider.createRefreshToken(loginUserReqDto.getEmail());
-            result.put("refresh-token", refreshToken);
-            loginUser.changeRefreshToken(refreshToken);
-            userRepository.save(loginUser);
-        } catch (NullPointerException e) {
-            httpStatus = HttpStatus.OK;
-            result.put("status", "NO USER");
-        } catch (RuntimeException e) {
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            result.put("status", "SEVER ERROR");
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        User loginUser = userService.login(loginUserReqDto);
+
+        httpStatus = HttpStatus.OK;
+        result.put("status", "SUCCESS");
+
+        String token = jwtTokenProvider.createToken(loginUser.getEmail(), loginUser.getUserIdentity());
+        result.put("token", token);
+
+        String refreshToken = jwtTokenProvider.createRefreshToken(loginUserReqDto.getEmail());
+        result.put("refresh-token", refreshToken);
+        loginUser.changeRefreshToken(refreshToken);
+        userRepository.save(loginUser);
+
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
@@ -121,14 +104,21 @@ public class UserController {
 
     @PutMapping
     @ApiOperation(value = "회원정보 수정", notes = "회원정보를 수정한다.")
-    public ResponseEntity<Map<String, Object>> updateUser(
-            @RequestBody @ApiParam(value = "회원정보 수정", required = true) HttpServletRequest request, UpdateUserReqDto updateUserReqDto) {
+    public ResponseEntity<Map<String, Object>> updateUser(HttpServletRequest request,
+            @RequestBody @ApiParam(value = "회원정보 수정", required = true) UpdateUserReqDto updateUserReqDto) {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
+
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
+
         try {
             User user = userRepository.findByEmail(userEmail);
+            if (user == null) throw new CustomException(ErrorCode.NO_USER);
+
             userService.updateUser(user, updateUserReqDto);
             httpStatus = HttpStatus.OK;
             result.put("status", "SUCCESS");
@@ -145,8 +135,13 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> deleteUser(HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
+
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
+
         try {
             userService.deleteUser(userEmail);
             httpStatus = HttpStatus.OK;
@@ -164,12 +159,18 @@ public class UserController {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
         FindUserResDto findUser = null;
-        String token = jwtTokenProvider.resolveToken(request);
-        String userEmail = jwtTokenProvider.getUserEmail(token);
         try {
+            String token = jwtTokenProvider.resolveToken(request);
+            if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
+            String userEmail = jwtTokenProvider.getUserEmail(token);
+            if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
+
             findUser = userService.findUserProfile(userEmail);
             httpStatus = HttpStatus.OK;
             result.put("status", "SUCCESS");
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
         } catch (Exception e) {
             e.printStackTrace();
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -187,7 +188,10 @@ public class UserController {
         HttpStatus httpStatus = null;
 
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
         try {
             String imageUrl = userService.updateImage(userEmail, file);
@@ -204,6 +208,8 @@ public class UserController {
     @GetMapping("/refreshToken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
+
+        if (refreshToken == null) throw new CustomException(ErrorCode.NO_REFRESH_TOKEN);
         String newToken = userService.issueNewToken(refreshToken);
         response.addHeader(JwtProperties.HEADER_STRING, newToken);
     }
