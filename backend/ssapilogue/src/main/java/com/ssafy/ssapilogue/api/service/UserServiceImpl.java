@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService{
 
     private final UserInfoRepository userInfoRepository;
 
+    private final UserInfoService userInfoService;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     private static PasswordEncoder passwordEncoder;
@@ -48,12 +50,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User signup(SignupUserReqDto signupUserReqDto) {
-        if (userRepository.findByUserId(signupUserReqDto.getUserId()) != null) {
-            throw new CustomException(ErrorCode.ALREADY_EXIST_USER);
-        }
+        String encodeMmId = userInfoService.encrypt(signupUserReqDto.getUserId().getBytes());
 
-        UserInfo userInfo = userInfoRepository.findByUserId(signupUserReqDto.getUserId());
-        if (userInfo == null) throw new CustomException(ErrorCode.INVALID_USER);
+        UserInfo userInfo = userInfoRepository.findByUserId(encodeMmId);
+        if (userInfo == null) {
+            throw new CustomException(ErrorCode.INVALID_USER);
+        }
 
         String password = signupUserReqDto.getPassword();
         if (password == null) throw new CustomException(ErrorCode.NULL_PASSWORD);
@@ -64,7 +66,7 @@ public class UserServiceImpl implements UserService{
         User user = User.builder()
                 .email(signupUserReqDto.getEmail())
                 .password(encPass)
-                .userId(signupUserReqDto.getUserId())
+                .userId(encodeMmId)
                 .nickname(userInfo.getNickname())
                 .username(userInfo.getUsername())
                 .github(signupUserReqDto.getGithub())
@@ -79,7 +81,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User login(LoginUserReqDto loginUserReqDto) {
-        if (userInfoRepository.findByUserId(loginUserReqDto.getUserId()) == null) {
+        String encodeMmId = userInfoService.encrypt(loginUserReqDto.getUserId().getBytes());
+        if (userInfoRepository.findByUserId(encodeMmId) == null) {
             throw new CustomException(ErrorCode.INVALID_USER);
         }
 

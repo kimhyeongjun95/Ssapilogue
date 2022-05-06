@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,20 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import java.net.URI;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Base64.Encoder;
+import java.util.Base64.Decoder;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -38,6 +50,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final static String[] CHO = {"ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ", "ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"};
     private final static String[] JUNG = {"ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ", "ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"};
     private final static String[] JONG = {"","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ", "ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"};
+
+    @Value("${encrypt.keyString}")
+    private String keyString;
 
     // 자모음 분리
     @Override
@@ -104,7 +119,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public void getUserInfo() throws ParseException {
         List<String> userIdList = new ArrayList<>();
-        for (int i = 1; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
 
             URI uri = UriComponentsBuilder
                     .fromUriString("https://meeting.ssafy.com")
@@ -120,7 +135,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             // 토큰 새로 발급받아서 수정하기
             RequestEntity<Void> req = RequestEntity
                     .get(uri)
-                    .header("authorization", "Bearer zs1hreyx3jdzpdesfeksz4ezzw")
+                    .header("authorization", "Bearer wzn76seko3fq789ajhfgrhkkhe")
                     .build();
 
             ResponseEntity<String> result = restTemplate.exchange(req, String.class);
@@ -149,7 +164,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             // 토큰 새로 발급받아서 수정하기
             RequestEntity<Void> userReq = RequestEntity
                     .get(uri)
-                    .header("authorization", "Bearer 7ma7ftyh9pb6bm5hqpo6wey4co")
+                    .header("authorization", "Bearer wzn76seko3fq789ajhfgrhkkhe")
                     .build();
 
             ResponseEntity<String> result = userRestTemplate.exchange(userReq, String.class);
@@ -158,16 +173,85 @@ public class UserInfoServiceImpl implements UserInfoService {
             Object object = jsonParser.parse(result.getBody());
             JSONObject jsonObject = (JSONObject) object;
 
+            String encodeMmId = encrypt(jsonObject.get("id").toString().getBytes());
             UserInfo userInfo = UserInfo.builder()
-                    .userId(jsonObject.get("id").toString())
+                    .userId(encodeMmId)
                     .nickname(jsonObject.get("nickname").toString())
                     .username(jsonObject.get("username").toString())
                     .build();
 
-            if (userInfoRepository.findByUserId(userInfo.getUserId()) == null) {
+            if (userInfoRepository.findByUserId(encodeMmId) == null) {
                 userInfoRepository.save(userInfo);
             }
         }
+    }
+
+    @Override
+    public String encrypt(byte[] mmId) {
+        byte[] key = getKey();
+        SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+
+        Cipher cipher = null;
+        try {
+            cipher = Cipher.getInstance("AES");
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("nosuchalgorithmexception");
+            return null;
+        } catch (NoSuchPaddingException e) {
+            System.out.println("nosuchpaddingexception");
+            return null;
+        }
+
+        try {
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+        } catch (InvalidKeyException e) {
+            System.out.println("invalidkeyexception");
+            e.printStackTrace();
+            return null;
+        }
+
+        try {
+            Encoder encoder = Base64.getEncoder();
+            return new String(encoder.encode(cipher.doFinal(mmId)));
+        } catch (IllegalBlockSizeException e) {
+            System.out.println("illegalblocksizeexception");
+        } catch (BadPaddingException e) {
+            System.out.println("badpaddingexception");
+        }
+        return null;
+    }
+
+    @Override
+    public String decrypt(byte[] mmId) {
+        byte[] key = getKey();
+        SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+
+        Cipher cipher = null;
+        try {
+            cipher = Cipher.getInstance("AES");
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        } catch (NoSuchPaddingException e) {
+            return null;
+        }
+
+        try {
+            cipher.init(Cipher.DECRYPT_MODE, keySpec);
+        } catch (InvalidKeyException e) {
+            return null;
+        }
+
+        try {
+            Decoder decoder = Base64.getDecoder();
+            return new String(cipher.doFinal(decoder.decode(mmId)));
+        } catch (IllegalBlockSizeException e) {
+        } catch (BadPaddingException e) {
+        }
+        return null;
+    }
+
+    private byte[] getKey() {
+        return keyString.getBytes();
     }
 
 }
