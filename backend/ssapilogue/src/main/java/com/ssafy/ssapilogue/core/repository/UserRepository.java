@@ -2,6 +2,7 @@ package com.ssafy.ssapilogue.core.repository;
 
 import com.ssafy.ssapilogue.core.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 

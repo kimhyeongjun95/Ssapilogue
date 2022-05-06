@@ -1,0 +1,21 @@
+.main-div {
+  display:flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+}
+.editor-div {
+  margin-top : 3%;
+  width: 40%;
+}
+.submit-button {
+  margin-top: 10%;
+}
+
+.form-style {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

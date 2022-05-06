@@ -27,6 +27,8 @@ public class Project {
 
     private String title;
 
+    private String splitTitle;
+
     private String introduce;
 
     @Enumerated(EnumType.STRING)
@@ -38,6 +40,7 @@ public class Project {
 
     private String thumbnail;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String readme;
 
     private int hits;
@@ -72,8 +75,9 @@ public class Project {
     private User user;
 
     @Builder
-    private Project(String title, String introduce, Category category, String deployAddress, String gitAddress, String thumbnail, String readme, User user) {
+    private Project(String title, String splitTitle, String introduce, Category category, String deployAddress, String gitAddress, String thumbnail, String readme, User user) {
         this.title = title;
+        this.splitTitle = splitTitle;
         this.introduce = introduce;
         this.category = category;
         this.deployAddress = deployAddress;
@@ -88,14 +92,20 @@ public class Project {
         this.thumbnail = image;
     }
 
+    // 프로젝트 리드미 수정을 위한 편의 함수
+    public void updateReadme(String readmeContent) {
+        this.readme = readmeContent;
+    }
+
     // 조회수 증가를 위한 편의 함수
     public void increaseHits() {
         this.hits++;
     }
 
     // 프로젝트 수정을 위한 편의 함수
-    public void update(CreateProjectReqDto createProjectReqDto) {
+    public void update(CreateProjectReqDto createProjectReqDto, String splitTitle) {
         this.title = createProjectReqDto.getTitle();
+        this.splitTitle = splitTitle;
         this.introduce = createProjectReqDto.getIntroduce();
         this.category = Category.valueOf(createProjectReqDto.getCategory());
         this.deployAddress = createProjectReqDto.getDeployAddress();

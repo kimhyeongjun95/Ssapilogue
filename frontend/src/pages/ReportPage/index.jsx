@@ -1,55 +1,57 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import Undo from "../../assets/undo.png"
 import edit from "../../assets/Edit-alt.png"
 import "./style.scss"
+import { Link, useParams } from "react-router-dom";
+import API from "../../api/API";
+import store from "../../utils/store";
 
 const ReportPage = () => {
+  const [board, setBoard] = useState([0,0,0]);
+  const [bugList,setBugList] = useState([]);
+  const [test, setTest] = useState(0);
+  const id = useParams().projectId;
+  useEffect( () => {
+    async function bugrecall() {
+      const res = await API.get(`/api/bug/${id}`);
+      console.log(res.data)
+      console.log(board)
+      console.log("테스트",test)
+      console.log(res.data.bugList["bugReports"])
+      setTest(res.data.bugList["totalCount"])
+      setBoard([res.data.bugList["totalCount"],res.data.bugList["solvedCount"],res.data.bugList["unsolvedCount"]])
+      setBugList(res.data.bugList['bugReports'])
+      console.log(board)
+    }
+    bugrecall()
+    return
+  },[])
 
-  const response = {
-    "bugList": [
-      {
-        "bugId": 1,
-        "nickname": "하현서[광주_1반_C104]팀장",
-        "profileImage": "https://j6ssafy.c104.com/images/xxxxx",
-        "title": "여기 클릭이 안돼요!!",
-        "content": "형준이가 클릭이 안돼요!!",
-        "is_solved": true,
-        "createAt": "2022-04-28 18:10"
-      },
-      {
-        "bugId": 1,
-        "nickname": "하현서[광주_1반_C104]팀장",
-        "profileImage": "https://j6ssafy.c104.com/images/xxxxx",
-        "title": "여기 클릭이 안돼요!!",
-        "content": "형준이가 클릭이 안돼요!!",
-        "is_solved": false,
-        "createAt": "2022-04-28 18:10"
-      },
-      {
-        "bugId": 1,
-        "nickname": "하현서[광주_1반_C104]팀장",
-        "profileImage": "https://j6ssafy.c104.com/images/xxxxx",
-        "title": "여기 클릭이 안돼요!!",
-        "content": "형준이가 클릭이 안돼요!!",
-        "is_solved": true,
-        "createAt": "2022-04-28 18:10"
-      },{
-        "bugId": 1,
-        "nickname": "하현서[광주_1반_C104]팀장",
-        "profileImage": "https://j6ssafy.c104.com/images/xxxxx",
-        "title": "여기 클릭이 안돼요!!",
-        "content": "형준이가 클릭이 안돼요!!",
-        "is_solved": false,
-        "createAt": "2022-04-28 18:10"
-      } 
-    ],
-    "status": "SUCCESS"
+  const inputClick = (item) => {
+    async function isSolve() {
+      store.getToken()
+      const res = await API.post(`/api/bug/solved/${item}`)
+      console.log(res)
+      let [a1,a2,a3] = board
+      var bgChangeDiv = document.getElementById(`${item}`)
+      if (res.data.isSolved) { 
+        bgChangeDiv.className = "black-item-div"
+        setBoard([a1,a2+1,a3-1])
+      }else{
+        bgChangeDiv.className = "white-item-div"
+        setBoard([a1,a2-1,a3+1])
+      }
+      console.log(board)
+    }
+    isSolve()
+    // let [a1, a2, a3] = board
+    // console.log(a1,a2,a3)
   }
-
-  const bugBox = response["bugList"].map((item) => {
+  const bugBox = bugList.map((item,index) => {
+    console.log(item)
     let bgdiv = "white-item-div"
     let pio = true
-    if (item.is_solved){
+    if (item.isSolved){
       bgdiv = "black-item-div"
       pio = true
       console.log(bgdiv)
@@ -59,16 +61,10 @@ const ReportPage = () => {
       console.log(bgdiv)
     }
     
-    const sico = (e) => {
-      if (e.target.checked === true){
-        e.target.checked = false
-      }else{
-        console.log("폴스")
-      }
-    }
-    return <div className={bgdiv}>
+
+    return <div className={bgdiv} id={item.bugId}>
       <div className="menu-solved">
-        <input type="checkbox" defaultChecked={pio} size="big"></input>
+        <input type="checkbox" defaultChecked={pio} onClick={() => inputClick(item.bugId)} size="big"></input>
       </div>
       <p className="menu-title">{item.title}</p>
       <p className="menu-date">{item.createAt}</p>
@@ -76,6 +72,8 @@ const ReportPage = () => {
      
     </div>
   })
+
+
 
   return (
     <>
@@ -95,20 +93,24 @@ const ReportPage = () => {
       <div className="solve-div">
         <div>
           <p>전체</p>
-          <h2 className="solve-h2">26</h2>
+          <h2 className="solve-h2">{board[0]}</h2>
         </div>
         <div>
           <p>해결</p>
-          <h2 className="solve-h2">18</h2>
+          <h2 className="solve-h2">{board[1]}</h2>
         </div>
         <div>
           <p>미해결</p>
-          <h2 className="solve-h2">8</h2>
+          <h2 className="solve-h2">{board[2]}</h2>
         </div>
       </div>
       <br />
       <div className="wirte-pic-div">
-        <img className="write-pic" src={edit} alt="write" />
+        <Link 
+          to={`/project/${id}/report/post`}
+        >
+          <img className="write-pic" src={edit} alt="write" />
+        </Link>
       </div>
       <div className="report-box-div">
         <div className="report-menu-div">
