@@ -2,9 +2,12 @@ package com.ssafy.ssapilogue.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.ssapilogue.api.dto.request.LoginUserReqDto;
+import com.ssafy.ssapilogue.api.exception.CustomException;
+import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
 import com.ssafy.ssapilogue.core.domain.User;
 import com.ssafy.ssapilogue.core.repository.UserRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -57,8 +60,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
             return authentication;
         } catch (BadCredentialsException e) {
             System.out.println("BadCredentialsException");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
