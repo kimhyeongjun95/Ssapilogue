@@ -1,77 +1,163 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
+import API from "../../api/API";
+import store from "../../utils/store";
 import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
+// import API from '../../assets/API';
 
 const PostSurvey = () => {
 
   const [option, setOption] = useState('주관식');
-  const [surveys, setSurveys] = useState([]); 
+  const [inputs, setInputs] = useState([])
+  const locations = useLocation().state;
+  const navigate = useNavigate();
+  const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
 
   const whichSurvey = (e) => {
     setOption(e.target.value);
   }
 
-  const addSruvey = () => {
+  const addSurvey = () => {
     return option === "주관식" ? addSubjective() : addMultipleChoice();
   }
 
-  const deleteSurvey = (e) => {
-    let question = e.target.closest("div");
-    question.remove();
+  const deleteSurvey = (idx) => {
+    const values = [...inputs];
+    values.splice(idx, 1);
+    setInputs(values);
+  }
+
+  const deleteChoice = (e, idx, optIdx) => {
+    e.target.closest("li").remove();
+    const list = [...inputs]
+    list[idx]["surveyOptions"][optIdx] = '';
+    setInputs(list);
   }
 
   const addSubjective = () => {
-    setSurveys([...surveys,
-      <div data-category-name="sub">
-        <img src={trash} onClick={deleteSurvey} alt="trash" />
-        <input placeholder="질문 제목을 입력해주세요." />
-        <input type="text" placeholder="주관식 답변" />
-        <br />
-      </div>
-    ]);
+    setInputs([...inputs, { title:'', surveyType: "주관식" }])
   }
 
   const addMultipleChoice = () => {
-    setSurveys([...surveys,
-      <div>
-        <img src={trash} onClick={deleteSurvey} alt="trash" />
-        <h3>질문 제목을 입력해주세요.</h3>
-        <li>
-          <button onClick={addChoice}>객관식 추가</button>
-        </li>
-      </div>
-    ])
+    setInputs([...inputs, { title: '', surveyType: "객관식", surveyOptions: [], count: 0 }])
   }
 
-  const addChoice = (e) => {
-    let box = document.createElement('div');
-    let asked = document.createElement('input');
+  const addChoice = (e, idx) => {
+    const list = [...inputs]
+    list[idx]["count"] += 1; 
+    const count = list[idx]["count"];
+    list[idx].surveyOptions[count] = '';
+    let ask = document.createElement("input");
+    ask.value = list[idx].surveyOptions[count];
+    ask.placeholder = "객관식 답변";
+    ask.name = "surveyOptions";
+    ask.addEventListener("keydown", (e) => {
+      choiceHandleInput(e, idx, count);
+    })
     let deleteBtn = document.createElement('img')
-    asked.placeholder = "객관식 답변";
     deleteBtn.src = cross;
     deleteBtn.className = "delete";
     deleteBtn.addEventListener("click", (e) => {
-      deleteSurvey(e);
+      deleteChoice(e, idx, count);
     })
-    box.appendChild(deleteBtn);
-    box.appendChild(asked);
-    e.target.closest("li").append(box);
+    let cover = document.createElement("li");
+    cover.appendChild(ask);
+    cover.append(deleteBtn);
+    e.target.closest("div").appendChild(cover);
+  }
+
+  const tracker = () => {
+    console.log(inputs);
+  }
+
+  const handleInput = (e, idx) => {
+    const { name, value } = e.target;
+    const list = [...inputs];
+    list[idx][name] = value;
+    setInputs(list);
+  }
+
+  const choiceHandleInput = (e, idx, optIdx) => {
+    const { name, value } = e.target;
+    const list = [...inputs];
+    list[idx][name][optIdx] = value;
+    setInputs(list);
+  }
+
+  const submit = async () => {
+    try {
+      store.getToken();
+      const projectResult = await API.post("/api/project",{
+        title: title,
+        introudce: intro,
+        category: various,
+        member: phashbox,
+        techStack: hashbox,
+        depolyAddress: bepo,
+        gitAddress: repo,
+        thumbnail: thumbnail,
+        readmeCheck: readmeCheck,
+        readme: markdown,
+      })
+      const projectId = projectResult.data.projectId;
+      await API.post(`/api/survey/${projectId}`, {
+        createSurveyReqDtos: inputs
+      }) 
+      navigate(`/project/${projectId}`)
+    } catch (e) {
+      throw e;
+    }
   }
 
   return (
     <div className="survey">
 
       <h2>설문조사를 등록해 주세요!</h2>
-      <button>기본 폼 가져오기</button>
+      <button onClick={tracker}>기본 폼 가져오기</button>
 
-      {surveys}
+      {inputs.map((input, idx) => (
+        <div key={idx}>
+          <input 
+            name="title"
+            value={input.title}
+            placeholder="질문 제목을 입력해주세요." 
+            onChange={e => handleInput(e, idx)}
+          />
+          <img src={trash} onClick={e => deleteSurvey(e, idx)} alt="trash" />
+
+          {input.surveyType === "주관식" ?
+            <></> 
+            : 
+            <>
+              <div className="choice-input">
+                <button onClick={e => addChoice(e, idx)}>추가</button>
+
+                <li>
+                  <input
+                    placeholder="객관식 답변" 
+                    name="surveyOptions"
+                    value={input.surveyOptions[0]}
+                    onChange={e => choiceHandleInput(e, idx, 0)}
+                  />
+                </li>
+
+              </div>
+              <img className="delete" src={cross} alt="cross" onClick={deleteSurvey} />
+            </>
+          }
+        </div>
+      ))}
 
       <hr />
-      <button onClick={addSruvey}>더하기 버튼</button>
+      <button onClick={addSurvey}>더하기 버튼</button>
 
       <button className={option === "주관식" ? "btn-on" : null} onClick={whichSurvey} value="주관식">주관식</button>
       <button className={option === "객관식" ? "btn-on" : null} onClick={whichSurvey} value="객관식">객관식</button>
+
+      <button onClick={submit}>등록</button>
+      <button>취소</button>
 
     </div>
   )
