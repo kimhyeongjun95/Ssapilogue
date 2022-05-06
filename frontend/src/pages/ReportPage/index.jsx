@@ -4,6 +4,7 @@ import edit from "../../assets/Edit-alt.png"
 import "./style.scss"
 import { Link, useParams } from "react-router-dom";
 import API from "../../api/API";
+import store from "../../utils/store";
 
 const ReportPage = () => {
   const [board, setBoard] = useState([0,0,0]);
@@ -25,51 +26,32 @@ const ReportPage = () => {
     bugrecall()
     return
   },[])
-  // const response = {
-  //   "bugList": [
-  //     {
-  //       "bugId": 1,
-  //       "nickname": "하현서[광주_1반_C104]팀장",
-  //       "profileImage": "https://j6ssafy.c104.com/images/xxxxx",
-  //       "title": "여기 클릭이 안돼요!!",
-  //       "content": "형준이가 클릭이 안돼요!!",
-  //       "is_solved": true,
-  //       "createAt": "2022-04-28 18:10"
-  //     },
-  //     {
-  //       "bugId": 1,
-  //       "nickname": "하현서[광주_1반_C104]팀장",
-  //       "profileImage": "https://j6ssafy.c104.com/images/xxxxx",
-  //       "title": "여기 클릭이 안돼요!!",
-  //       "content": "형준이가 클릭이 안돼요!!",
-  //       "is_solved": false,
-  //       "createAt": "2022-04-28 18:10"
-  //     },
-  //     {
-  //       "bugId": 1,
-  //       "nickname": "하현서[광주_1반_C104]팀장",
-  //       "profileImage": "https://j6ssafy.c104.com/images/xxxxx",
-  //       "title": "여기 클릭이 안돼요!!",
-  //       "content": "형준이가 클릭이 안돼요!!",
-  //       "is_solved": true,
-  //       "createAt": "2022-04-28 18:10"
-  //     },{
-  //       "bugId": 1,
-  //       "nickname": "하현서[광주_1반_C104]팀장",
-  //       "profileImage": "https://j6ssafy.c104.com/images/xxxxx",
-  //       "title": "여기 클릭이 안돼요!!",
-  //       "content": "형준이가 클릭이 안돼요!!",
-  //       "is_solved": false,
-  //       "createAt": "2022-04-28 18:10"
-  //     } 
-  //   ],
-  //   "status": "SUCCESS"
-  // }
 
-  const bugBox = bugList.map((item) => {
+  const inputClick = (item) => {
+    async function isSolve() {
+      store.getToken()
+      const res = await API.post(`/api/bug/solved/${item}`)
+      console.log(res)
+      let [a1,a2,a3] = board
+      var bgChangeDiv = document.getElementById(`${item}`)
+      if (res.data.isSolved) { 
+        bgChangeDiv.className = "black-item-div"
+        setBoard([a1,a2+1,a3-1])
+      }else{
+        bgChangeDiv.className = "white-item-div"
+        setBoard([a1,a2-1,a3+1])
+      }
+      console.log(board)
+    }
+    isSolve()
+    // let [a1, a2, a3] = board
+    // console.log(a1,a2,a3)
+  }
+  const bugBox = bugList.map((item,index) => {
+    console.log(item)
     let bgdiv = "white-item-div"
     let pio = true
-    if (item.is_solved){
+    if (item.isSolved){
       bgdiv = "black-item-div"
       pio = true
       console.log(bgdiv)
@@ -80,9 +62,9 @@ const ReportPage = () => {
     }
     
 
-    return <div className={bgdiv}>
+    return <div className={bgdiv} id={item.bugId}>
       <div className="menu-solved">
-        <input type="checkbox" defaultChecked={pio} onClick={() => inputclick(item.bugId)} size="big"></input>
+        <input type="checkbox" defaultChecked={pio} onClick={() => inputClick(item.bugId)} size="big"></input>
       </div>
       <p className="menu-title">{item.title}</p>
       <p className="menu-date">{item.createAt}</p>
@@ -90,6 +72,8 @@ const ReportPage = () => {
      
     </div>
   })
+
+
 
   return (
     <>
@@ -109,15 +93,15 @@ const ReportPage = () => {
       <div className="solve-div">
         <div>
           <p>전체</p>
-          <h2 className="solve-h2">26</h2>
+          <h2 className="solve-h2">{board[0]}</h2>
         </div>
         <div>
           <p>해결</p>
-          <h2 className="solve-h2">18</h2>
+          <h2 className="solve-h2">{board[1]}</h2>
         </div>
         <div>
           <p>미해결</p>
-          <h2 className="solve-h2">8</h2>
+          <h2 className="solve-h2">{board[2]}</h2>
         </div>
       </div>
       <br />
@@ -137,8 +121,6 @@ const ReportPage = () => {
         </div>
         <div>
           {bugBox}
-          호호
-          {board}
         </div>
       </div>
     </>
