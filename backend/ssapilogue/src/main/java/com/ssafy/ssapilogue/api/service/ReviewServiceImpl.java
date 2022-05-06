@@ -4,6 +4,7 @@ import com.ssafy.ssapilogue.api.dto.request.CreateReviewReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindObjectiveReviewResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindReviewResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSubjectiveReviewResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.core.domain.*;
 import com.ssafy.ssapilogue.core.repository.ReviewRepository;
 import com.ssafy.ssapilogue.core.repository.SurveyOptionRepository;
@@ -69,11 +70,11 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public List<String> createReview(String userEmail, List<CreateReviewReqDto> createReviewReqDtos) {
+    public List<String> createReview(String userEmail, List<FindSurveyResDto> reviews) {
         List<String> reviewIds = new ArrayList<>();
 
-        for (CreateReviewReqDto createReviewReqDto : createReviewReqDtos) {
-            Survey survey = surveyRepository.findById(createReviewReqDto.getSurveyId())
+        for (FindSurveyResDto findSurveyResDto : reviews) {
+            Survey survey = surveyRepository.findById(findSurveyResDto.getSurveyId())
                     .orElseThrow(() -> new IllegalStateException("존재하지 않는 설문조사입니다."));
 
             Review review = Review.builder()
@@ -81,12 +82,12 @@ public class ReviewServiceImpl implements ReviewService{
                     .survey(survey)
                     .build();
 
-            if (createReviewReqDto.getSurveyOptionId() != null) {
-                SurveyOption surveyOption = surveyOptionRepository.findById(createReviewReqDto.getSurveyOptionId())
+            if (survey.getSurveyType() == SurveyType.객관식) {
+                SurveyOption surveyOption = surveyOptionRepository.findById(findSurveyResDto.getAnswer())
                                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 옵션입니다."));
                 review.saveSurveyOption(surveyOption);
-            } else if (createReviewReqDto.getContent() != null) {
-                review.saveContent(createReviewReqDto.getContent());
+            } else if (survey.getSurveyType() == SurveyType.주관식) {
+                review.saveContent(findSurveyResDto.getAnswer());
             }
 
             Review saveReview = reviewRepository.save(review);
