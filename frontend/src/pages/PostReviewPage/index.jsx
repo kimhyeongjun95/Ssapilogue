@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from "react";
-import API from "../../api/API";
 import { useParams } from "react-router-dom";
+import API from "../../api/API";
+import store from "../../utils/store";
 
 const PostReviewPage = () => {
   const id = useParams().projectId;
   const [reviews, setReviews] = useState([]);
-  const [response, setResponse] = useState([]);
   
   const check = () => {
     console.log(reviews);
-    console.log(response);
-    // responesFrame();
   }
 
-  // const handleInput = (e, idx) => {
-  //   const { name, value } = e.target;
-  //   const list = [...response];
-  //   list[idx][name] = value;
-  //   setResponse(list);
-  // }
+  const handleInput = (e, idx) => {
+    const { name, value } = e.target;
+    const list = [...reviews];
+    list[idx][name] = value;
+    setReviews(list);
+  }
 
-  // const responesFrame = () => {
-  //   console.log(reviews.length);
-  // }
+  const choiceHandleInput = (e, idx) => {
+    const { value } = e.target;
+    const list = [...reviews];
+    list[idx]["answer"] = value;
+    setReviews(list);
+  }
 
-  const getSurvey = async () => {
+  const getSurvey = async (id) => {
     try {
       const result = await API.get(`/api/survey/${id}`);
       console.log(result);
@@ -33,26 +34,20 @@ const PostReviewPage = () => {
       throw e;
     }
   }
+
+  const submit = async () => {
+    try {
+      store.getToken()
+      const result = await API.post(`/api/review`, {reviews:reviews})
+      console.log(result);
+    } catch (e) {
+      throw e;
+    }
+  }
   
   useEffect(() => {
-    getSurvey();
-  }, [])
-
-  // 보내야하는 양식
-  // [
-  //   (객관식)
-  //   {
-  //     "content": null,
-  //     "surveyId": "62675cd8f7cfeb0c48c5770b",
-  //     "surveyOptionId": "62675cd8f7cfeb0c48c5770b"
-  //   },
-  //   (주관식)
-  //   {
-  //     "content": "매우 유용했습니다.",
-  //     "surveyId": "62675cd8f7cfeb0c48c5770b",
-  //     "surveyOptionId": null
-  //   }
-  // ]
+    getSurvey(id);
+  }, [id])
 
   return (
     <>
@@ -65,21 +60,22 @@ const PostReviewPage = () => {
               <h2>
                 {review.title}
               </h2>
-              <input type="text" name="" id="" value={review.answer} />
+              <input type="text" name="answer" value={review.answer} onChange={e => handleInput(e, idx)} />
             </>
             :
             <>
               {review.title}
-              {review.surveyOptions.map((option, ix) => (
-                <div key={ix}>
+              {review.surveyOptions.map((option, optIdx) => (
+                <div key={optIdx}>
                   {option.content}
-                  <input type="radio" name={review.surveyId} value={option.surveyOptionId}/>
+                  <input type="radio" name={idx} value={option.surveyOptionId} onChange={e => choiceHandleInput(e, idx)} />
                 </div>
               ))}
             </>
           } 
         </div>
       ))}
+      <button onClick={submit}>리뷰 작성 완료</button>
     </>
   )
 }

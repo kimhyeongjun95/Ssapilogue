@@ -105,6 +105,7 @@ const PostSurvey = () => {
         createSurveyReqDtos: inputs
       }) 
       navigate(`/project/${projectId}`)
+      return;
     } catch (e) {
       throw e;
     }
