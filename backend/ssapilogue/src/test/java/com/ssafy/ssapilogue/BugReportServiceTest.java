@@ -38,6 +38,16 @@ public class BugReportServiceTest {
     @Autowired
     private BugReportService bugReportService;
 
+    @BeforeEach
+    void before() {
+        createProject();
+        createUser();
+    }
+
+    private Project savedProject;
+
+    private User savedUser;
+
     @Test
     public void findBugReportsTest() throws Exception {
         BugReport bugReport1 = BugReport.builder()
@@ -157,16 +167,6 @@ public class BugReportServiceTest {
 
         assertThat(savedBugReport.getIsSolved()).isEqualTo(true);
     }
-
-    @BeforeEach
-    void before() {
-        createProject();
-        createUser();
-    }
-
-    private Project savedProject;
-
-    private User savedUser;
 
     private void createProject() {
         Project project = Project.builder()
