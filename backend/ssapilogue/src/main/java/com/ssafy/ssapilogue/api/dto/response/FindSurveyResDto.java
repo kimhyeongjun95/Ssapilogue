@@ -15,6 +15,9 @@ import java.util.List;
 @ApiModel("FindSurveyResDto")
 public class FindSurveyResDto {
 
+    @ApiModelProperty(value = "설문조사 id")
+    private String surveyId;
+
     @ApiModelProperty(value = "설문조사 제목", example = "싸필로그가 유용했나요?")
     private String title;
 
@@ -22,11 +25,12 @@ public class FindSurveyResDto {
     private SurveyType surveyType;
 
     @ApiModelProperty(value = "객관식 질문 옵션")
-    private List<SurveyOption> surveyOptions;
+    private List<FindSurveyOptionResDto> surveyOptions;
 
-    public FindSurveyResDto(Survey survey) {
+    public FindSurveyResDto(Survey survey, List<FindSurveyOptionResDto> surveyOptions) {
+        surveyId = survey.getId();
         title = survey.getTitle();
         surveyType = survey.getSurveyType();
-        surveyOptions = survey.getSurveyOptions();
+        this.surveyOptions = surveyOptions;
     }
 }

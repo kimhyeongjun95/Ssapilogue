@@ -3,6 +3,7 @@ package com.ssafy.ssapilogue.api.controller;
 import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindProjectTitleResDto;
 import com.ssafy.ssapilogue.api.service.BookmarkService;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
 import com.ssafy.ssapilogue.api.service.LikedService;
@@ -40,11 +41,16 @@ public class ProjectController {
             HttpServletRequest request) {
 
         Map<String, Object> result = new HashMap<>();
+        List<FindProjectResDto> projectList = null;
 
         String token = jwtTokenProvider.resolveToken(request);
-        String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (token == null) {
+            projectList = projectService.findProjects(standard, category, "");
+        } else {
+            String userEmail = jwtTokenProvider.getUserEmail(token);
+            projectList = projectService.findProjects(standard, category, userEmail);
+        }
 
-        List<FindProjectResDto> projectList = projectService.findProjects(standard, category, userEmail);
         result.put("projectList", projectList);
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
@@ -183,6 +189,23 @@ public class ProjectController {
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 
+    @PutMapping("/{projectId}/readme")
+    @ApiOperation(value = "리드미 갱신", notes = "리드미를 갱신한다.")
+    public ResponseEntity<Map<String, Object>> updateReadme(
+            @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId,
+            HttpServletRequest request) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        String token = jwtTokenProvider.resolveToken(request);
+        String userEmail = jwtTokenProvider.getUserEmail(token);
+
+        projectService.updateReadme(projectId);
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
     @PostMapping("/image")
     @ApiOperation(value = "프로젝트 이미지 업로드", notes = "프로젝트 이미지를 업로드한다.")
     public ResponseEntity<Map<String, Object>> updateImage(
@@ -205,5 +228,40 @@ public class ProjectController {
             result.put("status", "SERVER ERROR");
         }
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
+    }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "제목으로 프로젝트 검색", notes = "제목으로 프로젝트를 검색한다.")
+    public ResponseEntity<Map<String, Object>> searchProjectsByTitle(
+            @RequestParam @ApiParam(value = "검색어") String keyword,
+            HttpServletRequest request) {
+
+        Map<String, Object> result = new HashMap<>();
+        List<FindProjectResDto> projectList = null;
+
+        String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) {
+            projectList = projectService.searchProjectsByTitle(keyword, "");
+        } else {
+            String userEmail = jwtTokenProvider.getUserEmail(token);
+            projectList = projectService.searchProjectsByTitle(keyword, userEmail);
+        }
+
+        result.put("projectList", projectList);
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/title")
+    @ApiOperation(value = "프로젝트 제목 자동완성", notes = "프로젝트 제목을 검색한다.")
+    public ResponseEntity<Map<String, Object>> searchProjectTitles(
+            @RequestParam @ApiParam(value = "검색어") String keyword) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        List<FindProjectTitleResDto> searchList = projectService.searchProjectTitles(keyword);
+        result.put("searchList", searchList);
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
     }
 }

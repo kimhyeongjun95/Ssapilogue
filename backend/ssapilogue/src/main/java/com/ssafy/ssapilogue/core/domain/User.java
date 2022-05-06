@@ -44,6 +44,8 @@ public class User implements UserDetails {
 
     private int likes;
 
+    private String refreshToken;
+
     @Enumerated(EnumType.STRING)
     private UserIdentity userIdentity;
 
@@ -85,6 +87,15 @@ public class User implements UserDetails {
     public void updateImg(String image) {
         this.image = image;
     }
+
+    // 좋아요 수 변동을 위한 편의 함수
+    public void changeLikes(int cnt) {
+        this.likes = this.likes + cnt;
+    }
+
+    public void changeRefreshToken(String token) {
+        this.refreshToken = token;
+    };
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

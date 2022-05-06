@@ -1,7 +1,11 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateReviewReqDto;
+import com.ssafy.ssapilogue.api.dto.response.FindReviewResDto;
+
+import java.util.List;
 
 public interface ReviewService {
-    Long createReview(Long projectId, CreateReviewReqDto createReviewReqDto);
+    List<FindReviewResDto> findReviews(Long projectId);
+    List<String> createReview(String usrEmail, List<CreateReviewReqDto> createReviewReqDtos);
 }
