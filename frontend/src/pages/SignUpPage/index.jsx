@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import API from "../../api/API";
+import store from "../../utils/store";
 
 const SignUpPage = () => {
   
@@ -31,11 +32,16 @@ const SignUpPage = () => {
       greeting: greetings,
     })
       .then((res) => {
-        console.log(res);
+        if (res.data.message === "success") {
+          const token = res.data.token;
+          store.setToken(token);
+          window.location.replace("/");
+          return;
+        }
       })
       .catch((err) => {
-        console.log(err);
-      })
+        throw err;
+      });
   }
 
   return (
@@ -46,6 +52,7 @@ const SignUpPage = () => {
       소개말<input name="greetings" onChange={handleOnChange} value={greetings}/>
       Github<input name="github" onChange={handleOnChange} value={github}/>
       <button onClick={signUp}>회원가입</button>
+      
     </>
   )
 }

@@ -4,6 +4,8 @@ import com.ssafy.ssapilogue.api.dto.request.CreateSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindDefaultSurveyResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyOptionResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
+import com.ssafy.ssapilogue.api.exception.CustomException;
+import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.core.domain.Survey;
 import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.domain.SurveyType;
@@ -40,7 +42,7 @@ public class SurveyServiceImpl implements SurveyService {
                 surveyOptionList.add(new FindSurveyOptionResDto(surveyOption));
             }
 
-            surveyList.add(new FindSurveyResDto(survey, surveyOptionList));
+            surveyList.add(new FindSurveyResDto(survey, surveyOptionList, ""));
         }
 
         return surveyList;
@@ -82,7 +84,7 @@ public class SurveyServiceImpl implements SurveyService {
     public void deleteSurvey(String surveyId) {
         // 객관식인 경우, SurveyOption 삭제
         Survey survey = surveyRepository.findById(surveyId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 설문조사입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
 
         if (survey.getSurveyType() == SurveyType.객관식) {
             for (SurveyOption surveyOption : survey.getSurveyOptions()) {

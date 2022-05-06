@@ -1,6 +1,6 @@
 package com.ssafy.ssapilogue.api.controller;
 
-import com.ssafy.ssapilogue.api.dto.request.CreateReviewReqDto;
+import com.ssafy.ssapilogue.api.dto.request.CreateReviewsReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindReviewResDto;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
 import com.ssafy.ssapilogue.api.service.ReviewService;
@@ -43,14 +43,14 @@ public class ReviewController {
     @PostMapping
     @ApiOperation(value = "리뷰 등록", notes = "새로운 리뷰를 등록한다.")
     public ResponseEntity<Map<String, Object>> createReview(
-            @RequestBody @ApiParam(value = "리뷰 정보", required = true) List<CreateReviewReqDto> createReviewReqDtos,
+            @RequestBody @ApiParam(value = "리뷰 정보", required = true) CreateReviewsReqDto createReviewsReqDtos,
             HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
 
         String token = jwtTokenProvider.resolveToken(request);
         String userEmail = jwtTokenProvider.getUserEmail(token);
 
-        List<String> reviewIds = reviewService.createReview(userEmail, createReviewReqDtos);
+        List<String> reviewIds = reviewService.createReview(userEmail, createReviewsReqDtos.getReviews());
         result.put("reviewIds", reviewIds);
         result.put("status", "SUCCESS");
 

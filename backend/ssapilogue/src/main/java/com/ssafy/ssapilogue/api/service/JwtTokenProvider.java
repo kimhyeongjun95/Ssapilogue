@@ -1,5 +1,7 @@
 package com.ssafy.ssapilogue.api.service;
 
+import com.ssafy.ssapilogue.api.exception.CustomException;
+import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.core.domain.UserIdentity;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -92,6 +94,7 @@ public class JwtTokenProvider {
         }
         return newToken;
     }
+
 
     public String resolveRefreshToken(HttpServletRequest request) {
         String token = request.getHeader("RefreshToken");
