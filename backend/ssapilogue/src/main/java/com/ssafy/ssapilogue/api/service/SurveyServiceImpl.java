@@ -40,7 +40,7 @@ public class SurveyServiceImpl implements SurveyService {
                 surveyOptionList.add(new FindSurveyOptionResDto(surveyOption));
             }
 
-            surveyList.add(new FindSurveyResDto(survey, surveyOptionList));
+            surveyList.add(new FindSurveyResDto(survey, surveyOptionList, ""));
         }
 
         return surveyList;

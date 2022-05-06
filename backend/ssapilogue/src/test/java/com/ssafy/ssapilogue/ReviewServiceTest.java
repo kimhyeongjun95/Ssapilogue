@@ -2,6 +2,8 @@ package com.ssafy.ssapilogue;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateReviewReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindReviewResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindSurveyOptionResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.api.service.ReviewService;
 import com.ssafy.ssapilogue.core.domain.*;
 import com.ssafy.ssapilogue.core.repository.*;
@@ -86,17 +88,22 @@ public class ReviewServiceTest {
 
     @Test
     public void createReviewTest() throws Exception {
-        List<CreateReviewReqDto> createReviewReqDtos = new ArrayList<>();
+        List<FindSurveyResDto> findSurveyResDtos = new ArrayList<>();
 
         // 객관식
-        CreateReviewReqDto createReviewReqDto1 = new CreateReviewReqDto(objectiveSurvey.getId(), pickedOption.getId(), null);
-        createReviewReqDtos.add(createReviewReqDto1);
+        List<FindSurveyOptionResDto> surveyOptions = new ArrayList<>();
+        for (SurveyOption surveyOption : surveyOptionRepository.findAllBySurveyId(objectiveSurvey.getId())) {
+            surveyOptions.add(new FindSurveyOptionResDto(surveyOption));
+        }
+
+        FindSurveyResDto findSurveyResDto1 = new FindSurveyResDto(objectiveSurvey, surveyOptions, pickedOption.getId());
+        findSurveyResDtos.add(findSurveyResDto1);
 
         //주관식
-        CreateReviewReqDto createReviewReqDto2 = new CreateReviewReqDto(subjectiveSurvey.getId(), null, "매우 유용했습니다.");
-        createReviewReqDtos.add(createReviewReqDto2);
+        FindSurveyResDto findSurveyResDto2 = new FindSurveyResDto(subjectiveSurvey, null, "매우 유용했습니다.");
+        findSurveyResDtos.add(findSurveyResDto2);
 
-        List<String> reviewIds = reviewService.createReview(savedUser.getEmail(), createReviewReqDtos);
+        List<String> reviewIds = reviewService.createReview(savedUser.getEmail(), findSurveyResDtos);
 
         Optional<Review> review1 = reviewRepository.findById(reviewIds.get(0));
         assertThat(review1.get().getUserEmail()).isEqualTo(savedUser.getEmail());
