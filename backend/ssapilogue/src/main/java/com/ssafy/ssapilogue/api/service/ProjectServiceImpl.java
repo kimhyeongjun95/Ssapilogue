@@ -4,13 +4,12 @@ import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindCommentResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindProjectTitleResDto;
 import com.ssafy.ssapilogue.core.domain.*;
 import com.ssafy.ssapilogue.core.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,11 +25,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class ProjectServiceImpl implements ProjectService{
+public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
@@ -42,6 +42,17 @@ public class ProjectServiceImpl implements ProjectService{
     private final BookmarkRepsitory bookmarkRepsitory;
     private final ProjectCommentRepository projectCommentRepository;
 
+    private static final int HANGEUL_BASE = 0xAC00;    // '가'
+    private static final int HANGEUL_END = 0xD7AF;
+    // 이하 ja, mo는 단독으로 입력된 자모에 대해 적용
+    private static final int JA_BASE = 0x3131;
+    private static final int MO_BASE = 0x314F;
+
+    private static final String[] CHO = {"ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ", "ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"};
+    private static final String[] JUNG = {"ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ", "ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"};
+    private static final String[] JONG = {"","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ", "ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"};
+
+
     @Value("${projectImg.path}")
     private String uploadFolder;
 
@@ -49,7 +60,6 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     public List<FindProjectResDto> findProjects(String standard, String category, String userEmail) {
         List<Project> projects = null;
-        User user = userRepository.findByEmail(userEmail);
 
         if (standard.equals("최신")) {
             if (category.equals("전체")) {
@@ -66,15 +76,22 @@ public class ProjectServiceImpl implements ProjectService{
         }
 
         List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
-        for (Project project : projects) {
-            Optional<Bookmark> bookmark = bookmarkRepsitory.findByUserAndProject(user, project);
-
-            Boolean isBookmarked = false;
-            if (bookmark.isPresent()) {
-                isBookmarked = true;
+        if (userEmail.isEmpty()) {
+            for (Project project : projects) {
+                findProjectResDtos.add(new FindProjectResDto(project, false));
             }
+        } else {
+            User user = userRepository.findByEmail(userEmail);
+            for (Project project : projects) {
+                Optional<Bookmark> bookmark = bookmarkRepsitory.findByUserAndProject(user, project);
 
-            findProjectResDtos.add(new FindProjectResDto(project, isBookmarked));
+                Boolean isBookmarked = false;
+                if (bookmark.isPresent()) {
+                    isBookmarked = true;
+                }
+
+                findProjectResDtos.add(new FindProjectResDto(project, isBookmarked));
+            }
         }
 
         return findProjectResDtos;
@@ -87,6 +104,7 @@ public class ProjectServiceImpl implements ProjectService{
 
         Project project = Project.builder()
                 .title(createProjectReqDto.getTitle())
+                .splitTitle(getSplitTitle(createProjectReqDto.getTitle()))
                 .introduce(createProjectReqDto.getIntroduce())
                 .category(Category.valueOf(createProjectReqDto.getCategory()))
                 .deployAddress(createProjectReqDto.getDeployAddress())
@@ -226,14 +244,14 @@ public class ProjectServiceImpl implements ProjectService{
         }
 
         project.increaseHits();
-        return new FindProjectDetailResDto(project, isLiked, isBookmarked, findProjectResDtos ,commentList);
+        return new FindProjectDetailResDto(project, isLiked, isBookmarked, findProjectResDtos, commentList);
     }
 
     // 프로젝트 수정
     @Override
     public void updateProject(Long projectId, CreateProjectReqDto createProjectReqDto) {
         Project project = projectRepository.getById(projectId);
-        project.update(createProjectReqDto);
+        project.update(createProjectReqDto, getSplitTitle(createProjectReqDto.getTitle()));
 
         // 멤버 수정
         projectMemberRepository.deleteByProject(project);
@@ -299,6 +317,7 @@ public class ProjectServiceImpl implements ProjectService{
         }
     }
 
+    // 리드미 갱신
     @Override
     public void updateReadme(Long projectId) {
         Project project = projectRepository.getById(projectId);
@@ -353,5 +372,74 @@ public class ProjectServiceImpl implements ProjectService{
         }
 
         return "http://k6c104.p.ssafy.io/images/projectImg/" + imageFileName;
+    }
+
+    // 제목으로 프로젝트 검색
+    @Override
+    public List<FindProjectResDto> searchProjectsByTitle(String keyword, String userEmail) {
+        List<Project> projects = projectRepository.findBySplitTitleContainingOrderByIdDesc(getSplitTitle(keyword));
+
+        List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
+        if (userEmail.isEmpty()) {
+            for (Project project : projects) {
+                findProjectResDtos.add(new FindProjectResDto(project, false));
+            }
+        } else {
+            User user = userRepository.findByEmail(userEmail);
+            for (Project project : projects) {
+                Optional<Bookmark> bookmark = bookmarkRepsitory.findByUserAndProject(user, project);
+
+                Boolean isBookmarked = false;
+                if (bookmark.isPresent()) {
+                    isBookmarked = true;
+                }
+
+                findProjectResDtos.add(new FindProjectResDto(project, isBookmarked));
+            }
+        }
+
+        return findProjectResDtos;
+    }
+
+    // 프로젝트 제목 자동완성
+    @Override
+    public List<FindProjectTitleResDto> searchProjectTitles(String keyword) {
+        List<Project> projects = projectRepository.findBySplitTitleContainingOrderByIdDesc(getSplitTitle(keyword));
+
+        return projects.stream().map(FindProjectTitleResDto::new).collect(Collectors.toList());
+    }
+
+    private String getSplitTitle(String title) {
+        StringBuilder sb = new StringBuilder();
+
+        for (char c : title.toCharArray()) {
+            if((c <= 10 && c <= 13) || c == 32) {
+                sb.append(c);
+                continue;
+            } else if (c >= JA_BASE && c <= JA_BASE + 36) {
+                sb.append(c);
+                continue;
+            } else if (c >= MO_BASE && c <= MO_BASE + 58) {
+                sb.append((char)0);
+                continue;
+            } else if (c >= HANGEUL_BASE && c <= HANGEUL_END){
+                int choInt = (c - HANGEUL_BASE) / 28 / 21;
+                int jungInt = ((c - HANGEUL_BASE) / 28) % 21;
+                int jongInt = (c - HANGEUL_BASE) % 28;
+                char cho = (char) (choInt);
+                char jung = (char) (jungInt);
+                char jong = jongInt != 0 ? (char) (jongInt) : 0;
+
+                sb.append(CHO[cho]);
+                sb.append(JUNG[jung]);
+                if (jong != 0) {
+                    sb.append(JONG[jong]);
+                }
+            } else {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
     }
 }

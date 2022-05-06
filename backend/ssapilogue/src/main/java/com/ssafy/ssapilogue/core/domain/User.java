@@ -44,6 +44,8 @@ public class User implements UserDetails {
 
     private int likes;
 
+    private String refreshToken;
+
     @Enumerated(EnumType.STRING)
     private UserIdentity userIdentity;
 
@@ -90,6 +92,10 @@ public class User implements UserDetails {
     public void changeLikes(int cnt) {
         this.likes = this.likes + cnt;
     }
+
+    public void changeRefreshToken(String token) {
+        this.refreshToken = token;
+    };
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
