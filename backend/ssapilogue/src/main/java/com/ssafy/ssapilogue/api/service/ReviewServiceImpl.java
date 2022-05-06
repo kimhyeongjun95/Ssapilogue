@@ -1,10 +1,11 @@
 package com.ssafy.ssapilogue.api.service;
 
-import com.ssafy.ssapilogue.api.dto.request.CreateReviewReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindObjectiveReviewResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindReviewResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSubjectiveReviewResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
+import com.ssafy.ssapilogue.api.exception.CustomException;
+import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.core.domain.*;
 import com.ssafy.ssapilogue.core.repository.ReviewRepository;
 import com.ssafy.ssapilogue.core.repository.SurveyOptionRepository;
@@ -14,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class ReviewServiceImpl implements ReviewService{
 
         for (FindSurveyResDto findSurveyResDto : reviews) {
             Survey survey = surveyRepository.findById(findSurveyResDto.getSurveyId())
-                    .orElseThrow(() -> new IllegalStateException("존재하지 않는 설문조사입니다."));
+                    .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
 
             Review review = Review.builder()
                     .userEmail(userEmail)
@@ -84,7 +84,7 @@ public class ReviewServiceImpl implements ReviewService{
 
             if (survey.getSurveyType() == SurveyType.객관식) {
                 SurveyOption surveyOption = surveyOptionRepository.findById(findSurveyResDto.getAnswer())
-                                .orElseThrow(() -> new IllegalStateException("존재하지 않는 옵션입니다."));
+                        .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_OPTION_NOT_FOUND));
                 review.saveSurveyOption(surveyOption);
             } else if (survey.getSurveyType() == SurveyType.주관식) {
                 review.saveContent(findSurveyResDto.getAnswer());

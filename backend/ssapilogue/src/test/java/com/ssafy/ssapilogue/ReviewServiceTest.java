@@ -1,6 +1,5 @@
 package com.ssafy.ssapilogue;
 
-import com.ssafy.ssapilogue.api.dto.request.CreateReviewReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindReviewResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyOptionResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
