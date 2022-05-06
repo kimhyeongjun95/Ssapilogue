@@ -115,18 +115,13 @@ public class UserController {
         String userEmail = jwtTokenProvider.getUserEmail(token);
         if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
-        try {
-            User user = userRepository.findByEmail(userEmail);
-            if (user == null) throw new CustomException(ErrorCode.NO_USER);
+        User user = userRepository.findByEmail(userEmail);
+        if (user == null) throw new CustomException(ErrorCode.NO_USER);
 
-            userService.updateUser(user, updateUserReqDto);
-            httpStatus = HttpStatus.OK;
-            result.put("status", "SUCCESS");
-        } catch (Exception e) {
-            e.printStackTrace();
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            result.put("status", "SERVER ERROR");
-        }
+        userService.updateUser(user, updateUserReqDto);
+        httpStatus = HttpStatus.OK;
+        result.put("status", "SUCCESS");
+
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
@@ -142,14 +137,10 @@ public class UserController {
         String userEmail = jwtTokenProvider.getUserEmail(token);
         if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
-        try {
-            userService.deleteUser(userEmail);
-            httpStatus = HttpStatus.OK;
-            result.put("status", "SUCCESS");
-        } catch (Exception e) {
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            result.put("status", "SERVER ERROR");
-        }
+        userService.deleteUser(userEmail);
+        httpStatus = HttpStatus.OK;
+        result.put("status", "SUCCESS");
+
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
@@ -159,23 +150,16 @@ public class UserController {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
         FindUserResDto findUser = null;
-        try {
-            String token = jwtTokenProvider.resolveToken(request);
-            if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
 
-            String userEmail = jwtTokenProvider.getUserEmail(token);
-            if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
+        String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
 
-            findUser = userService.findUserProfile(userEmail);
-            httpStatus = HttpStatus.OK;
-            result.put("status", "SUCCESS");
-        } catch (ExpiredJwtException e) {
-            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
-        } catch (Exception e) {
-            e.printStackTrace();
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            result.put("status", "SERVER_ERROR");
-        }
+        String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
+
+        findUser = userService.findUserProfile(userEmail);
+        httpStatus = HttpStatus.OK;
+        result.put("status", "SUCCESS");
         result.put("user", findUser);
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
@@ -193,15 +177,10 @@ public class UserController {
         String userEmail = jwtTokenProvider.getUserEmail(token);
         if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
-        try {
-            String imageUrl = userService.updateImage(userEmail, file);
-            httpStatus = HttpStatus.OK;
-            result.put("imageUrl", imageUrl);
-        } catch (Exception e) {
-            e.printStackTrace();
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            result.put("status", "SERVER ERROR");
-        }
+        String imageUrl = userService.updateImage(userEmail, file);
+        httpStatus = HttpStatus.OK;
+        result.put("imageUrl", imageUrl);
+        
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
