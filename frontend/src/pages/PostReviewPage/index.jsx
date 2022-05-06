@@ -5,6 +5,24 @@ import { useParams } from "react-router-dom";
 const PostReviewPage = () => {
   const id = useParams().projectId;
   const [reviews, setReviews] = useState([]);
+  const [response, setResponse] = useState([]);
+  
+  const check = () => {
+    console.log(reviews);
+    console.log(response);
+    // responesFrame();
+  }
+
+  // const handleInput = (e, idx) => {
+  //   const { name, value } = e.target;
+  //   const list = [...response];
+  //   list[idx][name] = value;
+  //   setResponse(list);
+  // }
+
+  // const responesFrame = () => {
+  //   console.log(reviews.length);
+  // }
 
   const getSurvey = async () => {
     try {
@@ -15,11 +33,7 @@ const PostReviewPage = () => {
       throw e;
     }
   }
-
-  const check = () => {
-    console.log(reviews);
-  }
-
+  
   useEffect(() => {
     getSurvey();
   }, [])
@@ -51,15 +65,15 @@ const PostReviewPage = () => {
               <h2>
                 {review.title}
               </h2>
-              <input type="text" name="" id="" value={review.surveyId} />
+              <input type="text" name="" id="" value={review.answer} />
             </>
             :
             <>
               {review.title}
-              {review.surveyOptions.map((option, idx) => (
-                <div key={idx}>
+              {review.surveyOptions.map((option, ix) => (
+                <div key={ix}>
                   {option.content}
-                  <input type="radio" name={option.surveyId} value={option.id}/>
+                  <input type="radio" name={review.surveyId} value={option.surveyOptionId}/>
                 </div>
               ))}
             </>

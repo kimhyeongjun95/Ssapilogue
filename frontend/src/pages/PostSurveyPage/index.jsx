@@ -5,7 +5,6 @@ import store from "../../utils/store";
 import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
-// import API from '../../assets/API';
 
 const PostSurvey = () => {
 
@@ -53,7 +52,7 @@ const PostSurvey = () => {
     ask.value = list[idx].surveyOptions[count];
     ask.placeholder = "객관식 답변";
     ask.name = "surveyOptions";
-    ask.addEventListener("keydown", (e) => {
+    ask.addEventListener("input", (e) => {
       choiceHandleInput(e, idx, count);
     })
     let deleteBtn = document.createElement('img')
