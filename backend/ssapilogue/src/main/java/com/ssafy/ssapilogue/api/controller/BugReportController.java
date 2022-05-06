@@ -2,7 +2,7 @@ package com.ssafy.ssapilogue.api.controller;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateBugReportReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindBugReportDetailResDto;
-import com.ssafy.ssapilogue.api.dto.response.FindBugReportResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindBugReportsResDto;
 import com.ssafy.ssapilogue.api.service.BugReportService;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
 import io.swagger.annotations.Api;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Api(tags = "BugReport", value = "버그리포트 API")
@@ -34,7 +33,7 @@ public class BugReportController {
             @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId){
         Map<String, Object> result = new HashMap<>();
 
-        List<FindBugReportResDto> bugList = bugReportService.findBugReports(projectId);
+        FindBugReportsResDto bugList = bugReportService.findBugReports(projectId);
         result.put("bugList", bugList);
         result.put("status", "SUCCESS");
 
@@ -95,5 +94,18 @@ public class BugReportController {
         result.put("status", "SUCCESS");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
+    @PostMapping("solved/{bugId}")
+    @ApiOperation(value = "버그 리포트 해결/미해결 변경", notes = "버그 리포트의 해결 상태를 변경한다.")
+    public ResponseEntity<Map<String, Object>> solvedBugReport(
+            @PathVariable @ApiParam(value = "버그 리포트 id", required = true, example = "1") Long bugId) {
+        Map<String, Object> result = new HashMap<>();
+
+        Boolean isSolved = bugReportService.solvedBugReport(bugId);
+        result.put("isSolved", isSolved);
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.CREATED);
     }
 }
