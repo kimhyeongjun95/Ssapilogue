@@ -1,11 +1,9 @@
 package com.ssafy.ssapilogue.api.dto.response;
 
 import com.ssafy.ssapilogue.core.domain.Survey;
-import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.domain.SurveyType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

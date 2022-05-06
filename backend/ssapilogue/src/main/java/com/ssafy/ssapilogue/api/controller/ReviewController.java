@@ -1,6 +1,5 @@
 package com.ssafy.ssapilogue.api.controller;
 
-import com.ssafy.ssapilogue.api.dto.request.CreateReviewReqDto;
 import com.ssafy.ssapilogue.api.dto.request.CreateReviewsReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindReviewResDto;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
