@@ -29,7 +29,7 @@ public class FindBugReportResDto {
     private String content;
 
     @ApiModelProperty(value = "버그 리포트 해결 여부", example = "false")
-    private Boolean is_solved;
+    private Boolean isSolved;
 
     @ApiModelProperty(value = "버그 리포트 작성일", example = "2022-02-01 23:59")
     private String createAt;
@@ -40,7 +40,7 @@ public class FindBugReportResDto {
         profileImage = bugReport.getUser().getImage();
         title = bugReport.getTitle();
         content = bugReport.getContent();
-        is_solved = bugReport.getIs_solved();
+        isSolved = bugReport.getIsSolved();
         this.createAt = createAt;
     }
 }

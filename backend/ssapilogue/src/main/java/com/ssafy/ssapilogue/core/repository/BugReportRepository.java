@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface BugReportRepository extends JpaRepository<BugReport, Long> {
     List<BugReport> findAllByProjectIdOrderById(Long projectId);
+    Integer countAllByProjectIdAndIsSolvedTrue(Long projectId);
+    Integer countAllByProjectIdAndIsSolvedFalse(Long projectId);
 }
