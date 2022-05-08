@@ -9,4 +9,6 @@ public interface UserInfoService {
     void splitUserInfo();
     List<String> searchUserInfos(String keyword);
     void getUserInfo() throws ParseException;
+    String encrypt(byte[] mmId);
+    String decrypt(byte[] mmId);
 }
