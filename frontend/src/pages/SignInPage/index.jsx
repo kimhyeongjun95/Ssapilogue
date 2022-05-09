@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import API from "../../api/API";
 import { useNavigate } from 'react-router-dom';
 import store from "../../utils/store";
+import "./style.scss"
+import mattermost from "../../assets/mattermost.png"
 
 const SignInPage = () => {
 
@@ -42,10 +44,13 @@ const SignInPage = () => {
   }
 
   return (
-    <div>
-      아이디<input name="id" onChange={handleOnChange} value={id}/>
-      비밀번호<input name="pw" onChange={handleOnChange} type="password" value={pw}/>
-      <button onClick={signIn}>로그인</button>
+    <div className="box">
+      <img className="mattermost" src={mattermost} alt="mattermost" />
+      <p className="id">아이디</p>
+      <input className="input" name="id" onChange={handleOnChange} value={id}/>
+      <p className="password">비밀번호</p>
+      <input className="input" name="pw" onChange={handleOnChange} type="password" value={pw}/>
+      <button className="button" onClick={signIn}>로그인</button>
     </div>
   )
 }

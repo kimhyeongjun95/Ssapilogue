@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-@RestController
+@Service
 @RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserService{
@@ -38,6 +39,8 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
     private final UserInfoRepository userInfoRepository;
+
+    private final UserInfoService userInfoService;
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -48,12 +51,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User signup(SignupUserReqDto signupUserReqDto) {
-        if (userRepository.findByUserId(signupUserReqDto.getUserId()) != null) {
-            throw new CustomException(ErrorCode.ALREADY_EXIST_USER);
-        }
+        String encodeMmId = userInfoService.encrypt(signupUserReqDto.getUserId().getBytes());
 
-        UserInfo userInfo = userInfoRepository.findByUserId(signupUserReqDto.getUserId());
-        if (userInfo == null) throw new CustomException(ErrorCode.INVALID_USER);
+        UserInfo userInfo = userInfoRepository.findByUserId(encodeMmId);
+        if (userInfo == null) {
+            throw new CustomException(ErrorCode.INVALID_USER);
+        }
 
         String password = signupUserReqDto.getPassword();
         if (password == null) throw new CustomException(ErrorCode.NULL_PASSWORD);
@@ -64,7 +67,7 @@ public class UserServiceImpl implements UserService{
         User user = User.builder()
                 .email(signupUserReqDto.getEmail())
                 .password(encPass)
-                .userId(signupUserReqDto.getUserId())
+                .userId(encodeMmId)
                 .nickname(userInfo.getNickname())
                 .username(userInfo.getUsername())
                 .github(signupUserReqDto.getGithub())
@@ -79,7 +82,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User login(LoginUserReqDto loginUserReqDto) {
-        if (userInfoRepository.findByUserId(loginUserReqDto.getUserId()) == null) {
+        String encodeMmId = userInfoService.encrypt(loginUserReqDto.getUserId().getBytes());
+        if (userInfoRepository.findByUserId(encodeMmId) == null) {
             throw new CustomException(ErrorCode.INVALID_USER);
         }
 

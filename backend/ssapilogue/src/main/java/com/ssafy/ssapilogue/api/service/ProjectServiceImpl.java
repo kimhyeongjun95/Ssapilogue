@@ -5,6 +5,8 @@ import com.ssafy.ssapilogue.api.dto.response.FindCommentResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectTitleResDto;
+import com.ssafy.ssapilogue.api.exception.CustomException;
+import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.core.domain.*;
 import com.ssafy.ssapilogue.core.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -58,22 +60,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     // 프로젝트 전체조회
     @Override
-    public List<FindProjectResDto> findProjects(String standard, String category, String userEmail) {
-        List<Project> projects = null;
-
-        if (standard.equals("최신")) {
-            if (category.equals("전체")) {
-                projects = projectRepository.findAllByOrderByIdDesc();
-            } else {
-                projects = projectRepository.findByCategoryOrderByIdDesc(Category.valueOf(category));
-            }
-        } else if (standard.equals("인기")) {
-            if (category.equals("전체")) {
-                projects = projectRepository.findAllByOrderByLikesDesc();
-            } else {
-                projects = projectRepository.findByCategoryOrderByLikesDesc(Category.valueOf(category));
-            }
-        }
+    public List<FindProjectResDto> findProjects(String userEmail) {
+        List<Project> projects = projectRepository.findAllByOrderByIdDesc();
 
         List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
         if (userEmail.isEmpty()) {
@@ -101,6 +89,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Long createProject(CreateProjectReqDto createProjectReqDto, String userEmail) {
         User user = userRepository.findByEmail(userEmail);
+        if (user == null) throw new CustomException(ErrorCode.NO_USER);
 
         Project project = Project.builder()
                 .title(createProjectReqDto.getTitle())
@@ -204,9 +193,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     // 프로젝트 상세조회
     @Override
-    public FindProjectDetailResDto findProject(Long projectId, String userEmail) {
-        Project project = projectRepository.getById(projectId);
+    public FindProjectDetailResDto findProjectDetail(Long projectId, String userEmail) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+
         User user = userRepository.findByEmail(userEmail);
+        if (user == null) throw new CustomException(ErrorCode.NO_USER);
 
         Optional<Liked> liked = likedRepository.findByUserAndProject(user, project);
         Boolean isLiked = false;
@@ -250,7 +242,9 @@ public class ProjectServiceImpl implements ProjectService {
     // 프로젝트 수정
     @Override
     public void updateProject(Long projectId, CreateProjectReqDto createProjectReqDto) {
-        Project project = projectRepository.getById(projectId);
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+
         project.update(createProjectReqDto, getSplitTitle(createProjectReqDto.getTitle()));
 
         // 멤버 수정
@@ -309,7 +303,9 @@ public class ProjectServiceImpl implements ProjectService {
     // 프로젝트 삭제
     @Override
     public void deleteProject(Long projectId, String userEmail) {
-        Project project = projectRepository.getById(projectId);
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+
         int likeCnt = project.getLikedList().size();
         if (project.getUser().getEmail().equals(userEmail)) {
             project.getUser().changeLikes(-likeCnt);
@@ -320,7 +316,9 @@ public class ProjectServiceImpl implements ProjectService {
     // 리드미 갱신
     @Override
     public void updateReadme(Long projectId) {
-        Project project = projectRepository.getById(projectId);
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+
         try {
             String gitAddress = project.getGitAddress();
             int idx = gitAddress.indexOf("github.com");
@@ -359,7 +357,6 @@ public class ProjectServiceImpl implements ProjectService {
     // 이미지 업로드
     @Override
     public String uploadImage(MultipartFile multipartFile, String userEmail) {
-        User user = userRepository.findByEmail(userEmail);
         String imageFileName = UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename();
         Path imageFilePath = Paths.get(uploadFolder + imageFileName);
 
