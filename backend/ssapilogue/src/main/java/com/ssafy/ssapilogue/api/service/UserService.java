@@ -19,7 +19,7 @@ public interface UserService {
 
     void updateUser(User user, UpdateUserReqDto updateUserReqDto);
 
-    void deleteUser(String userId);
+    void deleteUser(String email);
 
     FindUserResDto findUserProfile(String email);
 
