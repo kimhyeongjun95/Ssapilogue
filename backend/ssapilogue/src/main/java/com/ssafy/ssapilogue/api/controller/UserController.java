@@ -180,7 +180,7 @@ public class UserController {
         String imageUrl = userService.updateImage(userEmail, file);
         httpStatus = HttpStatus.OK;
         result.put("imageUrl", imageUrl);
-        
+
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
