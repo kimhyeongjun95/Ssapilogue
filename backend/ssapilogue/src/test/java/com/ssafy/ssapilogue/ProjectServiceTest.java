@@ -80,7 +80,7 @@ public class ProjectServiceTest {
         Long projectId = projectService.createProject(createProjectReqDto, saveUser.getEmail());
 
         // when
-        FindProjectDetailResDto findProjectDetailResDto = projectService.findProject(projectId, saveUser.getEmail());
+        FindProjectDetailResDto findProjectDetailResDto = projectService.findProjectDetail(projectId, saveUser.getEmail());
 
         // then
         assertThat(findProjectDetailResDto.getProjectId()).isEqualTo(projectId);
@@ -98,7 +98,7 @@ public class ProjectServiceTest {
         // when
         updateProjectReqDto();
         projectService.updateProject(projectId, updateProjectReqDto);
-        FindProjectDetailResDto findProjectDetailResDto = projectService.findProject(projectId, saveUser.getEmail());
+        FindProjectDetailResDto findProjectDetailResDto = projectService.findProjectDetail(projectId, saveUser.getEmail());
 
         // then
         assertThat(findProjectDetailResDto.getTitle()).isEqualTo("라이키수정");

@@ -5,6 +5,8 @@ import com.ssafy.ssapilogue.api.dto.response.FindBugReportCommentResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindBugReportDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindBugReportResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindBugReportsResDto;
+import com.ssafy.ssapilogue.api.exception.CustomException;
+import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.core.domain.BugReport;
 import com.ssafy.ssapilogue.core.domain.BugReportComment;
 import com.ssafy.ssapilogue.core.domain.Project;
@@ -55,7 +57,7 @@ public class BugReportServiceImpl implements BugReportService{
     @Override
     public Long createBugReport(Long projectId, String userEmail, CreateBugReportReqDto createBugReportReqDto) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 프로젝트입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
 
         User user = userRepository.findByEmail(userEmail);
 
@@ -74,7 +76,7 @@ public class BugReportServiceImpl implements BugReportService{
     @Override
     public FindBugReportDetailResDto findBugReportDetail(Long bugId) {
         BugReport bugReport = bugReportRepository.findById(bugId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 버그 리포트입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.BUGREPORT_NOT_FOUND));
 
         User user = bugReport.getUser();
 
@@ -96,7 +98,7 @@ public class BugReportServiceImpl implements BugReportService{
     @Override
     public void updateBugReport(Long bugId, CreateBugReportReqDto createBugReportReqDto) {
         BugReport bugReport = bugReportRepository.findById(bugId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 버그 리포트입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.BUGREPORT_NOT_FOUND));
 
         bugReport.update(createBugReportReqDto);
     }
@@ -109,7 +111,7 @@ public class BugReportServiceImpl implements BugReportService{
     @Override
     public Boolean solvedBugReport(Long bugId) {
         BugReport bugReport = bugReportRepository.findById(bugId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 버그 리포트입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.BUGREPORT_NOT_FOUND));
 
         Boolean now = bugReport.getIsSolved();
         Boolean update = true;
