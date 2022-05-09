@@ -1,5 +1,6 @@
 package com.ssafy.ssapilogue.api.dto.request;
 
+import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -17,5 +18,5 @@ public class CreateReviewsReqDto {
 
     @NotNull
     @ApiModelProperty(value = "리뷰 정보", required = true)
-    private List<CreateReviewReqDto> reviews;
+    private List<FindSurveyResDto> reviews;
 }

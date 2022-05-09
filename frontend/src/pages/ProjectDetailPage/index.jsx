@@ -120,7 +120,7 @@ const DetailPage = () => {
         <Link 
           to={`/project/${id}/report/`}
         >
-          <button>버그 리포트</button>
+          <button>리뷰 / 버그 리포트</button>
         </Link>
       </div>
 
