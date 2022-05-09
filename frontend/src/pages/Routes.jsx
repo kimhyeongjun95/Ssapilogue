@@ -32,6 +32,7 @@ const Routes = () => {
       {/* review에 객관식 주관식 nesting 예정 */}
       <Route path="/project/:projectId/review" element={<ReviewPage />} />
       <Route path="/project/:projectId/review/post" element={<PostReviewPage />} />
+      
 
       <Route path="/project/:projectId/report" element={<ReportPage />} />
       <Route path="/project/:projectId/report/post" element={<PostReportPage />} />

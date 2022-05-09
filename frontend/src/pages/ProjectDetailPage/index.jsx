@@ -146,8 +146,6 @@ const DetailPage = () => {
           <button>버그 리포트</button>
         </Link>
       </div>
-
-
       <div className="readme-div"dangerouslySetInnerHTML={{
         __html: markdownIt().render(readme),
       }}
