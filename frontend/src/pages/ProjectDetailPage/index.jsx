@@ -1,6 +1,6 @@
 import React, {useEffect,useState} from "react";
 import { Link, useParams } from "react-router-dom";
-import detailImage from "../../assets//detailImage.png"
+import detailImage from "../../assets/detailImage.png"
 import "./style.scss"
 import constructionPic from "../../assets/construction.png"
 import projectPeoplePic from "../../assets/proejectPeople.png"
@@ -9,8 +9,6 @@ import google from "../../assets/Google.png"
 import {Button} from "@mui/material"
 import API from "../../api/API";
 import store from "../../utils/store";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from 'remark-gfm';
 import markdownIt from "markdown-it";
 
 
@@ -142,6 +140,11 @@ const DetailPage = () => {
         </a>
         <Link 
           to={`/project/${id}/opinions/review`}
+        >
+          <button>리뷰</button>
+        </Link>
+        <Link 
+          to={`/project/${id}/opinions/report`}
         >
           <button>버그 리포트</button>
         </Link>

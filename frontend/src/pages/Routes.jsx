@@ -35,9 +35,9 @@ const Routes = () => {
         <Route path="review" element={<ReviewPage />} />
         <Route path="review/post" element={<PostReviewPage />} />
 
-        <Route path="/project/:projectId/opinions/report" element={<ReportPage />} />
-        <Route path="/project/:projectId/opinions/report/post" element={<PostReportPage />} />
-        <Route path="/project/:projectId/opinions/report/:reportId" element={<ReportDetailPage />} />
+        <Route path="report" element={<ReportPage />} />
+        <Route path="report/post" element={<PostReportPage />} />
+        <Route path="report/:reportId" element={<ReportDetailPage />} />
       </Route>
 
     </ReactRouterRoutes>

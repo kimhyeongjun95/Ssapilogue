@@ -36,7 +36,7 @@ const PostReviewPage = () => {
         content : markdown
       })
       console.log(postReport)
-      navigate(`/project/${id}/report/${postReport.data.bugId}`)
+      navigate(`/project/${id}/opinions/report/${postReport.data.bugId}`)
     } catch (e) {
       throw e;
     }
