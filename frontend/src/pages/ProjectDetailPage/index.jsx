@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link, useParams } from "react-router-dom";
 import detailImage from "../../assets//detailImage.png"
 import "./style.scss"
@@ -7,10 +7,20 @@ import projectPeoplePic from "../../assets/proejectPeople.png"
 import gitRepo from "../../assets/git.png"
 import google from "../../assets/Google.png"
 import {Button} from "@mui/material"
+import API from "../../api/API";
+import store from "../../utils/store";
 
 
 const DetailPage = () => {
   const id = useParams().projectId;
+  useEffect(() => {
+    async function projectCall() {
+      const res = await API.get(`/api/project/${id}`)
+      console.log(res)
+    }
+    projectCall()
+
+  })
   let category = '자율'
   let title = '라이키와 함께 자전거 여행을 떠나보세요!  나의 라이딩 메이트, RIKEY'
   let stack = ['react-native','react','spring','엔진엑스','Unity','Unity']
@@ -47,7 +57,12 @@ const DetailPage = () => {
 
     </div>
   })
-
+  const deleteProject = async() => {
+    console.log(id)
+    store.getToken();
+    const res = await API.delete(`/api/project/${id}`)
+    console.log(res)
+  }
 
   const stackBox = stack.map((item) => {
     return <Button variant="contained" style={{margin:"0.3%", marginRight:"1%", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
@@ -81,7 +96,7 @@ const DetailPage = () => {
           <span className="option-div">
             <p className="option-category">ReadMe 갱신</p>
             <p className="option-category">수정</p>
-            <p className="option-category-red">삭제</p>
+            <p onClick={deleteProject} className="option-category-red">삭제</p>
           </span>
         </div>
 
@@ -103,9 +118,9 @@ const DetailPage = () => {
           Demo Site
         </a>
         <Link 
-          to={`/project/${id}/report/post`}
+          to={`/project/${id}/report/`}
         >
-          <button>리뷰 / 버그 작성</button>
+          <button>리뷰 / 버그 리포트</button>
         </Link>
       </div>
 
