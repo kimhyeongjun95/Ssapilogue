@@ -1,6 +1,8 @@
 package com.ssafy.ssapilogue.api.service;
 
-import com.ssafy.ssapilogue.api.dto.request.CreateCommentReqDto;
+import com.ssafy.ssapilogue.api.dto.request.CreateProjectCommentReqDto;
+import com.ssafy.ssapilogue.api.exception.CustomException;
+import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.core.domain.Project;
 import com.ssafy.ssapilogue.core.domain.ProjectComment;
 import com.ssafy.ssapilogue.core.domain.User;
@@ -22,12 +24,14 @@ public class ProjectCommentServiceImpl implements ProjectCommentService {
 
     // 댓글 등록
     @Override
-    public Long createComment(CreateCommentReqDto createCommentReqDto, String userId) {
-        Project project = projectRepository.getById(createCommentReqDto.getProjectId());
-        User user = userRepository.getById(userId);
+    public Long createComment(Long projectId, CreateProjectCommentReqDto createProjectCommentReqDto, String userEmail) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+
+        User user = userRepository.findByEmail(userEmail);
 
         ProjectComment projectComment = ProjectComment.builder()
-                .content(createCommentReqDto.getContent())
+                .content(createProjectCommentReqDto.getContent())
                 .project(project)
                 .user(user)
                 .build();
