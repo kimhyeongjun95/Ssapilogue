@@ -40,13 +40,14 @@ public class ReviewServiceImpl implements ReviewService{
         List<Survey> surveys = surveyRepository.findAllByProjectId(projectId);
         for (Survey survey : surveys) {
             String surveyTitle = survey.getTitle();
+            SurveyType surveyType = survey.getSurveyType();
 
             List<Review> reviews = reviewRepository.findAllBySurvey(survey);
             Integer totalCount = reviews.size();
 
             List<FindObjectiveReviewResDto> objectiveReviews = new ArrayList<>();
             List<FindSubjectiveReviewResDto> subjectiveReviews = new ArrayList<>();
-            if (survey.getSurveyType() == SurveyType.객관식) {
+            if (surveyType == SurveyType.객관식) {
                 List<SurveyOption> surveyOptions = survey.getSurveyOptions();
                 for (SurveyOption surveyOption : surveyOptions) {
                     Integer count = reviewRepository.countAllBySurveyOption(surveyOption);
@@ -63,7 +64,7 @@ public class ReviewServiceImpl implements ReviewService{
                 }
             }
 
-            findReviewResDtos.add(new FindReviewResDto(index, surveyTitle, totalCount, objectiveReviews, subjectiveReviews));
+            findReviewResDtos.add(new FindReviewResDto(index, surveyTitle, String.valueOf(surveyType), totalCount, objectiveReviews, subjectiveReviews));
             index ++;
         }
         return findReviewResDtos;
