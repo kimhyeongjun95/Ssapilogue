@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 
 const PostReviewPage = () => {
-  const id = useParams().projectId;
+  const id = useParams().projectId; 
 
   const editorRef = React.createRef();
   const [val, setVal] = useState('')
