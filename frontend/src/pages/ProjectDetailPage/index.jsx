@@ -103,7 +103,7 @@ const DetailPage = () => {
           Demo Site
         </a>
         <Link 
-          to={`/project/${id}/report/`}
+          to={`/project/${id}/opinions/review`}
         >
           <button>리뷰 / 버그 리포트</button>
         </Link>
