@@ -58,22 +58,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     // 프로젝트 전체조회
     @Override
-    public List<FindProjectResDto> findProjects(String standard, String category, String userEmail) {
+    public List<FindProjectResDto> findProjects(String userEmail) {
         List<Project> projects = null;
 
-        if (standard.equals("최신")) {
-            if (category.equals("전체")) {
-                projects = projectRepository.findAllByOrderByIdDesc();
-            } else {
-                projects = projectRepository.findByCategoryOrderByIdDesc(Category.valueOf(category));
-            }
-        } else if (standard.equals("인기")) {
-            if (category.equals("전체")) {
-                projects = projectRepository.findAllByOrderByLikesDesc();
-            } else {
-                projects = projectRepository.findByCategoryOrderByLikesDesc(Category.valueOf(category));
-            }
-        }
+        projects = projectRepository.findAllByOrderByIdDesc();
 
         List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
         if (userEmail.isEmpty()) {
