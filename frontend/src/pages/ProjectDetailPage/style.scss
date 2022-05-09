@@ -54,7 +54,10 @@
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+}
 
+.member-div {
+  margin-top: 10px;
 }
 
 .git-div {
@@ -138,6 +141,7 @@
 .option-div {
   display: flex;
   flex-direction:  row;
+  // justify-content: flex-start;
 }
 
 .option-category {
