@@ -1,0 +1,109 @@
+.main {
+  margin-left: 15%;
+}
+.report-main-div {
+  border : 1px solid black;
+  border-radius: 10px;
+
+  width: 70%;
+  height: 100%;
+  div {
+    margin-left: 3%;
+  }
+  p {
+    margin : 0;
+  }
+  hr {
+    margin: 0;
+    border : 0;
+    border-top: 0.1px solid #DBDBDB;
+    width: 100%;
+  }
+}
+.hr-div {
+  margin-top : 2%;
+}
+.report-nav {
+  display: flex;
+  flex-direction: row ;
+  align-items: center;
+  font-weight: bold;
+  .pow {
+    margin-left: auto;
+    margin-right: 5%;
+    display: flex;
+    flex-direction: row;
+  p {
+      margin-left: 2vw;
+  }
+  p:hover {
+    cursor: pointer;
+  }
+
+  }
+}
+
+.red {
+  color : red;
+}
+
+.writer-div {
+  margin-top: 2%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  img {
+    width: 30px;
+    height: 30px;
+  }
+  p {
+    margin-left: 1%;
+  }
+}
+
+.content-div {
+  margin-top: 5%;
+  margin-right: 2vw;
+  margin-bottom: 5%;
+  img {
+    object-fit: cover;
+    max-width: 100%;
+    height: auto;
+  }
+}
+.comment-div {
+  width: 70%;
+}
+.comment-p {
+  font-weight: bold;
+}
+.comment-number {
+  margin-left: 0.2%;
+  color : #3396F4;
+}
+.comment-box {
+  width: 100%;
+  height: 10vh;
+  resize: none;  
+}
+.box-div {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5vh;
+}
+.icon {
+  vertical-align:top;
+  width: 30px;
+  height: 30px;
+  margin-right: 1%;
+}
+.comment-nav {
+  display: flex;
+  flex-direction: row;
+  p {
+    margin-right: 5%;
+  }
+  p:hover {
+    cursor: pointer;
+  }
+}

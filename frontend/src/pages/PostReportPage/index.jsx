@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const PostReviewPage = () => {
   const id = useParams().projectId; 
-
+  let navigate = useNavigate();
   const editorRef = React.createRef();
   const [val, setVal] = useState('')
   const [markdown, setMarkdown] = useState('')
@@ -36,6 +36,7 @@ const PostReviewPage = () => {
         content : markdown
       })
       console.log(postReport)
+      navigate(`/project/${id}/opinions/report/${postReport.data.bugId}`)
     } catch (e) {
       throw e;
     }
