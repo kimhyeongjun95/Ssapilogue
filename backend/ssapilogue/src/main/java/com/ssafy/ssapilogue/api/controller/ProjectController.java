@@ -4,6 +4,8 @@ import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectTitleResDto;
+import com.ssafy.ssapilogue.api.exception.CustomException;
+import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.api.service.BookmarkService;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
 import com.ssafy.ssapilogue.api.service.LikedService;
@@ -46,6 +48,8 @@ public class ProjectController {
             projectList = projectService.findProjects("");
         } else {
             String userEmail = jwtTokenProvider.getUserEmail(token);
+            if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
+
             projectList = projectService.findProjects(userEmail);
         }
 
@@ -63,7 +67,10 @@ public class ProjectController {
         Map<String, Object> result = new HashMap<>();
 
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
         Long projectId = projectService.createProject(createProjectReqDto, userEmail);
         result.put("projectId", projectId);
@@ -73,16 +80,19 @@ public class ProjectController {
 
     @GetMapping("/{projectId}")
     @ApiOperation(value = "프로젝트 상세조회", notes = "프로젝트를 조회한다.")
-    public ResponseEntity<Map<String, Object>> findProject(
+    public ResponseEntity<Map<String, Object>> findProjectDetail(
             @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId,
             HttpServletRequest request) {
 
         Map<String, Object> result = new HashMap<>();
 
         String token = jwtTokenProvider.resolveToken(request);
-        String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
 
-        FindProjectDetailResDto project = projectService.findProject(projectId, userEmail);
+        String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
+
+        FindProjectDetailResDto project = projectService.findProjectDetail(projectId, userEmail);
         result.put("project", project);
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
@@ -92,9 +102,16 @@ public class ProjectController {
     @ApiOperation(value = "프로젝트 수정", notes = "프로젝트를 수정한다.")
     public ResponseEntity<Map<String, Object>> updateProject(
             @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId,
-            @RequestBody @ApiParam(value = "프로젝트 정보", required = true) CreateProjectReqDto createProjectReqDto) {
+            @RequestBody @ApiParam(value = "프로젝트 정보", required = true) CreateProjectReqDto createProjectReqDto,
+            HttpServletRequest request) {
 
         Map<String, Object> result = new HashMap<>();
+
+        String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
+        String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
         projectService.updateProject(projectId, createProjectReqDto);
         result.put("status", "SUCCESS");
@@ -111,7 +128,10 @@ public class ProjectController {
         Map<String, Object> result = new HashMap<>();
 
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
         projectService.deleteProject(projectId, userEmail);
         result.put("status", "SUCCESS");
@@ -128,7 +148,10 @@ public class ProjectController {
         Map<String, Object> result = new HashMap<>();
 
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
         likedService.createLiked(userEmail, projectId);
         result.put("status", "SUCCESS");
@@ -145,7 +168,10 @@ public class ProjectController {
         Map<String, Object> result = new HashMap<>();
 
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
         likedService.deleteLiked(userEmail, projectId);
         result.put("status", "SUCCESS");
@@ -162,7 +188,10 @@ public class ProjectController {
         Map<String, Object> result = new HashMap<>();
 
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
         bookmarkService.createBookmark(userEmail, projectId);
         result.put("status", "SUCCESS");
@@ -179,7 +208,10 @@ public class ProjectController {
         Map<String, Object> result = new HashMap<>();
 
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
         bookmarkService.deleteBookmark(userEmail, projectId);
         result.put("status", "SUCCESS");
@@ -196,7 +228,10 @@ public class ProjectController {
         Map<String, Object> result = new HashMap<>();
 
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
         projectService.updateReadme(projectId);
         result.put("status", "SUCCESS");
@@ -206,7 +241,7 @@ public class ProjectController {
 
     @PostMapping("/image")
     @ApiOperation(value = "프로젝트 이미지 업로드", notes = "프로젝트 이미지를 업로드한다.")
-    public ResponseEntity<Map<String, Object>> updateImage(
+    public ResponseEntity<Map<String, Object>> uploadImage(
             @RequestPart @ApiParam(value = "이미지 파일", required = true) MultipartFile file,
             HttpServletRequest request) {
 
@@ -214,7 +249,10 @@ public class ProjectController {
         HttpStatus httpStatus = null;
 
         String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
         String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
 
         try {
             String imageUrl = projectService.uploadImage(file, userEmail);
@@ -242,6 +280,8 @@ public class ProjectController {
             projectList = projectService.searchProjectsByTitle(keyword, "");
         } else {
             String userEmail = jwtTokenProvider.getUserEmail(token);
+            if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
+
             projectList = projectService.searchProjectsByTitle(keyword, userEmail);
         }
 
