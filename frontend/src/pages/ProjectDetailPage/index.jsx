@@ -137,6 +137,26 @@ const DetailPage = () => {
             {memberBox}
           </span>
         </div>
+<<<<<<< HEAD
+=======
+      </div>
+
+      <div className="git-div">
+        <a href="https://www.naver.com" className="link-a">
+          <img className="icon" src={gitRepo} alt="gitRepo" />
+          Git Repo
+        </a>
+        <a href="https://www.kakao.com" className="link-a">
+          <img className="icon" src={google} alt="google" />
+          Demo Site
+        </a>
+        <Link 
+          to={`/project/${id}/opinions/review`}
+        >
+          <button>버그 리포트</button>
+        </Link>
+      </div>
+>>>>>>> c84d5f2076ccaf43baa8c31bd1569fdbf528a6c7
 
         <div className="git-div">
           <a href="https://www.naver.com" className="link-a">
