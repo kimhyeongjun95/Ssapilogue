@@ -24,7 +24,7 @@ const SignInPage = () => {
     try {
       store.setToken("");
       const result = await API.post("/api/v4/users/login", {login_id: id,password: pw,})
-      const res = await API.post("/api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
+      const res = await API.post("/api/user/login", { email:result.data.email, password:pw, userId:result.data.id })
       const direct = res.data.status;
       if (direct === "NO USER") {
         navigate("/signup", {state: {email: result.data.email, pw: pw, userId: result.data.id }});
@@ -37,7 +37,6 @@ const SignInPage = () => {
         return;
       }
     } catch (e) {
-      console.log(e);
       throw e;
     }
   }
