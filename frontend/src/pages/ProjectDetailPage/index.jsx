@@ -81,9 +81,11 @@ const DetailPage = () => {
           </div>
         </div>
         <div className="comment-content">
-          {item.content}
+          <p>{item.content}</p>
         </div>
-        <div>삭제하기</div>
+        <div>
+          <p className="red">삭제하기</p>
+        </div>
       </div>
 
     </div>
@@ -167,7 +169,7 @@ const DetailPage = () => {
           <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
           <div>
             <p><textarea className="comment-box" maxLength={340}></textarea></p>
-            <input className="comment-submit" type="submit" value="댓글 작성" />
+            <button className="comment-submit" type="submit">댓글 작성</button>
           </div>
         </div>
 

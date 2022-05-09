@@ -1,7 +1,7 @@
-.main {
+.report-detail-main {
   margin-left: 15%;
 }
-.report-main-div {
+.report-detail-main-div {
   border : 1px solid black;
   border-radius: 10px;
 
@@ -20,10 +20,10 @@
     width: 100%;
   }
 }
-.hr-div {
+.report-hr-div {
   margin-top : 2%;
 }
-.report-nav {
+.report-detail-nav {
   display: flex;
   flex-direction: row ;
   align-items: center;
@@ -33,21 +33,31 @@
     margin-right: 5%;
     display: flex;
     flex-direction: row;
+  }
   p {
       margin-left: 2vw;
+      text-decoration: none;
   }
   p:hover {
     cursor: pointer;
   }
-
+  Link {
+    text-decoration: none;
   }
+
+  
 }
 
-.red {
+.report-detail-red {
   color : red;
+  width: 30%;
+  font-size: 14px !important;
+}
+.report-detail-red:hover {
+  cursor: pointer;
 }
 
-.writer-div {
+.report-detail-writer-div {
   margin-top: 2%;
   display: flex;
   flex-direction: row;
@@ -61,7 +71,7 @@
   }
 }
 
-.content-div {
+.report-detail-content-div {
   margin-top: 5%;
   margin-right: 2vw;
   margin-bottom: 5%;
@@ -71,33 +81,43 @@
     height: auto;
   }
 }
-.comment-div {
+.report-detail-comment-div {
   width: 70%;
+  button {
+    margin-top : 1%;
+  }
+  button:hover{
+    cursor: pointer;
+  }
 }
-.comment-p {
+.report-detail-comment-p {
   font-weight: bold;
 }
-.comment-number {
+.report-detail-comment-number {
   margin-left: 0.2%;
   color : #3396F4;
 }
-.comment-box {
+.report-detail-comment-box {
   width: 100%;
   height: 10vh;
   resize: none;  
 }
-.box-div {
+.report-detail-box-div {
   display: flex;
   flex-direction: row;
-  margin-top: 5vh;
+  margin-top: 30px;
+  p {
+    font-size: 12px;
+  }
 }
-.icon {
+.report-detail-icon {
   vertical-align:top;
-  width: 30px;
-  height: 30px;
+  border-radius: 30px;
+  width: 50px;
+  height: 50px;
   margin-right: 1%;
 }
-.comment-nav {
+.report-detail-comment-nav {
   display: flex;
   flex-direction: row;
   p {
