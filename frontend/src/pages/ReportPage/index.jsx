@@ -5,6 +5,7 @@ import "./style.scss"
 import { Link, useNavigate, useParams } from "react-router-dom";
 import API from "../../api/API";
 import store from "../../utils/store";
+import moment from 'moment';
 
 const ReportPage = () => {
   const [board, setBoard] = useState([0,0,0]);
@@ -73,7 +74,7 @@ const ReportPage = () => {
         <input type="checkbox" defaultChecked={pio} onClick={() => inputClick(item.bugId)} size="big"></input>
       </div>
       <p className="menu-title" onClick={() => bugClick(item.bugId)}>{item.title}</p>
-      <p className="menu-date">{item.createAt}</p>
+      <p className="menu-date">{moment(item.createAt).format('YYYY년 MM월 DD일')}</p>
       <p className="menu-writer">{item.nickname}</p>
      
     </div>

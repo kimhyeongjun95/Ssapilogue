@@ -55,16 +55,26 @@ const ReportDetailPage = () => {
     setKai(kai + 1)
   }
 
+  const deleteComment = async(bugCoId) => {
+    const res = await API.delete(`/api/bug-comment/${bugCoId}`)
+    console.log(res)
+    setKai(kai + 1)
+  }
+  const goEdit = () => {
+    console.log(content)
+    navigate("edit", {state: {content :content ,title : title}});
+  }
+    
   const commentBox = comment.map((item) => {
-    return <div className="box-div">
+    return <div className="report-detail-box-div">
       <div>
-        <img className="icon" src={detailImage} alt="profile" />
+        <img className="report-detail-icon" src={detailImage} alt="profile" />
       </div>
       <div>
-        <p>{item.nickname} {item.createdAt}</p>
+        {item.nickname} {item.createdAt}
         <p>{item.content}</p>
         <div>
-          <p className="red">삭제하기</p>
+          <p className="report-detail-red" onClick={() => deleteComment(item.bugCoId)}>삭제하기</p>
         </div>
         
       </div>
@@ -73,33 +83,33 @@ const ReportDetailPage = () => {
   })
 
   return (
-    <div className="main">
-      <div className="report-main-div">
-        <div className="report-nav">
+    <div className="report-detail-main">
+      <div className="report-detail-main-div">
+        <div className="report-detail-nav">
           <h1>{title}</h1>
           <div className="pow">
-            <p>수정</p>
+            <p onClick={goEdit}>수정</p>
             <p className="red" onClick={deleteReport}>삭제</p>
           </div>
         </div>
         <hr />
-        <div className="hr-div">
+        <div className="report-hr-div">
           <p> 작성일  {createAt}</p>
         </div>
-        <div className="writer-div">
+        <div className="report-detail-writer-div">
           <img src={defaultpic} />
           <p>{writer}</p>
         </div>
-        <div className="content-div" dangerouslySetInnerHTML={{
+        <div className="report-detail-content-div" dangerouslySetInnerHTML={{
           __html: markdownIt().render(content),
         }}
         ></div>
       </div>
-      <div className="comment-div">
+      <div className="report-detail-comment-div">
         <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
         <div>
           <textarea className="comment-box" maxLength={400} value={writecomment} onChange={onChangeComment}></textarea>
-          <Button variant="contained" onClick={postComment}>작성하기</Button>
+          <button className="comment-submit" type="submit" onClick={postComment}>댓글 작성</button>
         </div>
       </div>
       {commentBox}
