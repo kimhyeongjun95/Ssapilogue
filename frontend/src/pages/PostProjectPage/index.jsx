@@ -4,10 +4,12 @@ import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
 import {InputLabel,MenuItem,FormControl, Button, Chip} from "@mui/material"
 import Select from "@mui/material/Select";
-
+import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import { Link } from 'react-router-dom';
+import store from '../../utils/store';
+
 
 
 const PostProjectPage = () => {
@@ -87,13 +89,17 @@ const PostProjectPage = () => {
     imageInput.current.click();
   };
  
-  const onChange = (event) => {
+  const onChange = async(event) => {
     const imageFile = event.target.files[0];
+    console.log(imageFile)
     const imageUrl = URL.createObjectURL(imageFile);
     setThumnailUrl(imageUrl)
-    setThumnail(imageFile)
-    console.log(thumbnail)
-    console.log(thumbnailUrl)
+    const formData = new FormData();
+
+    formData.append('file', imageFile);
+    
+    const res = await API.post('/api/project/image', formData);
+    setThumnail(res.data.imageUrl)
  
   };
   ///
@@ -194,6 +200,7 @@ const PostProjectPage = () => {
         { (readmeCheck === "1") ?
           <div style={{marginTop:"2%",width:"40%"}}>
             <Editor
+              initialEditType="markdown"
               height="40vh"
               placeholder='마크다운을 붙여주세요.'
               onChange={onChangeIntroFunction}
