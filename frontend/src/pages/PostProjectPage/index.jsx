@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import store from '../../utils/store';
 
 
+
 const PostProjectPage = () => {
   // 상태관리
   const [title, setTitle] = useState('')
@@ -204,6 +205,7 @@ const PostProjectPage = () => {
               placeholder='마크다운을 붙여주세요.'
               onChange={onChangeIntroFunction}
               ref={editorRef}
+              initialEditType="markdown"
               
             /> 
           </div>
