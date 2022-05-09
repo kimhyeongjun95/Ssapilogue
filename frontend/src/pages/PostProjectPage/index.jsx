@@ -205,6 +205,7 @@ const PostProjectPage = () => {
               placeholder='마크다운을 붙여주세요.'
               onChange={onChangeIntroFunction}
               ref={editorRef}
+              initialEditType="markdown"
               
             /> 
           </div>
