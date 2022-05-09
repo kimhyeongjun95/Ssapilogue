@@ -6,6 +6,7 @@ import constructionPic from "../../assets/construction.png"
 import projectPeoplePic from "../../assets/proejectPeople.png"
 import gitRepo from "../../assets/git.png"
 import google from "../../assets/Google.png"
+import report from "../../assets/report.png"
 import {Button} from "@mui/material"
 import API from "../../api/API";
 import store from "../../utils/store";
@@ -70,12 +71,21 @@ const DetailPage = () => {
   const commentBox = comment.map((item) => {
     return <div className="box-div">
       <div>
-        <img className="icon" src={detailImage} alt="profile" />
+        <img className="comment-image" src={detailImage} alt="profile" />
       </div>
-      <div>
-        <p>{item.nickname} {item.createdAt}</p>
-        <p>{item.content}</p>
-        <p>답글달기</p>
+      <div className="comment-content-box">
+        <div className="comment-nickname-box">
+          <div className="comment-nickname">
+            {item.nickname}
+          </div>
+          <div className="comment-created">
+            {item.createdAt}
+          </div>
+        </div>
+        <div className="comment-content">
+          {item.content}
+        </div>
+        <div>삭제하기</div>
       </div>
 
     </div>
@@ -88,13 +98,13 @@ const DetailPage = () => {
   }
 
   const stackBox = stack.map((item) => {
-    return <Button variant="contained" style={{margin:"0.3%", marginRight:"1%", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+    return <Button variant="contained" style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
       
     >{item}</Button>
   })
 
   const memberBox = member.map((item) => {
-    return <Button variant="contained" style={{margin : "0.6%", backgroundColor : "#00CAF4", color:'white', fontWeight:'bold'}}
+    return <Button variant="contained" style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#00CAF4", color:'white', fontWeight:'bold'}}
     >{item}
     </Button>
   })
@@ -108,41 +118,45 @@ const DetailPage = () => {
           <div className="project-part">{category}</div>
           <h2>{title}</h2>
         </div>
-        <div>
-          <div className="stack-div">
-            <span className="stack">
-              <img className="icon" src={constructionPic} alt="conpic" />
-              {stackBox}
-            </span>
+        <div className="stack-div">
+          <span className="stack">
+            <img className="icon" src={constructionPic} alt="conpic" />
+            {stackBox}
+          </span>
 
-            <span className="option-div">
-              <p className="option-category">ReadMe 갱신</p>
-              <p className="option-category">수정</p>
-              <p onClick={deleteProject} className="option-category-red">삭제</p>
-            </span>
-          </div>
+          <span className="option-div">
+            <p className="option-category">ReadMe 갱신</p>
+            <p className="option-category">수정</p>
+            <p onClick={deleteProject} className="option-category-red">삭제</p>
+          </span>
+        </div>
 
-          <div className="member-div">
-            <span className="stack">
-              <img className="icon" src={projectPeoplePic} alt="projectPeoplePic" />
-              {memberBox}
-            </span>
-          </div>
+        <div className="member-div">
+          <span className="stack">
+            <img className="icon" src={projectPeoplePic} alt="projectPeoplePic" />
+            {memberBox}
+          </span>
         </div>
 
         <div className="git-div">
           <a href="https://www.naver.com" className="link-a">
             <img className="icon" src={gitRepo} alt="gitRepo" />
-            Git Repo
+            <span>
+              Git Repo
+            </span>
           </a>
           <a href="https://www.kakao.com" className="link-a">
             <img className="icon" src={google} alt="google" />
-            Demo Site
+            <span>
+              Demo Site
+            </span>
           </a>
           <Link 
             to={`/project/${id}/report/`}
+            className="link-a"
           >
-            <button>버그 리포트</button>
+            <img className="icon" src={report} alt="report" />
+            리뷰·버그 리포트
           </Link>
         </div>
 
@@ -155,7 +169,7 @@ const DetailPage = () => {
           <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
           <div>
             <p><textarea className="comment-box" maxLength={340}></textarea></p>
-            <input type="submit" value="Submit" />
+            <input className="comment-submit" type="submit" value="댓글 작성" />
           </div>
         </div>
 
