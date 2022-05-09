@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface ProjectService {
 
-    List<FindProjectResDto> findProjects(String standard, String category, String userEmail);
+    List<FindProjectResDto> findProjects(String userEmail);
     Long createProject(CreateProjectReqDto createProjectReqDto, String userEmail);
-    FindProjectDetailResDto findProject(Long projectId, String userEmail);
+    FindProjectDetailResDto findProjectDetail(Long projectId, String userEmail);
     void updateProject(Long projectId, CreateProjectReqDto createProjectReqDto);
     void deleteProject(Long projectId, String userEmail);
     void updateReadme(Long projectId);
