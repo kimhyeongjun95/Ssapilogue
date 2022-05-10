@@ -24,11 +24,13 @@ const Navbar = () => {
   }
 
   const goProfile = () => {
-    navigate("/profile")
+    navigate("/profile");
+    setDropDown(!dropDown);
   }
 
   const goChangeInfo = () => {
-    navigate("/changeinfo")
+    navigate("/changeinfo");
+    setDropDown(!dropDown);
   }
 
   useEffect(() => {
