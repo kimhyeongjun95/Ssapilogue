@@ -24,7 +24,13 @@ const Navbar = () => {
   }
 
   const goProfile = () => {
-    navigate("/profile")
+    navigate("/profile");
+    setDropDown(!dropDown);
+  }
+
+  const goChangeInfo = () => {
+    navigate("/changeinfo");
+    setDropDown(!dropDown);
   }
 
   useEffect(() => {
@@ -54,19 +60,19 @@ const Navbar = () => {
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_myprofile">
-                <a onClick={goProfile}>프로필</a>
+                <button onClick={goProfile}>프로필</button>
               </div>
             </div>
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_myprofile">
-                <a>정보수정</a>
+                <button onClick={goChangeInfo}>정보수정</button>
               </div>
             </div>
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_logout">
-                <a onClick={signOut}>로그아웃</a>
+                <button onClick={signOut}>로그아웃</button>
               </div>   
             </div>
             
