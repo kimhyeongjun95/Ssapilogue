@@ -10,7 +10,6 @@ import moment from 'moment';
 const ReportPage = () => {
   const [board, setBoard] = useState([0,0,0]);
   const [bugList,setBugList] = useState([]);
-  const [test, setTest] = useState(0);
   const id = useParams().projectId;
 
   let navigate = useNavigate();
@@ -18,18 +17,12 @@ const ReportPage = () => {
   useEffect( () => {
     async function bugrecall() {
       const res = await API.get(`/api/bug/${id}`);
-      console.log(res.data)
-      console.log(board)
-      console.log("테스트",test)
-      console.log(res.data.bugList["bugReports"])
-      setTest(res.data.bugList["totalCount"])
       setBoard([res.data.bugList["totalCount"],res.data.bugList["solvedCount"],res.data.bugList["unsolvedCount"]])
       setBugList(res.data.bugList['bugReports'])
-      console.log(board)
     }
     bugrecall()
     return
-  },[])
+  },[id])
 
   const inputClick = (item) => {
     async function isSolve() {
