@@ -74,10 +74,10 @@ public class BugReportServiceTest {
         assertThat(result.getSolvedCount()).isEqualTo(1);
         assertThat(result.getUnsolvedCount()).isEqualTo(1);
 
-        assertThat(result.getBugReports().get(0).getNickname()).isEqualTo(savedUser.getNickname());
-        assertThat(result.getBugReports().get(0).getTitle()).isEqualTo("여기 클릭이 안돼요!!");
-        assertThat(result.getBugReports().get(0).getContent()).isEqualTo("형준이가 클릭이 안돼요!!");
-        assertThat(result.getBugReports().get(0).getIsSolved()).isEqualTo(false);
+        assertThat(result.getBugReports().get(1).getNickname()).isEqualTo(savedUser.getNickname());
+        assertThat(result.getBugReports().get(1).getTitle()).isEqualTo("여기 클릭이 안돼요!!");
+        assertThat(result.getBugReports().get(1).getContent()).isEqualTo("형준이가 클릭이 안돼요!!");
+        assertThat(result.getBugReports().get(1).getIsSolved()).isEqualTo(false);
     }
 
     @Test
