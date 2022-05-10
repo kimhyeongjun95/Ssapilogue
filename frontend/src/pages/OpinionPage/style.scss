@@ -1,0 +1,23 @@
+$blue : #3396F4;
+
+.option-btn {
+  border: none;
+  border-color: transparent;
+  background-color: transparent;
+  font-size: 2em;
+}
+
+.opinion-center {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.opinion-link {
+  text-decoration: none;
+  color: black;
+}
+
+.option-btn-on {
+  color: $blue;
+}

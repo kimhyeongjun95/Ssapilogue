@@ -43,7 +43,7 @@ const PostSurvey = () => {
   const addMultipleChoice = () => {
     setInputs([...inputs, { title: '', surveyType: "객관식", surveyOptions: [], count: 0 }])
   }
-
+  
   const addChoice = (e, idx) => {
     const list = [...inputs]
     list[idx]["count"] += 1; 
@@ -93,11 +93,11 @@ const PostSurvey = () => {
       store.getToken();
       const projectResult = await API.post("/api/project",{
         title: title,
-        introudce: intro,
+        introduce: intro,
         category: various,
         member: phashbox,
         techStack: hashbox,
-        depolyAddress: bepo,
+        deployAddress: bepo,
         gitAddress: repo,
         thumbnail: thumbnail,
         readmeCheck: readmeCheck,
@@ -169,6 +169,8 @@ const PostSurvey = () => {
         <button className="btn-blue btn-large" onClick={submit}>등록</button>
       </div>
 
+      <button onClick={submit}>등록</button>
+      <button>취소</button>
     </div>
   )
 }

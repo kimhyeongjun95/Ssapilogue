@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import API from "../../api/API";
 import { useNavigate } from 'react-router-dom';
 import store from "../../utils/store";
+import "./style.scss"
+import mattermost from "../../assets/mattermost.png"
 
 const SignInPage = () => {
 
@@ -24,7 +26,7 @@ const SignInPage = () => {
     try {
       store.setToken("");
       const result = await API.post("/api/v4/users/login", {login_id: id,password: pw,})
-      const res = await API.post("/api/user/login", {email:result.data.email, password:pw, userId:result.data.id})
+      const res = await API.post("/api/user/login", { email:result.data.email, password:pw, userId:result.data.id })
       const direct = res.data.status;
       if (direct === "NO USER") {
         navigate("/signup", {state: {email: result.data.email, pw: pw, userId: result.data.id }});
@@ -37,16 +39,18 @@ const SignInPage = () => {
         return;
       }
     } catch (e) {
-      console.log(e);
       throw e;
     }
   }
 
   return (
-    <div>
-      아이디<input name="id" onChange={handleOnChange} value={id}/>
-      비밀번호<input name="pw" onChange={handleOnChange} type="password" value={pw}/>
-      <button onClick={signIn}>로그인</button>
+    <div className="box">
+      <img className="mattermost" src={mattermost} alt="mattermost" />
+      <p className="id">아이디</p>
+      <input className="input" name="id" onChange={handleOnChange} value={id}/>
+      <p className="password">비밀번호</p>
+      <input className="input" name="pw" onChange={handleOnChange} type="password" value={pw}/>
+      <button className="button" onClick={signIn}>로그인</button>
     </div>
   )
 }

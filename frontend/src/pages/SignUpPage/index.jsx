@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import API from "../../api/API";
 import store from "../../utils/store";
+import "./style.scss"
 
 const SignUpPage = () => {
   
@@ -45,15 +46,19 @@ const SignUpPage = () => {
   }
 
   return (
-    <>
-      <h1>회원가입 페이지!</h1>
+    <div className="box">
+      <h2>반가워요!</h2>
+      <p className="p">*는 필수항목입니다.</p>
 
-      닉네임<input name="nickName" onChange={handleOnChange} value={nickName}/>
-      소개말<input name="greetings" onChange={handleOnChange} value={greetings}/>
-      Github<input name="github" onChange={handleOnChange} value={github}/>
-      <button onClick={signUp}>회원가입</button>
+      <p className="subject">닉네임</p>
+      <input className="input" name="nickName" onChange={handleOnChange} value={nickName}/>
+      <p className="subject">소개말</p>
+      <input className="input" name="greetings" onChange={handleOnChange} value={greetings}/>
+      <p className="subject">Github</p>
+      <input className="input" name="github" onChange={handleOnChange} value={github}/>
+      <button className="button" onClick={signUp}>회원가입</button>
       
-    </>
+    </div>
   )
 }
 

@@ -6,10 +6,6 @@ import store from "../../utils/store";
 const PostReviewPage = () => {
   const id = useParams().projectId;
   const [reviews, setReviews] = useState([]);
-  
-  const check = () => {
-    console.log(reviews);
-  }
 
   const handleInput = (e, idx) => {
     const { name, value } = e.target;
@@ -28,7 +24,6 @@ const PostReviewPage = () => {
   const getSurvey = async (id) => {
     try {
       const result = await API.get(`/api/survey/${id}`);
-      console.log(result);
       setReviews(result.data.surveyList);
     } catch (e) {
       throw e;
@@ -38,8 +33,8 @@ const PostReviewPage = () => {
   const submit = async () => {
     try {
       store.getToken()
-      const result = await API.post(`/api/review`, {reviews:reviews})
-      console.log(result);
+      const response = await API.post(`/api/review`, {reviews:reviews})
+      console.log(response);
     } catch (e) {
       throw e;
     }
@@ -52,7 +47,6 @@ const PostReviewPage = () => {
   return (
     <>
       <h1>리뷰 등록 페이지!</h1>
-      <button onClick={check}>확인</button>
       {reviews.map((review, idx) => (
         <div key={idx}>
           {review.surveyType === "주관식" ?
@@ -76,6 +70,7 @@ const PostReviewPage = () => {
         </div>
       ))}
       <button onClick={submit}>리뷰 작성 완료</button>
+
     </>
   )
 }

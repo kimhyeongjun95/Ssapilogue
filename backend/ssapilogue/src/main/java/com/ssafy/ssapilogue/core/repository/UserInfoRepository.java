@@ -9,4 +9,5 @@ import java.util.List;
 public interface UserInfoRepository extends JpaRepository<UserInfo, String> {
 
     UserInfo findByUserId(String userId);
+    UserInfo findByUsername(String username);
 }
