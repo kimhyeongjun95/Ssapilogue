@@ -27,6 +27,10 @@ const Navbar = () => {
     navigate("/profile")
   }
 
+  const goChangeInfo = () => {
+    navigate("/changeinfo")
+  }
+
   useEffect(() => {
     signInCheck();
   }, [])
@@ -60,7 +64,7 @@ const Navbar = () => {
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_myprofile">
-                <button>정보수정</button>
+                <button onClick={goChangeInfo}>정보수정</button>
               </div>
             </div>
 
