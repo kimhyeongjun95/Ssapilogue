@@ -42,7 +42,7 @@ const PostSurvey = () => {
   const addMultipleChoice = () => {
     setInputs([...inputs, { title: '', surveyType: "객관식", surveyOptions: [], count: 0 }])
   }
-
+  
   const addChoice = (e, idx) => {
     const list = [...inputs]
     list[idx]["count"] += 1; 

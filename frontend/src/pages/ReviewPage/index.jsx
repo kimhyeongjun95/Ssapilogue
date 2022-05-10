@@ -51,9 +51,9 @@ const ReviewPage = () => {
 
   const getReview = async (id) => {
     const response = await API.get(`/api/review/${id}`);
+    console.log(response);
     setReviews(response.data.reviewList)
   }
-
 
   useEffect(() => {
     getReview(id);
@@ -83,9 +83,16 @@ const ReviewPage = () => {
               {review.surveyType === "주관식" ?
                 <>
                   <h1>{review.surveyTitle}</h1>
-                  {/* <h1>{review.subjectiveReviews[idx]["content"]}</h1> */}
+                  {review.subjectiveReviews.map((res, idx) => (
+                    <div key={idx}>
+                      {res.content}
+                      {res.nickname}
+                    </div>
+                  ))}
                 </>
+
                 :
+
                 <>
                   <h1>{review.surveyTitle}</h1>
                   <BarChart width={730} height={250} data={review.objectiveReviews} >
