@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState} from "react";
 import Question from "../../components/Input/question"
 import API from "../../api/API";
 import { Editor } from '@toast-ui/react-editor';

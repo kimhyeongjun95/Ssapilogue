@@ -90,11 +90,11 @@ const PostSurvey = () => {
       store.getToken();
       const projectResult = await API.post("/api/project",{
         title: title,
-        introudce: intro,
+        introduce: intro,
         category: various,
         member: phashbox,
         techStack: hashbox,
-        depolyAddress: bepo,
+        deployAddress: bepo,
         gitAddress: repo,
         thumbnail: thumbnail,
         readmeCheck: readmeCheck,
@@ -158,7 +158,6 @@ const PostSurvey = () => {
 
       <button onClick={submit}>등록</button>
       <button>취소</button>
-
     </div>
   )
 }

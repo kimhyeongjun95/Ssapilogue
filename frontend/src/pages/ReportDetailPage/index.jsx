@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import detailImage from "../../assets//detailImage.png"
 import "./style.scss"
 import API from "../../api/API";
 import moment from 'moment';
 import defaultpic from '../../assets/default.png'
 import markdownIt from "markdown-it";
-import { Button } from "@mui/material";
 
 const ReportDetailPage = () => {
   const reportId = useParams().reportId
@@ -24,17 +22,20 @@ const ReportDetailPage = () => {
   const [createAt, setCreateAt] = useState('');
   const [kai, setKai] = useState(0);
 
-  useEffect(async()=> {
-    const res = await API.get(`/api/bug/detail/${reportId}`)
-    setCommentCnt(res.data.bugReport.commentCnt)
-    setComment(res.data.bugReport.comments)
-    setTitle(res.data.bugReport.title)
-    setContent(res.data.bugReport.content)
-    setWriter(res.data.bugReport.nickname)
-    setProfilepic(res.data.bugReport.profileImage)
-    setCreateAt(moment(res.data.bugReport.createAt).format('YYYY년 MM월 DD일'))
-    console.log(res.data.bugReport)
-  },[kai])
+  useEffect(() => {
+    async function startReportDetail() {
+      const res = await API.get(`/api/bug/detail/${reportId}`)
+      setCommentCnt(res.data.bugReport.commentCnt)
+      setComment(res.data.bugReport.comments)
+      setTitle(res.data.bugReport.title)
+      setContent(res.data.bugReport.content)
+      setWriter(res.data.bugReport.nickname)
+      setProfilepic(res.data.bugReport.profileImage)
+      setCreateAt(moment(res.data.bugReport.createAt).format('YYYY년 MM월 DD일'))
+      console.log(res.data.bugReport)
+    }
+    startReportDetail()
+  },[kai,reportId])
 
   const deleteReport = async() => {
     const res = await API.delete(`/api/bug/${reportId}`)
@@ -44,7 +45,7 @@ const ReportDetailPage = () => {
 
   const postComment = async() => {
     let commentText = document.getElementById('commentText').value;
-    const res = await API.post(`/api/bug-comment/${reportId}`,{
+    await API.post(`/api/bug-comment/${reportId}`,{
       content : commentText
     })
     document.getElementById('commentText').value = ''
@@ -64,7 +65,7 @@ const ReportDetailPage = () => {
   const commentBox = comment.map((item) => {
     return <div className="report-detail-box-div">
       <div>
-        <img className="report-detail-icon" src={detailImage} alt="profile" />
+        <img className="report-detail-icon" src={(item.profileImage) ? item.profileImage : defaultpic} alt="profile" />
       </div>
       <div>
         {item.nickname} {item.createdAt}
@@ -93,7 +94,7 @@ const ReportDetailPage = () => {
           <p> 작성일  {createAt}</p>
         </div>
         <div className="report-detail-writer-div">
-          <img src={defaultpic} />
+          <img src={(profilepic) ? profilepic : defaultpic} alt="writerProfilePic" />
           <p>{writer}</p>
         </div>
         <div className="report-detail-content-div" dangerouslySetInnerHTML={{

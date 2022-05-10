@@ -167,7 +167,13 @@
   color : red;
   font-weight: bold;
 }
-
+.option-category-red:hover {
+  cursor: pointer;
+}
+.to-edit {
+  text-decoration: none;
+  color: #484848;
+}
 .icon {
   vertical-align:top;
   width: 30px;
