@@ -152,7 +152,7 @@ const DetailPage = () => {
             </span>
           </a>
           <Link 
-            to={`/project/${id}/report/`}
+            to={`/project/${id}/opinions/review`}
             className="link-a"
           >
             <img className="icon" src={report} alt="report" />
