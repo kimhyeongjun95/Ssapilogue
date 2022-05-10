@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -55,12 +56,16 @@ public class ReviewServiceImpl implements ReviewService{
                 }
             } else {
                 for (Review review : reviews) {
-                    User user = userRepository.findByEmail(review.getUserEmail());
+                    Optional<User> user = Optional.ofNullable(userRepository.findByEmail(review.getUserEmail()));
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                     String createdAt = review.getCreatedAt().format(formatter);
 
-                    subjectiveReviews.add(new FindSubjectiveReviewResDto(review, user, createdAt));
+                    if (user.isPresent() == false) {
+                        subjectiveReviews.add(new FindSubjectiveReviewResDto(review, null, null, createdAt));
+                    } else {
+                        subjectiveReviews.add(new FindSubjectiveReviewResDto(review, user.get().getNickname(), user.get().getImage(), createdAt));
+                    }
                 }
             }
 
