@@ -51,7 +51,7 @@ const Navbar = () => {
           </div>
           :
           <Link className="login" to="/signin">
-            <button>로그인</button>
+            <p className="p">로그인</p>
           </Link>
         }
 

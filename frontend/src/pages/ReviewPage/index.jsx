@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import "./style.scss"
 
 function TabPanel(props) {
@@ -83,10 +84,12 @@ const ReviewPage = () => {
               {review.surveyType === "주관식" ?
                 <>
                   <h1>{review.surveyTitle}</h1>
+                  <h1>{review.totalCount}</h1>
                   {review.subjectiveReviews.map((res, idx) => (
                     <div key={idx}>
                       {res.content}
                       {res.nickname}
+                      {moment(res.createAt).format('YYYY년 MM월 DD일')}
                     </div>
                   ))}
                 </>
@@ -95,6 +98,7 @@ const ReviewPage = () => {
 
                 <>
                   <h1>{review.surveyTitle}</h1>
+                  <h1>{review.totalCount}</h1>
                   <BarChart width={730} height={250} data={review.objectiveReviews} >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="optionContent" />
