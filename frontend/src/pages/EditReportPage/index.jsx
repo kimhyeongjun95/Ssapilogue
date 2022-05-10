@@ -1,19 +1,25 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useLayoutEffect } from "react";
 import Question from "../../components/Input/question"
 import API from "../../api/API";
 import { Editor } from '@toast-ui/react-editor';
 import {Button} from "@mui/material"
 import "./style.scss"
-import store from "../../utils/store";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams,useLocation } from "react-router-dom";
 
-
-const PostReviewPage = () => {
-  const id = useParams().projectId; 
+const EditReportPage = () => {
+  const projectid = useParams().projectId; 
+  const reportId = useParams().reportId;
   let navigate = useNavigate();
+  const locations = useLocation().state;
+  const { content,title } = locations;
+  
   const editorRef = React.createRef();
-  const [val, setVal] = useState('')
-  const [markdown, setMarkdown] = useState('')
+  const [val, setVal] = useState(title)
+  const [markdown, setMarkdown] = useState(content)
+
+
+
+  
 
   const onChangeIntroFunction = () => {
     const marktext = editorRef.current.getInstance().getMarkdown()
@@ -21,7 +27,7 @@ const PostReviewPage = () => {
     setMarkdown(marktext)
   };
 
-  const postReport = async() => {
+  const editReport = async() => {
     if (!val) {
       return alert('제목을 입력해주세요')
     }else{
@@ -30,13 +36,12 @@ const PostReviewPage = () => {
       }
     }
     try{
-      store.getToken()
-      const postReport = await API.post(`/api/bug/${id}`, {
+      const editReport = await API.put(`/api/bug/${reportId}`, {
         title: val,
         content : markdown
       })
-      console.log(postReport)
-      navigate(`/project/${id}/opinions/report/${postReport.data.bugId}`)
+      console.log(editReport)
+      navigate(`/project/${projectid}/opinions/report/${reportId}`)
     } catch (e) {
       throw e;
     }
@@ -50,11 +55,12 @@ const PostReviewPage = () => {
       <div className="editor-div">
         <Editor 
           placeholder='리포트를 작성해주세요.'
+          initialValue={content}
           onChange={onChangeIntroFunction}
           ref={editorRef}
         />
       </div>
-      <Button type="submit" style={{marginTop:"10%"}} onClick={postReport} variant="contained">등록</Button>
+      <Button type="submit" style={{marginTop:"10%"}} onClick={editReport} variant="contained">등록</Button>
         
       {/* </form> */}
         
@@ -63,5 +69,4 @@ const PostReviewPage = () => {
     
   )
 }
-
-export default PostReviewPage;
+export default EditReportPage

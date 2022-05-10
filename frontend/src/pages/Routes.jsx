@@ -14,6 +14,7 @@ import ReportPage from './ReportPage'
 import PostReportPage from './PostReportPage'
 import ReportDetailPage from './ReportDetailPage'
 import OpinionPage from './OpinionPage';
+import EditReportPage from './EditReportPage';
 
 const Routes = () => {
   return (
@@ -35,10 +36,11 @@ const Routes = () => {
         <Route path="review" element={<ReviewPage />} />
         <Route path="review/post" element={<PostReviewPage />} />
 
-        <Route path="/project/:projectId/opinions/report" element={<ReportPage />} />
-        <Route path="/project/:projectId/opinions/report/post" element={<PostReportPage />} />
-        <Route path="/project/:projectId/opinions/report/:reportId" element={<ReportDetailPage />} />
+        <Route path="report" element={<ReportPage />} />
       </Route>
+      <Route path="/project/:projectId/opinions/report/post" element={<PostReportPage />} />
+      <Route path="/project/:projectId/opinions/report/:reportId" element={<ReportDetailPage />} />
+      <Route path="/project/:projectId/opinions/report/:reportId/edit" element={<EditReportPage />} />
 
     </ReactRouterRoutes>
   )

@@ -1,6 +1,6 @@
 import React, {useEffect,useState} from "react";
 import { Link, useParams } from "react-router-dom";
-import detailImage from "../../assets//detailImage.png"
+import detailImage from "../../assets/detailImage.png"
 import "./style.scss"
 import constructionPic from "../../assets/construction.png"
 import projectPeoplePic from "../../assets/proejectPeople.png"
@@ -10,8 +10,6 @@ import report from "../../assets/report.png"
 import {Button} from "@mui/material"
 import API from "../../api/API";
 import store from "../../utils/store";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from 'remark-gfm';
 import markdownIt from "markdown-it";
 
 
@@ -83,9 +81,11 @@ const DetailPage = () => {
           </div>
         </div>
         <div className="comment-content">
-          {item.content}
+          <p>{item.content}</p>
         </div>
-        <div>삭제하기</div>
+        <div>
+          <p className="red">삭제하기</p>
+        </div>
       </div>
 
     </div>
@@ -125,9 +125,9 @@ const DetailPage = () => {
           </span>
 
           <span className="option-div">
-            <p className="option-category">ReadMe 갱신</p>
-            <p className="option-category">수정</p>
-            <p onClick={deleteProject} className="option-category-red">삭제</p>
+            <div className="option-category">ReadMe 갱신</div>
+            <div className="option-category">수정</div>
+            <div onClick={deleteProject} className="option-category-red">삭제</div>
           </span>
         </div>
 
@@ -137,26 +137,6 @@ const DetailPage = () => {
             {memberBox}
           </span>
         </div>
-<<<<<<< HEAD
-=======
-      </div>
-
-      <div className="git-div">
-        <a href="https://www.naver.com" className="link-a">
-          <img className="icon" src={gitRepo} alt="gitRepo" />
-          Git Repo
-        </a>
-        <a href="https://www.kakao.com" className="link-a">
-          <img className="icon" src={google} alt="google" />
-          Demo Site
-        </a>
-        <Link 
-          to={`/project/${id}/opinions/review`}
-        >
-          <button>버그 리포트</button>
-        </Link>
-      </div>
->>>>>>> c84d5f2076ccaf43baa8c31bd1569fdbf528a6c7
 
         <div className="git-div">
           <a href="https://www.naver.com" className="link-a">
@@ -189,7 +169,7 @@ const DetailPage = () => {
           <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
           <div>
             <p><textarea className="comment-box" maxLength={340}></textarea></p>
-            <input className="comment-submit" type="submit" value="댓글 작성" />
+            <button className="comment-submit" type="submit">댓글 작성</button>
           </div>
         </div>
 
