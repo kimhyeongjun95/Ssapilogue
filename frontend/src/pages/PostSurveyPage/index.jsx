@@ -169,8 +169,6 @@ const PostSurvey = () => {
         <button className="btn-blue btn-large" onClick={submit}>등록</button>
       </div>
 
-      <button onClick={submit}>등록</button>
-      <button>취소</button>
     </div>
   )
 }
