@@ -5,6 +5,7 @@ import store from "../../utils/store";
 import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
+import plus from '../../assets/plus.png';
 
 const PostSurvey = () => {
 
@@ -52,6 +53,7 @@ const PostSurvey = () => {
     ask.value = list[idx].surveyOptions[count];
     ask.placeholder = "객관식 답변";
     ask.name = "surveyOptions";
+    ask.className = "objective-answer";
     ask.addEventListener("input", (e) => {
       choiceHandleInput(e, idx, count);
     })
@@ -62,6 +64,7 @@ const PostSurvey = () => {
       deleteChoice(e, idx, count);
     })
     let cover = document.createElement("li");
+    cover.className = "answer-box";
     cover.appendChild(ask);
     cover.append(deleteBtn);
     e.target.closest("div").appendChild(cover);
@@ -115,27 +118,31 @@ const PostSurvey = () => {
     <div className="survey">
 
       <h2>설문조사를 등록해 주세요!</h2>
-      <button onClick={tracker}>기본 폼 가져오기</button>
+      <div className="default-survey">
+        <button className="btn-blue" onClick={tracker}>기본 폼 가져오기</button>
+      </div>
 
       {inputs.map((input, idx) => (
-        <div key={idx}>
+        <div className="survey-box" key={idx}>
           <input 
+            className="title-box"
             name="title"
             value={input.title}
             placeholder="질문 제목을 입력해주세요." 
             onChange={e => handleInput(e, idx)}
           />
-          <img src={trash} onClick={e => deleteSurvey(e, idx)} alt="trash" />
+          <img className="trash" src={trash} onClick={e => deleteSurvey(e, idx)} alt="trash" />
 
           {input.surveyType === "주관식" ?
             <></> 
             : 
             <>
               <div className="choice-input">
-                <button onClick={e => addChoice(e, idx)}>추가</button>
+                <img className="plus" src={plus} onClick={e => addChoice(e, idx)} />
 
-                <li>
+                <li className="answer-box">
                   <input
+                    className="objective-answer"
                     placeholder="객관식 답변" 
                     name="surveyOptions"
                     value={input.surveyOptions[0]}
@@ -150,14 +157,17 @@ const PostSurvey = () => {
         </div>
       ))}
 
-      <hr />
-      <button onClick={addSurvey}>더하기 버튼</button>
+      <img className="plus" src={plus} onClick={addSurvey}/>
 
-      <button className={option === "주관식" ? "btn-on" : null} onClick={whichSurvey} value="주관식">주관식</button>
-      <button className={option === "객관식" ? "btn-on" : null} onClick={whichSurvey} value="객관식">객관식</button>
+      <div className="survey-type">
+        <button className={option === "주관식" ? "btn-blue" : "btn-white"} onClick={whichSurvey} value="주관식">주관식</button>
+        <button className={option === "객관식" ? "btn-blue" : "btn-white"} onClick={whichSurvey} value="객관식">객관식</button>
+      </div>
 
-      <button onClick={submit}>등록</button>
-      <button>취소</button>
+      <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
+        <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
+        <button className="btn-blue btn-large" onClick={submit}>등록</button>
+      </div>
 
     </div>
   )
