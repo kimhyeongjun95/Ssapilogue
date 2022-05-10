@@ -2,15 +2,19 @@ import React, {useState,useEffect} from "react";
 import Undo from "../../assets/undo.png"
 import edit from "../../assets/Edit-alt.png"
 import "./style.scss"
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import API from "../../api/API";
 import store from "../../utils/store";
+import moment from 'moment';
 
 const ReportPage = () => {
   const [board, setBoard] = useState([0,0,0]);
   const [bugList,setBugList] = useState([]);
   const [test, setTest] = useState(0);
   const id = useParams().projectId;
+
+  let navigate = useNavigate();
+
   useEffect( () => {
     async function bugrecall() {
       const res = await API.get(`/api/bug/${id}`);
@@ -47,6 +51,9 @@ const ReportPage = () => {
     // let [a1, a2, a3] = board
     // console.log(a1,a2,a3)
   }
+  const bugClick = (item) => {
+    navigate(`${item}`)
+  }
   const bugBox = bugList.map((item,index) => {
     console.log(item)
     let bgdiv = "white-item-div"
@@ -66,8 +73,8 @@ const ReportPage = () => {
       <div className="menu-solved">
         <input type="checkbox" defaultChecked={pio} onClick={() => inputClick(item.bugId)} size="big"></input>
       </div>
-      <p className="menu-title">{item.title}</p>
-      <p className="menu-date">{item.createAt}</p>
+      <p className="menu-title" onClick={() => bugClick(item.bugId)}>{item.title}</p>
+      <p className="menu-date">{moment(item.createAt).format('YYYY년 MM월 DD일')}</p>
       <p className="menu-writer">{item.nickname}</p>
      
     </div>
@@ -107,7 +114,7 @@ const ReportPage = () => {
       <br />
       <div className="wirte-pic-div">
         <Link 
-          to={`/project/${id}/report/post`}
+          to={'post'}
         >
           <img className="write-pic" src={edit} alt="write" />
         </Link>
@@ -115,7 +122,7 @@ const ReportPage = () => {
       <div className="report-box-div">
         <div className="report-menu-div">
           <p className="menu-solved">해결</p>
-          <p className="menu-title">제목</p>
+          <p className="menu-title2">제목</p>
           <p className="menu-date">날짜</p>
           <p>제보자</p>
         </div>

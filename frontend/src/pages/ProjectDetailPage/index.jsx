@@ -1,6 +1,6 @@
 import React, {useEffect,useState} from "react";
 import { Link, useParams } from "react-router-dom";
-import detailImage from "../../assets//detailImage.png"
+import detailImage from "../../assets/detailImage.png"
 import "./style.scss"
 import constructionPic from "../../assets/construction.png"
 import projectPeoplePic from "../../assets/proejectPeople.png"
@@ -10,8 +10,6 @@ import report from "../../assets/report.png"
 import {Button} from "@mui/material"
 import API from "../../api/API";
 import store from "../../utils/store";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from 'remark-gfm';
 import markdownIt from "markdown-it";
 
 
@@ -26,6 +24,7 @@ const DetailPage = () => {
   const [repo, setRepo] = useState('');
   const [bepo, setBepo] = useState(''); 
   const [readme, setReadme] = useState('');
+  const [kai, setKai] = useState(0);
   
   useEffect(() => {
     async function projectCall() {
@@ -40,11 +39,11 @@ const DetailPage = () => {
       setBepo(res.data.project.deployAddress)
       setReadme(res.data.project.readme)
       console.log(res.data.project)
-      console.log(res.data.project.anonymousmember)
+      console.log(res.data.project.anonymousMember)
     }
     projectCall()
 
-  },[])
+  },[kai])
   // let category = '자율'
   // let title = '라이키와 함께 자전거 여행을 떠나보세요!  나의 라이딩 메이트, RIKEY'
   // let stack = ['react-native','react','spring','엔진엑스','Unity','Unity']
@@ -67,6 +66,11 @@ const DetailPage = () => {
   //   }
   // ]
 
+  const deleteComment = async(item) => {
+    const res = await API.delete(`/api/project-comment/${item}`)
+    console.log(res)
+    setKai(kai + 1)
+  }
 
   const commentBox = comment.map((item) => {
     return <div className="box-div">
@@ -83,9 +87,11 @@ const DetailPage = () => {
           </div>
         </div>
         <div className="comment-content">
-          {item.content}
+          <p>{item.content}</p>
         </div>
-        <div>삭제하기</div>
+        <div>
+          <p className="project-detail-red" onClick={() => deleteComment(item.commentId)}>삭제하기</p>
+        </div>
       </div>
 
     </div>
@@ -108,6 +114,16 @@ const DetailPage = () => {
     >{item}
     </Button>
   })
+
+  const writeComment = async() => {
+    var commentText = document.getElementById('commentText').value;
+    const res = await API.post(`/api/project-comment/${id}`,{
+      content : commentText,
+    })
+    console.log(res)
+    console.log(commentText)
+    setKai(kai + 1)
+  }
   
   return (
     
@@ -168,8 +184,8 @@ const DetailPage = () => {
         <div className="comment-div">
           <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
           <div>
-            <p><textarea className="comment-box" maxLength={340}></textarea></p>
-            <input className="comment-submit" type="submit" value="댓글 작성" />
+            <textarea id="commentText" className="comment-box" maxLength={400}></textarea>
+            <button className="comment-submit" type="submit" onClick={writeComment}>댓글 작성</button>
           </div>
         </div>
 
