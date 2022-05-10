@@ -42,7 +42,7 @@ public class ReviewServiceImpl implements ReviewService{
             String surveyTitle = survey.getTitle();
             SurveyType surveyType = survey.getSurveyType();
 
-            List<Review> reviews = reviewRepository.findAllBySurvey(survey);
+            List<Review> reviews = reviewRepository.findAllBySurveyOrderByCreatedAtDesc(survey);
             Integer totalCount = reviews.size();
 
             List<FindObjectiveReviewResDto> objectiveReviews = new ArrayList<>();

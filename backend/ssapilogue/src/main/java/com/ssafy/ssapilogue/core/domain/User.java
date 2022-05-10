@@ -64,6 +64,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<BugReport> bugReports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<BugReportComment> bugReportComments = new ArrayList<>();
+
     @Builder
     public User(String email, String password, String userId, String nickname, String username, String github, String greeting, String image) {
         this.email = email;
