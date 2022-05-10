@@ -9,19 +9,36 @@ nav {
   padding-top: 5px;
   padding-bottom: 5px;
   background-color: white;
+
   
   .home {
     text-decoration: none;
     color: black;
+    margin-left: 20px;
   }
 
   .login {
-    margin-right: 2%;
+    text-decoration: none;
+    color: black;
+    margin-right: 20px;
+  }
+
+  .p {
+    margin-right: 20px;
+    margin-top: 10px;
+    text-decoration: none;
+    color: black;
   }
 
   .navbar-profile-image {
     width: 5%;
     height: 5%;
+    float: right;
+    position: fixed;
+    top: 5px;
+    right: 0px;
+    margin-right: 3%;
+
     img {
       width: 100%;
       height: 100%;
@@ -30,6 +47,23 @@ nav {
       border-radius: 70%;
       padding: 5px;
     }
+  }
+
+  .navbar_dropdown_content {
+    background-color: #121010;
+    opacity: 0.39;
+    color: white;
+    width: 100px;
+    text-align: center;
+    padding: 5px;
+    float: right;
+    position: relative;
+    top: 60px;
+    right: 60px;
+  }
+
+  .navbar_dropdown_content_element {
+    margin: 8px;
   }
 
 }
