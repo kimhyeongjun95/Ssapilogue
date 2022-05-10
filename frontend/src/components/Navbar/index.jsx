@@ -45,7 +45,7 @@ const Navbar = () => {
           </div>
           :
           <Link className="login" to="/signin">
-            <button>로그인</button>
+            <p className="p">로그인</p>
           </Link>
         }
 
@@ -54,19 +54,19 @@ const Navbar = () => {
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_myprofile">
-                <button onClick={goProfile}>프로필</button>
+                <a onClick={goProfile}>프로필</a>
               </div>
             </div>
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_myprofile">
-                <button>정보수정</button>
+                <a>정보수정</a>
               </div>
             </div>
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_logout">
-                <button onClick={signOut}>로그아웃</button>
+                <a onClick={signOut}>로그아웃</a>
               </div>   
             </div>
             
