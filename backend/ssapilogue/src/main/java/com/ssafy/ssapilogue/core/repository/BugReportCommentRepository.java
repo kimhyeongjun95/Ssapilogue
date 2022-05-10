@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BugReportCommentRepository extends JpaRepository<BugReportComment, Long> {
-    List<BugReportComment> findAllByBugReportIdOrderById(Long bugId);
+    List<BugReportComment> findAllByBugReportIdOrderByIdDesc(Long bugId);
 }
