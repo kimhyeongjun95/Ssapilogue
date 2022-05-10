@@ -76,6 +76,9 @@
 .comment-div {
   width: 100%;
   margin-top: 20px;
+  button:hover {
+    cursor: pointer;
+  }
 }
 
 .comment-p {
@@ -152,9 +155,13 @@
   color : #484848;
   font-weight: bold;
 }
-.red {
+.project-detail-red {
   color: red;
+  width: 20%;
   font-weight: bold;
+}
+.project-detail-red:hover {
+  cursor: pointer;
 }
 .option-category-red {
   color : red;

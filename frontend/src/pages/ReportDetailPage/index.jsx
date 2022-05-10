@@ -22,7 +22,6 @@ const ReportDetailPage = () => {
   const [writer, setWriter] = useState('');
   const [profilepic, setProfilepic] = useState('');
   const [createAt, setCreateAt] = useState('');
-  const [writecomment, setWriteComment] = useState('');
   const [kai, setKai] = useState(0);
 
   useEffect(async()=> {
@@ -43,15 +42,12 @@ const ReportDetailPage = () => {
     console.log(res)
   }
 
-  const onChangeComment = (e) => {
-    setWriteComment(e.target.value)
-  }
-
   const postComment = async() => {
+    let commentText = document.getElementById('commentText').value;
     const res = await API.post(`/api/bug-comment/${reportId}`,{
-      content : writecomment
+      content : commentText
     })
-    setWriteComment('')
+    document.getElementById('commentText').value = ''
     setKai(kai + 1)
   }
 
@@ -108,7 +104,7 @@ const ReportDetailPage = () => {
       <div className="report-detail-comment-div">
         <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
         <div>
-          <textarea className="comment-box" maxLength={400} value={writecomment} onChange={onChangeComment}></textarea>
+          <textarea id="commentText" className="comment-box" maxLength={400}></textarea>
           <button className="comment-submit" type="submit" onClick={postComment}>댓글 작성</button>
         </div>
       </div>
