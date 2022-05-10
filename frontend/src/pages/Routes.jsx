@@ -15,6 +15,7 @@ import PostReportPage from './PostReportPage'
 import ReportDetailPage from './ReportDetailPage'
 import OpinionPage from './OpinionPage';
 import EditReportPage from './EditReportPage';
+import EditProjectPage from './EditProjectPage';
 
 const Routes = () => {
   return (
@@ -29,6 +30,7 @@ const Routes = () => {
       <Route path="/project/survey" element={<PostSurveyPage />} />
 
       <Route path="/project/:projectId" element={<ProjectDetailPage />} />
+      <Route path="/project/:projectId/edit" element={<EditProjectPage />} />
       <Route path="/project/:projectId/editsurvey" element={<EditSurveyPage />} />
 
       {/* review에 객관식 주관식 nesting 예정 */}
