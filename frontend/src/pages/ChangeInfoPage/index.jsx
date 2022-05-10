@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import API from "../../api/API";
 import store from "../../utils/store";
 
@@ -11,11 +12,11 @@ const ChangeInfoPage = () => {
     greeting: '',
   });
   const { nickname, github, email, greeting } = inputs;
-  
+  const navigate = useNavigate();
+
   const getInfo = async () => {
     store.getToken();
     const response = await API.get("/api/user")
-    console.log(response);
     setInputs(response.data.user);
   }
 
@@ -25,9 +26,25 @@ const ChangeInfoPage = () => {
       ...inputs,
       [name]: value
     });
-    console.log(name, value);
   };
+
+  const changeInfo = () => {
+    API.put("/api/user", {
+      email: email,
+      nickname: nickname,
+      github: github,
+      greeting: greeting,
+      image: null,
+    })
+  }
   
+  const withDraw = () => {
+    store.getToken();
+    API.delete("api/user");
+    store.setToken("logout");
+    return;
+  }
+
   useEffect(() => {
     getInfo();
   }, [])
@@ -39,6 +56,9 @@ const ChangeInfoPage = () => {
       이메일 <input name="email" onChange={e => handleOnChange(e)} value={email}/>
       GITHUB <input name="github" onChange={e => handleOnChange(e)} value={github}/>
       자기소개 <input name="greeting" onChange={e => handleOnChange(e)} value={greeting}/>
+      <button>변경하기</button>
+
+      <button onClick={withDraw}>회원탈퇴</button>
     </>
   )
 }
