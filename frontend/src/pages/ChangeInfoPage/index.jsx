@@ -5,18 +5,20 @@ import store from "../../utils/store";
 const ChangeInfoPage = () => {
 
   const [inputs, setInputs] = useState({
-    nickname: '',
     github: '',
-    email: '',
     greeting: '',
   });
-  const { nickname, github, email, greeting } = inputs;
-  
+  const [nickName, setNickName] = useState('');
+  const [email, setEmail] = useState('');
+  const [image, setImage] = useState('');
+  const { github, greeting } = inputs;
+
   const getInfo = async () => {
     store.getToken();
     const response = await API.get("/api/user")
-    console.log(response);
     setInputs(response.data.user);
+    setEmail(response.data.user.nickName);
+    setNickName(response.data.user.email);
   }
 
   const handleOnChange = (e) => {
@@ -25,9 +27,33 @@ const ChangeInfoPage = () => {
       ...inputs,
       [name]: value
     });
-    console.log(name, value);
   };
+
+  const uploadImage = async (e) => {
+    store.getToken();
+    const formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    const response = await API.post('/api/user/image', formData);
+    setImage(response.data.imageUrl);
+  }
+
+  const changeInfo = async() => {
+    await API.put("/api/user", {
+      email: email,
+      nickname: nickName,
+      github: github,
+      greeting: greeting,
+      image: image,
+    })
+  }
   
+  const withDraw = () => {
+    store.getToken();
+    API.delete("api/user");
+    store.setToken("logout");
+    return;
+  }
+
   useEffect(() => {
     getInfo();
   }, [])
@@ -35,10 +61,12 @@ const ChangeInfoPage = () => {
   return (
     <>
       <h1>회원정보 변경 페이지!</h1>
-      닉네임 <input name="nickname" onChange={e => handleOnChange(e)} value={nickname}/>
-      이메일 <input name="email" onChange={e => handleOnChange(e)} value={email}/>
+
+      <input type="file" onChange={uploadImage} />
       GITHUB <input name="github" onChange={e => handleOnChange(e)} value={github}/>
       자기소개 <input name="greeting" onChange={e => handleOnChange(e)} value={greeting}/>
+      <button onClick={changeInfo}>변경하기</button>
+      <button onClick={withDraw}>회원탈퇴</button>
     </>
   )
 }
