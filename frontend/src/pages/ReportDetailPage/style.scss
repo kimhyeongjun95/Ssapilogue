@@ -128,3 +128,35 @@
     cursor: pointer;
   }
 }
+
+.project-remote-controll {
+  position: fixed;
+  top : 50%;
+  left : 90%;
+  p {
+    margin-left: auto;
+  }
+}
+
+.remote-div {
+  height: 30vh;
+  min-height:100px;
+  min-width: 60px;
+  width: 4.5vw;
+  border: 1px solid #BDBDBD;
+  border-radius: 50px;
+  box-shadow: 1px 1px 1px 1px rgb(191, 190, 190);
+  img {
+    width: 3vw;
+    height: 6vh;
+    min-width: 40px;
+    min-height: 50px;
+    margin-left: 0.77vw;
+    margin-top: 3.2vh;
+    transition: all 300ms;
+  }
+  img:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+}
