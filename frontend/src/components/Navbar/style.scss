@@ -23,7 +23,7 @@ nav {
     margin-right: 20px;
   }
 
-  .p {
+  .login_text {
     margin-right: 20px;
     margin-top: 10px;
     text-decoration: none;
@@ -31,8 +31,8 @@ nav {
   }
 
   .navbar-profile-image {
-    width: 5%;
-    height: 5%;
+    width: 50px;
+    height: 50px;
     float: right;
     position: fixed;
     top: 5px;
@@ -52,18 +52,23 @@ nav {
   .navbar_dropdown_content {
     background-color: #121010;
     opacity: 0.39;
-    color: white;
     width: 100px;
     text-align: center;
     padding: 5px;
     float: right;
     position: relative;
-    top: 60px;
-    right: 60px;
+    top: 70px;
+    right: 40px;
   }
 
   .navbar_dropdown_content_element {
     margin: 8px;
+  }
+
+  .navbar_dropdown_button {
+    background-color: #121010;
+    color: white;
+    border: none;
   }
 
 }
