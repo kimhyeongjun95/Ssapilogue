@@ -17,11 +17,16 @@ import {Button} from "@mui/material"
 import API from "../../api/API";
 import store from "../../utils/store";
 import markdownIt from "markdown-it";
+//pdf
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 
 
 const DetailPage = () => {
   const id = useParams().projectId;
   let navigate = useNavigate();
+
+  // 변수관리 hook
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [stack, setStack] = useState([]);
@@ -174,6 +179,26 @@ const DetailPage = () => {
     }
   }
   
+  const printDocument = () => {
+    html2canvas(document.getElementById("readme")).then(function(canvas) {
+      console.log(document.getElementById("readme"))
+      var imgData = canvas.toDataURL('image/png');
+      var imgWidth = 210;
+      var pageHeight = imgWidth * 1.414;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+
+      var doc = new jsPDF({
+        'orientation': 'p',
+        'unit': 'mm',
+        'format': 'a4'
+      });
+
+      doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      doc.save('sample_A4.pdf');
+      console.log('Reached here?');
+    });
+  } 
+
   return (
     
     <div className="project-div">
@@ -243,8 +268,10 @@ const DetailPage = () => {
             리뷰·버그 리포트
           </Link>
         </div>
-
-        <div className="readme-div"dangerouslySetInnerHTML={{
+        <div>
+          <button onClick={printDocument}>Print</button>
+        </div>
+        <div id="readme" className="readme-div"dangerouslySetInnerHTML={{
           __html: markdownIt().render(readme),
         }}
         ></div>
