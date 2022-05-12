@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import API from "../../api/API";
 import Select from "../../components/Select"
+import Card from "../../components/Card"
+import "./style.scss"
 
 const HomePage = () => {
   
   const [searchResult, setSearchResult] = useState('');
   const [dropResult, setDropResult] = useState('');
   const [techSearchResult, setTechSearchResult] = useState('');
-  const [option, setOption] = React.useState('');
+  const [option, setOption] = useState('제목');
 
   const handleOption = (e) => {
     setOption(e.target.value);
@@ -16,6 +18,7 @@ const HomePage = () => {
 
   const titleEnterSearch = async (e, value) => {
     const response = await API.get(`/api/project//search?keyword=${value}`);
+    console.log(response.data.projectList)
     setSearchResult(response.data.projectList);
     setDropResult('');
     e.target.value = "";
@@ -33,7 +36,7 @@ const HomePage = () => {
 
   const techStackAutoSearch = async (value) => {
     const response = await API.get(`/api/tech-stack/search/specific?keyword=${value}`);
-    setTechSearchResult(response.data.searchList)
+    setTechSearchResult(response.data.searchList);
   }
 
   const techProjectEnterSearch = async (e, value) => {
@@ -84,7 +87,6 @@ const HomePage = () => {
 
       <h1>여기는 메인화면</h1>
 
-
       <Link to="/project/post">
         <button>지금 등록하기</button>
       </Link>
@@ -109,11 +111,22 @@ const HomePage = () => {
       ))}
 
       <h3>프로젝트 최종 검색 결과</h3>
-      {searchResult && searchResult.map((search, idx) => (
-        <div key={idx}>
-          {search.title}
-        </div>
-      ))}
+      <div className="cards-grid">
+        {searchResult && searchResult.map((search, idx) => (
+          <div key={idx}>
+            <Card
+              title={search.title} 
+              content={search.introduce}
+              category={search.category}
+              likeCnt={search.likeCnt}
+              viewCnt={search.hits}
+              commentCnt={search.commentCnt}
+              techStack={search.techStack}
+              thumbnail={search.thumbnail}
+            />
+          </div>
+        ))}
+      </div>
     </>
   )
 }
