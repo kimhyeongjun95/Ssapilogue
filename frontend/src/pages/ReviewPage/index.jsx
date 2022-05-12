@@ -27,7 +27,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box>
           <Typography component={"span"} >{children}</Typography>
         </Box>
       )}
@@ -93,31 +93,43 @@ const ReviewPage = () => {
 
   return (
     <div className="review-detail">
-      <h1>리뷰 페이지!</h1>
       <div>
         <button onClick={printDocument}>Print</button>
       </div>
-      
-      <Box sx={{ width: '80%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+      {/* <Box sx={{ width: '80%' }}> */}
+      <Box className="review_box">
+        <Box>
+          <Tabs 
+            TabIndicatorProps={{ style: { backgroundColor: "#C3E2F9" } }} 
+            value={value} 
+            onChange={handleChange} 
+            indicatorColor="secondary"
+            aria-label="basic tabs example"
+          >
             {reviews.map((review, idx) => (
               <Tab key={idx} label={idx+1} {...a11yProps(idx+1)} />
             ))}
           </Tabs>
         </Box>
         {reviews.map((review, idx) => (
-          <div id="printReview"  key={idx}>
+          <div id="printReview" className="review_title_box" key={idx}>
             <TabPanel value={value} index={idx}>
               {review.surveyType === "주관식" ?
                 <>
-                  <h1>{review.surveyTitle}</h1>
-                  <h1>{review.totalCount}</h1>
+                  <div className="review_title_count">
+                    <h4 className="review_title">{review.surveyTitle}</h4>
+                    <h4 className="review_title">TOTAL: {review.totalCount}명</h4>
+                  </div>
+                  <div className="review_menu">
+                    <p className="review_content_title">내용</p>
+                    <p className="review_date_title">날짜</p>
+                    <p className="review_writer_title">작성자</p>
+                  </div>
                   {review.subjectiveReviews.map((res, idx) => (
-                    <div key={idx}>
-                      {res.content}
-                      {res.nickname}
-                      {moment(res.createAt).format('YYYY년 MM월 DD일')}
+                    <div className="review_contents" key={idx}>
+                      <p className="review_content">{res.content}</p>
+                      <p className="review_date_title">{moment(res.createAt).format('YYYY년 MM월 DD일')}</p>
+                      <p className="review_writer_title">{res.nickname}</p>
                     </div>
                   ))}
                 </>
@@ -125,15 +137,19 @@ const ReviewPage = () => {
                 :
 
                 <>
-                  <h1>{review.surveyTitle}</h1>
-                  <h1>{review.totalCount}</h1>
-                  <BarChart width={730} height={250} data={review.objectiveReviews} >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="optionContent" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#3949AB" />
-                  </BarChart>
+                  <div className="review_title_count_options">
+                    <h4 className="review_title">{review.surveyTitle}</h4>
+                    <h4 className="review_title">TOTAL: {review.totalCount}명</h4>
+                  </div>
+                  <div className="review_chart_box">
+                    <BarChart width={750} height={250} data={review.objectiveReviews} >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="optionContent" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="count" fill="#3949AB" />
+                    </BarChart>
+                  </div>
                 </>
               }
             </TabPanel>
