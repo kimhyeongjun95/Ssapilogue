@@ -38,3 +38,17 @@ $red : #EA978C;
   justify-content: flex-end;
   margin-bottom: 13vh;
 }
+
+.change-input-box {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 4vh;
+}
+
+.change-input-name {
+  margin-right: 40px;
+}
+
+.change-input {
+  width: 320px;
+}

@@ -3,7 +3,6 @@ import API from "../../api/API";
 import store from "../../utils/store";
 import profilePic from "../../assets/profileDefault.jpg"
 import "./style.scss"
-import { height } from "@mui/system";
 
 const ChangeInfoPage = () => {
 
@@ -74,14 +73,14 @@ const ChangeInfoPage = () => {
           <h5>프로필 사진을 변경하려면 사진을 클릭하세요</h5>
         </div>
 
-        <div style={{display:"flex", flexDirection:"row", marginBottom: "4vh"}}>
-          <p style={{marginRight: "40px"}}>GITHUB</p>
-          <input style={{width: "320px"}} name="github" onChange={e => handleOnChange(e)} value={github}/>
+        <div className="change-input-box">
+          <p className="change-input-name">GITHUB</p>
+          <input className="change-input" name="github" onChange={e => handleOnChange(e)} value={github}/>
         </div>
 
-        <div style={{display:"flex", flexDirection:"row", marginBottom: "4vh"}}>
-          <p style={{marginRight: "40px"}}>자기소개</p>
-          <input style={{width: "320px", height: "100px"}} name="greeting" onChange={e => handleOnChange(e)} value={greeting}/>
+        <div className="change-input-box">
+          <p className="change-input-name">자기소개</p>
+          <input className="change-input" style={{height: "100px"}} name="greeting" onChange={e => handleOnChange(e)} value={greeting}/>
         </div>
 
         <div className="change-btn">
