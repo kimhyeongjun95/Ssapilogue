@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import detailImage from "../../assets//detailImage.png"
 import "./style.scss"
 import API from "../../api/API";
 import moment from 'moment';
 import defaultpic from '../../assets/default.png'
 import markdownIt from "markdown-it";
-import { Button } from "@mui/material";
 
 const ReportDetailPage = () => {
   const reportId = useParams().reportId
@@ -22,20 +20,22 @@ const ReportDetailPage = () => {
   const [writer, setWriter] = useState('');
   const [profilepic, setProfilepic] = useState('');
   const [createAt, setCreateAt] = useState('');
-  const [writecomment, setWriteComment] = useState('');
   const [kai, setKai] = useState(0);
 
-  useEffect(async()=> {
-    const res = await API.get(`/api/bug/detail/${reportId}`)
-    setCommentCnt(res.data.bugReport.commentCnt)
-    setComment(res.data.bugReport.comments)
-    setTitle(res.data.bugReport.title)
-    setContent(res.data.bugReport.content)
-    setWriter(res.data.bugReport.nickname)
-    setProfilepic(res.data.bugReport.profileImage)
-    setCreateAt(moment(res.data.bugReport.createAt).format('YYYY년 MM월 DD일'))
-    console.log(res.data.bugReport)
-  },[kai])
+  useEffect(() => {
+    async function startReportDetail() {
+      const res = await API.get(`/api/bug/detail/${reportId}`)
+      setCommentCnt(res.data.bugReport.commentCnt)
+      setComment(res.data.bugReport.comments)
+      setTitle(res.data.bugReport.title)
+      setContent(res.data.bugReport.content)
+      setWriter(res.data.bugReport.nickname)
+      setProfilepic(res.data.bugReport.profileImage)
+      setCreateAt(moment(res.data.bugReport.createAt).format('YYYY년 MM월 DD일'))
+      console.log(res.data.bugReport)
+    }
+    startReportDetail()
+  },[kai,reportId])
 
   const deleteReport = async() => {
     const res = await API.delete(`/api/bug/${reportId}`)
@@ -43,28 +43,35 @@ const ReportDetailPage = () => {
     console.log(res)
   }
 
-  const onChangeComment = (e) => {
-    setWriteComment(e.target.value)
-  }
-
   const postComment = async() => {
-    const res = await API.post(`/api/bug-comment/${reportId}`,{
-      content : writecomment
+    let commentText = document.getElementById('commentText').value;
+    await API.post(`/api/bug-comment/${reportId}`,{
+      content : commentText
     })
-    setWriteComment('')
+    document.getElementById('commentText').value = ''
     setKai(kai + 1)
   }
 
+  const deleteComment = async(bugCoId) => {
+    const res = await API.delete(`/api/bug-comment/${bugCoId}`)
+    console.log(res)
+    setKai(kai + 1)
+  }
+  const goEdit = () => {
+    console.log(content)
+    navigate("edit", {state: {content :content ,title : title}});
+  }
+    
   const commentBox = comment.map((item) => {
-    return <div className="box-div">
+    return <div className="report-detail-box-div">
       <div>
-        <img className="icon" src={detailImage} alt="profile" />
+        <img className="report-detail-icon" src={(item.profileImage) ? item.profileImage : defaultpic} alt="profile" />
       </div>
       <div>
-        <p>{item.nickname} {item.createdAt}</p>
+        {item.nickname} {item.createdAt}
         <p>{item.content}</p>
         <div>
-          <p className="red">삭제하기</p>
+          <p className="report-detail-red" onClick={() => deleteComment(item.bugCoId)}>삭제하기</p>
         </div>
         
       </div>
@@ -73,33 +80,33 @@ const ReportDetailPage = () => {
   })
 
   return (
-    <div className="main">
-      <div className="report-main-div">
-        <div className="report-nav">
+    <div className="report-detail-main">
+      <div className="report-detail-main-div">
+        <div className="report-detail-nav">
           <h1>{title}</h1>
           <div className="pow">
-            <p>수정</p>
+            <p onClick={goEdit}>수정</p>
             <p className="red" onClick={deleteReport}>삭제</p>
           </div>
         </div>
         <hr />
-        <div className="hr-div">
+        <div className="report-hr-div">
           <p> 작성일  {createAt}</p>
         </div>
-        <div className="writer-div">
-          <img src={defaultpic} />
+        <div className="report-detail-writer-div">
+          <img src={(profilepic) ? profilepic : defaultpic} alt="writerProfilePic" />
           <p>{writer}</p>
         </div>
-        <div className="content-div" dangerouslySetInnerHTML={{
+        <div className="report-detail-content-div" dangerouslySetInnerHTML={{
           __html: markdownIt().render(content),
         }}
         ></div>
       </div>
-      <div className="comment-div">
+      <div className="report-detail-comment-div">
         <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
         <div>
-          <textarea className="comment-box" maxLength={400} value={writecomment} onChange={onChangeComment}></textarea>
-          <Button variant="contained" onClick={postComment}>작성하기</Button>
+          <textarea id="commentText" className="comment-box" maxLength={400}></textarea>
+          <button className="comment-submit" type="submit" onClick={postComment}>댓글 작성</button>
         </div>
       </div>
       {commentBox}
