@@ -138,7 +138,7 @@ const PostSurvey = () => {
             : 
             <>
               <div className="choice-input">
-                <img className="plus" src={plus} onClick={e => addChoice(e, idx)} />
+                <img className="plus" src={plus} onClick={e => addChoice(e, idx)} alt="choice-plus" />
 
                 <li className="answer-box">
                   <input
@@ -157,7 +157,7 @@ const PostSurvey = () => {
         </div>
       ))}
 
-      <img className="plus" src={plus} onClick={addSurvey}/>
+      <img className="plus" src={plus} onClick={addSurvey} alt="plus-survey" />
 
       <div className="survey-type">
         <button className={option === "주관식" ? "btn-blue" : "btn-white"} onClick={whichSurvey} value="주관식">주관식</button>
