@@ -1,5 +1,4 @@
 import React, {useState, useRef} from 'react';
-
 import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
 import {InputLabel,MenuItem,FormControl, Button, Chip} from "@mui/material"
@@ -7,29 +6,54 @@ import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { Link } from 'react-router-dom';
+import { useParams,useLocation, useNavigate } from 'react-router-dom';
 
 
 const PostProjectPage = () => {
+  const id = useParams().projectId;
+  const locations = useLocation().state;
+  let navigate = useNavigate()
+  const { editTitle, editCategory,editStack,editMember,editThumbnail, editRepo,editIntro, editBepo, editReadme,editAuthormember, } = locations;
+
   // 상태관리
-  const [title, setTitle] = useState('')
-  const [bepo, setBepo] = useState('') 
-  const [repo, setRepo] = useState('')
-  const [various, setVarious] = useState('');
-  const [intro, setIntro] = useState('')
-  const [thumbnail, setThumnail] = useState('')
-  const [thumbnailUrl, setThumnailUrl] = useState('')
-  const [markdown, setMarkdown] = useState('')
+  const [title, setTitle] = useState(editTitle);
+  const [bepo, setBepo] = useState(editBepo);
+  const [repo, setRepo] = useState(editRepo);
+  const [various, setVarious] = useState(editCategory);
+  const [intro, setIntro] = useState(editIntro);
+  const [thumbnail, setThumnail] = useState(editThumbnail);
+  const [thumbnailUrl, setThumnailUrl] = useState('');
+  const [markdown, setMarkdown] = useState(editReadme);
   const [readmeCheck, setReadmeCheck] = useState('1');
+
   const editorRef = React.createRef();
 
+
   // 기술스택 //
-  const [hashbox, setHashbox] = useState([])
+  const [hashbox, setHashbox] = useState((editStack) ? editStack : [])
   const [hashtag, setHashtag] = useState('')
   // 프로젝트 맴버 //
-  const [phashbox, setpHashbox] = useState([])
+  const [phashbox, setpHashbox] = useState((editMember) ? editMember : [])
   const [phashtag, setpHashtag] = useState('')
 
+  const editProject = async() => {
+    const res = await API.put(`/api/project/${id}`,{
+      category: various,
+      deployAddress : bepo,
+      gitAddress : repo,
+      intro : intro,
+      member : phashbox,
+      readme : markdown,
+      readmeCheck : readmeCheck,
+      techStack : hashbox,
+      thumbnail : thumbnail,
+      title : title
+    })
+    console.log(res)
+  
+    navigate(`/project/${id}`)
+
+  }
   // 라벨링
   const plusHashtag = (e) => {
     if (e.key === "Enter") {
@@ -170,6 +194,7 @@ const PostProjectPage = () => {
 
   return (
     <>
+      <button onClick={() => console.log(repo,bepo)}>헤잉</button>
       <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
 
         <h2 style={{width:"40%", textAlign:"center"}}>프로젝트를 등록해주세요</h2>
@@ -185,11 +210,11 @@ const PostProjectPage = () => {
         <button style={uploadButton} onClick={onCickImageUpload}>썸네일 업로드</button>
         { (thumbnail) ?
           <div style={{marginTop:"2vh"}}>
-            <img src={thumbnailUrl} style={{height:"20vh",width:"35vh"}} alt="thumbnail" />
+            <img src={(thumbnail) ? thumbnail : thumbnailUrl} style={{height:"20vh",width:"35vh"}} alt="thumbnail" />
           </div>
           :
           null
-        }
+        } 
         <div>
           <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />직접 입력하기
           <input type="radio" checked={readmeCheck === "0"} name="theme" value={"0"} onChange={mkChange}/>github에서 가져오기
@@ -203,6 +228,8 @@ const PostProjectPage = () => {
               placeholder='마크다운을 붙여주세요.'
               onChange={onChangeIntroFunction}
               ref={editorRef}
+              initialValue={markdown}
+          
             /> 
           </div>
           : null
@@ -210,23 +237,8 @@ const PostProjectPage = () => {
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
           <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
-          <Link 
-            to="/project/survey"
-            state={{
-              title: title,
-              intro: intro,
-              various: various,
-              phashbox: phashbox,
-              hashbox: hashbox,
-              bepo: bepo,
-              repo: repo,
-              thumbnail: thumbnail,
-              readmeCheck: readmeCheck,
-              markdown: markdown
-            }}
-          >
-            <Button size="large" variant="contained"> 다음단계 </Button>
-          </Link>
+          
+          <Button size="large" variant="contained" onClick={editProject}> 등록하기 </Button>
         </div>
 
        

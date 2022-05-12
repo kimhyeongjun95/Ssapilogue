@@ -70,6 +70,7 @@ const PostReviewPage = () => {
         </div>
       ))}
       <button onClick={submit}>리뷰 작성 완료</button>
+
     </>
   )
 }
