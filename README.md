@@ -63,7 +63,7 @@
 
 ### 💻 아키텍처
 
-<img src="https://user-images.githubusercontent.com/78924207/168004111-70ddae5a-ed7d-4200-97ca-032f74db919d.png" width="700" />
+<img src="https://user-images.githubusercontent.com/78924207/168020378-f77c454e-54b0-4cc2-9c9b-cfc8beb639a6.png" width="700" />
 
 <br/>
 
@@ -101,7 +101,7 @@ java/com/ssafy/ssapilogue
 │	│
 │	├── service
 │	│
-│   └── util
+│	└── util
 │
 └── core
     ├── config
