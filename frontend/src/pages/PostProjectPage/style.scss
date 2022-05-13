@@ -1,0 +1,12 @@
+.post-question-style {
+  width: 97.3%;
+  height: 3.5vh;
+  min-height: 31.5px;
+  border : 1px solid #ADADAD;
+  border-radius: 5px;
+  padding-left: 2%;
+  margin-top: 2%;
+}
+.question-style::placeholder {
+  color: #ADADAD;
+}
