@@ -43,6 +43,8 @@ public class ProjectServiceImpl implements ProjectService {
     private final LikedRepository likedRepository;
     private final BookmarkRepsitory bookmarkRepsitory;
     private final ProjectCommentRepository projectCommentRepository;
+    private final SurveyRepository surveyRepository;
+    private final SurveyService surveyService;
 
     private static final int HANGEUL_BASE = 0xAC00;    // '가'
     private static final int HANGEUL_END = 0xD7AF;
@@ -309,6 +311,13 @@ public class ProjectServiceImpl implements ProjectService {
         int likeCnt = project.getLikedList().size();
         if (project.getUser().getEmail().equals(userEmail)) {
             project.getUser().changeLikes(-likeCnt);
+
+            // 설문조사 삭제
+            List<Survey> surveys = surveyRepository.findAllByProjectId(project.getId());
+            for (Survey survey : surveys) {
+                surveyService.deleteSurvey(survey.getId());
+            }
+
             projectRepository.deleteById(projectId);
         }
     }

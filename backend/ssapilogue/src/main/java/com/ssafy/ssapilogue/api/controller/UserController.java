@@ -10,6 +10,7 @@ import com.ssafy.ssapilogue.api.dto.response.SignupUserResDto;
 import com.ssafy.ssapilogue.api.exception.CustomException;
 import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.api.service.JwtTokenProvider;
+import com.ssafy.ssapilogue.api.service.UserInfoService;
 import com.ssafy.ssapilogue.api.service.UserService;
 import com.ssafy.ssapilogue.api.util.MediaUtils;
 import com.ssafy.ssapilogue.core.domain.User;
@@ -43,6 +44,8 @@ public class UserController {
 
     private final UserService userService;
 
+    private final UserInfoService userInfoService;
+
     private final UserInfoRepository userInfoRepository;
 
     private final UserRepository userRepository;
@@ -51,6 +54,9 @@ public class UserController {
 
     @Value("${profileImg.path}")
     private String uploadPath;
+
+    @Value("${jasypt.encryptor.password}")
+    private String encryptKey;
 
     @PostMapping
     @ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
@@ -84,6 +90,20 @@ public class UserController {
             @RequestBody @ApiParam(value = "로그인 유저 정보", required = true) LoginUserReqDto loginUserReqDto) throws Exception {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
+
+        System.out.println(encryptKey);
+        String encodeMmId = userInfoService.encrypt(loginUserReqDto.getUserId().getBytes());
+        if (userInfoRepository.findByUserId(encodeMmId) == null) {
+            throw new CustomException(ErrorCode.INVALID_USER);
+        }
+
+        User findUser = userRepository.findByEmail(loginUserReqDto.getEmail());
+        if (findUser == null) {
+            httpStatus = HttpStatus.OK;
+            result.put("status", "NO USER");
+            return new ResponseEntity<Map<String, Object>>(result, httpStatus);
+        }
+
         User loginUser = userService.login(loginUserReqDto);
 
         httpStatus = HttpStatus.OK;

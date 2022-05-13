@@ -8,10 +8,10 @@ services:
   backend:
     build:
       context: ./backend
-    environment:
-      JASYPT_ENCRYPTOR_PASSWORD: ssapilogue104EShjDKkhHS
     volumes:
       - ../images:/images
+    environment:
+      - JASYPT_PASSWORD=ssapilogue104EShjDKkhHS
     ports:
       - "8080:8080"
   nginx:

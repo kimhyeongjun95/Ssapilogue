@@ -40,7 +40,7 @@ public class BugReportServiceImpl implements BugReportService{
     public FindBugReportsResDto findBugReports(Long projectId) {
         List<FindBugReportResDto> findBugReportResDtos = new ArrayList<>();
 
-        List<BugReport> bugReports = bugReportRepository.findAllByProjectIdOrderById(projectId);
+        List<BugReport> bugReports = bugReportRepository.findAllByProjectIdOrderByIdDesc(projectId);
         for (BugReport bugReport : bugReports) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             String createAt = bugReport.getCreatedAt().format(formatter);
@@ -84,7 +84,7 @@ public class BugReportServiceImpl implements BugReportService{
         String createdAt = bugReport.getCreatedAt().format(formatter);
 
         List<FindBugReportCommentResDto> comments = new ArrayList<>();
-        List<BugReportComment> findComments = bugReportCommentRepository.findAllByBugReportIdOrderById(bugId);
+        List<BugReportComment> findComments = bugReportCommentRepository.findAllByBugReportIdOrderByIdDesc(bugId);
         for (BugReportComment bugReportComment : findComments) {
             User commentUser = bugReportComment.getUser();
             String commentCreatedAt = bugReportComment.getCreatedAt().format(formatter);
