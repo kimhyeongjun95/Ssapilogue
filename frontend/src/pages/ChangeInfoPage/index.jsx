@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import API from "../../api/API";
 import store from "../../utils/store";
+import profilePic from "../../assets/profileDefault.jpg"
+import "./style.scss"
 
 const ChangeInfoPage = () => {
 
@@ -60,13 +62,32 @@ const ChangeInfoPage = () => {
   
   return (
     <>
-      <h1>회원정보 변경 페이지!</h1>
+      <div className="change-info">
+        <div style={{marginBottom: "10vh"}}>
+          <label for="file-input">
+            <div className="profile-circle">
+              <img className="profile-img" src={profilePic} alt="profilePic" />
+            </div>
+          </label>
+          <input id="file-input" type="file" style={{display: "none"}} onChange={uploadImage} />
+          <h5>프로필 사진을 변경하려면 사진을 클릭하세요</h5>
+        </div>
 
-      <input type="file" onChange={uploadImage} />
-      GITHUB <input name="github" onChange={e => handleOnChange(e)} value={github}/>
-      자기소개 <input name="greeting" onChange={e => handleOnChange(e)} value={greeting}/>
-      <button onClick={changeInfo}>변경하기</button>
-      <button onClick={withDraw}>회원탈퇴</button>
+        <div className="change-input-box">
+          <p className="change-input-name">GITHUB</p>
+          <input className="change-input" name="github" onChange={e => handleOnChange(e)} value={github}/>
+        </div>
+
+        <div className="change-input-box">
+          <p className="change-input-name">자기소개</p>
+          <input className="change-input" style={{height: "100px"}} name="greeting" onChange={e => handleOnChange(e)} value={greeting}/>
+        </div>
+
+        <div className="change-btn">
+          <button className="btn-red" style={{marginRight: "20px"}} onClick={withDraw}>회원탈퇴</button>
+          <button className="btn-blue" onClick={changeInfo}>변경하기</button>
+        </div>
+      </div>
     </>
   )
 }

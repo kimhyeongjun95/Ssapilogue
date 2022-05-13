@@ -9,6 +9,7 @@ import bookmarkPic from "../../assets/bookmark.svg"
 import likePic from "../../assets/thumb.svg"
 import alLikePic from "../../assets/thumbColor.svg"
 import alBookmark from "../../assets/bookmarkColor.svg"
+import SearchPage from "../../components/Search/index"
 
 import gitRepo from "../../assets/git.png"
 import google from "../../assets/Google.png"
@@ -17,11 +18,17 @@ import {Button} from "@mui/material"
 import API from "../../api/API";
 import store from "../../utils/store";
 import markdownIt from "markdown-it";
+//pdf
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 
 
 const DetailPage = () => {
   const id = useParams().projectId;
   let navigate = useNavigate();
+
+  // 변수관리 hook
+  const [tag, setTag] = useState('')
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [stack, setStack] = useState([]);
@@ -37,6 +44,14 @@ const DetailPage = () => {
   const [intro, setIntro] = useState('');
   const [isliked, setIsliked] = useState(false);
   const [isbookmarked, setIsbookmarked] = useState(false);
+
+  // 댓글기능
+  const [indicomment, setIndiComment] = useState('')
+  const [commentTrue, setCommentTrue] = useState(false)
+  const [startWord, setStartword] = useState(-1)
+  const [endWord, setEndword] = useState(-1)
+  const [searchData, setSearchData] = useState([]);
+
   
   useEffect(() => {
     async function projectCall() {
@@ -82,11 +97,10 @@ const DetailPage = () => {
   // ]
   const writeComment = async() => {
     try {
-      var commentText = document.getElementById('commentText').value;
       await API.post(`/api/project-comment/${id}`,{
-        content : commentText,
+        content : indicomment,
       })
-      document.getElementById('commentText').value = ''
+      setIndiComment('')
       setKai(kai + 1)
     } catch(e) {
       throw e;
@@ -96,13 +110,13 @@ const DetailPage = () => {
   const deleteComment = async(item) => {
     try {
       await API.delete(`/api/project-comment/${item}`)
-
       setKai(kai + 1)
     } catch(e) {
       throw e;
     }
 
   }
+
 
   const commentBox = comment.map((item) => {
     return <div className="box-div">
@@ -173,7 +187,117 @@ const DetailPage = () => {
       setIsbookmarked(true)
     }
   }
+
+
+  const onClickSearch = (item) => {
+    var changeComment = document.getElementById("commentText").value.replace(document.getElementById("commentText").value.slice(startWord+1,endWord), item + " ")
+    document.getElementById("commentText").value = changeComment
+    setIndiComment(changeComment)
+    allCancel()
+  }
+
+  function allCancel() {
+    setCommentTrue(false)
+    setSearchData([])
+  }
+
+  const onChangeComment = (e) => {
+    setIndiComment(e.target.value)
+    if (commentTrue === true) {
+      console.log('트루는통과')
+      if (document.getElementById('commentText').selectionStart) {
+        setEndword(document.getElementById('commentText').selectionStart)
+        if (document.getElementById("commentText").value.slice(startWord+1,endWord)) {
+          console.log('들어왓음')
+          console.log(document.getElementById("commentText").value.slice(startWord+1,endWord))
+          searchWord(document.getElementById("commentText").value.slice(startWord+1,endWord))
+        }
+      }
+     
+    }
+    
+    
+  }
+
+
+  const checkTag = (event) => {
+    if (!commentTrue || indicomment.includes('@')) {
+      if (event.key=='@') {
+        console.log('언급시작')
+        setCommentTrue(true)
+
+        setStartword(document.getElementById('commentText').selectionStart)
+        console.log(startWord)
+        
+
+      }
+    }
+
+    // if (commentTrue) {
+    //   if (event.key==" ") {
+    //     setEndword(document.getElementById('commentText').selectionStart)
+    //     setCommentTrue(false)
+        
+    //     console.log("끝",endWord)
+    //     console.log("시작",startWord)
+    //     let searchname = indicomment.slice(startWord+1,endWord)
+    //     console.log('검색',searchname)
+
+    //   }
+    // }
+    
+  }
+
+
+
+  async function searchWord(word) {
+    console.log(document.getElementById("commentText").value.slice(startWord+1,endWord))
+    console.log("검색",word)
+    const res  = await API.get(`/api/user-info/search?keyword=${word}`)
+    setSearchData(res.data.searchList)
+    const date = new Date();
+    console.log(date)
+    console.log("왜이게..?",document.getElementById("commentText").value.slice(startWord+1,endWord))
+    console.log(res)
+    
+    
+
+  }
+
   
+
+  const printDocument = () => {
+    html2canvas(document.getElementById("readme"), { 
+      loggin : true,
+      letterRendering: 1,
+      allowTaint: false,
+      useCORS: true
+    }).then((canvas) => { 
+      var doc = new jsPDF('p', 'mm', 'a4'); 
+      var imgData = canvas.toDataURL('image/png'); 
+      var imgWidth = 210; var pageHeight = 295; 
+      var imgHeight = canvas.height * imgWidth / canvas.width; 
+      var heightLeft = imgHeight; 
+      var position = 0; doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight); 
+      heightLeft -= pageHeight; 
+      while (heightLeft >= 0) { 
+        position = heightLeft - imgHeight; 
+        doc.addPage(); 
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight); 
+        heightLeft -= pageHeight; 
+      } 
+      doc.save('download.pdf'); 
+    });
+
+  }
+
+  // 언급 검색결과
+  const searchMap = searchData.map((item) => {
+    
+    return <div className="search-indi-div">
+      <p className="search-p" onClick={() => onClickSearch(item)}>{item}</p>
+    </div>
+  });
   return (
     
     <div className="project-div">
@@ -243,16 +367,29 @@ const DetailPage = () => {
             리뷰·버그 리포트
           </Link>
         </div>
-
-        <div className="readme-div"dangerouslySetInnerHTML={{
+        <div>
+          <button onClick={printDocument}>Print</button>
+        </div>
+        <div id="readme" className="readme-div"dangerouslySetInnerHTML={{
           __html: markdownIt().render(readme),
         }}
         ></div>
 
         <div className="comment-div">
+          
+          {/* {indicomment.slice(startWord+1)} */}
           <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
+          { !(searchData.length === 0) ?
+            
+            <div className="search-main-div">
+              <p>{searchMap}</p>
+            </div>
+
+            : 
+            null
+          }
           <div>
-            <textarea id="commentText" className="comment-box" maxLength={400}></textarea>
+            <textarea id="commentText" value={indicomment} onKeyPress={checkTag} onChange={onChangeComment} className="comment-box" maxLength={400}></textarea>
             <button className="comment-submit" type="submit" onClick={writeComment}>댓글 작성</button>
           </div>
         </div>
