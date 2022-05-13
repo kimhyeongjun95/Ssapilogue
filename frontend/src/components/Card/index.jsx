@@ -1,14 +1,14 @@
 import "./style.scss"
 import { Chip } from "@mui/material"
 import Thumbsup from "../../assets/thumbsup.png"
-import View from "../../assets/view.png"
+import View from "../../assets/view.svg"
 import Comment from "../../assets/comment.png"
 
 const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStack, thumbnail }) => {
   return (
     <div className="card">
       <div className="image-box">
-        <img className="card-thumbnail" src={thumbnail} alt="project-card" />
+        <img className="card-thumbnail" src={thumbnail} alt="thumbnail" />
       </div>
       <div className="text-box">
         <div className="card-title-content">
@@ -17,9 +17,9 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
         </div>
         <div className="card-stack">
           {techStack.map((stack, idx) => (
-            <span key={idx}>
+            <span className="card-stack-span" key={idx}>
               <Chip 
-                style={{ margin : "3%", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+                style={{ height : "24px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
                 label={stack} 
               />
             </span>
@@ -32,18 +32,21 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
             color="primary" 
             variant="outlined"
           />
-          <div className="bottom-image-box">
-            <img className="bottom-image" src={Thumbsup} alt="thumsup" />
-            <span className="count-number">{likeCnt}</span>
+          <div className="card-bottom-right">
+            <div className="bottom-image-box">
+              <img className="bottom-image" src={Thumbsup} alt="thumsup" />
+              <span className="count-number">{likeCnt}</span>
+            </div>
+            <div className="bottom-image-box">
+              <img className="bottom-view-image" src={View} alt="views" />
+              <span className="count-number">{viewCnt}</span>
+            </div>
+            <div className="bottom-image-box">
+              <img className="bottom-image" src={Comment} alt="comments" />
+              <span className="count-number">{commentCnt}</span>
+            </div>
           </div>
-          <div className="bottom-image-box">
-            <img className="bottom-view-image" src={View} alt="views" />
-            <span className="count-number">{viewCnt}</span>
-          </div>
-          <div className="bottom-image-box">
-            <img className="bottom-image" src={Comment} alt="comments" />
-            <span className="count-number">{commentCnt}</span>
-          </div>
+          
         </div>
       </div>
     </div>

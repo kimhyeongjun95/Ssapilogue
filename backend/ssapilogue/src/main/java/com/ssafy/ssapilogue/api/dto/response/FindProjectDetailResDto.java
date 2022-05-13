@@ -21,6 +21,9 @@ public class FindProjectDetailResDto {
     @ApiModelProperty(value = "프로젝트 이름", example = "라이키")
     private String title;
 
+    @ApiModelProperty(value = "프로젝트 소개", example = "라이키 프로젝트입니다.")
+    private String introduce;
+
     @ApiModelProperty(value = "작성자 이메일", example = "khyunchoi@naver.com")
     private String email;
 
@@ -69,6 +72,7 @@ public class FindProjectDetailResDto {
     public FindProjectDetailResDto(Project project, Boolean isLiked, Boolean isBookmarked, List<FindProjectResDto> findProjectResDtos, List<FindCommentResDto> commentList) {
         projectId = project.getId();
         title = project.getTitle();
+        introduce = project.getIntroduce();
         email = project.getUser().getEmail();
         techStack = project.getProjectStacks()
                 .stream().map(ProjectStack::getTechStack).collect(Collectors.toList())
