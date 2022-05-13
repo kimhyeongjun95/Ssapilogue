@@ -1,5 +1,4 @@
 import React,{ useState, useEffect } from "react";
-import { CardContent,CardMedia,Typography,CardActionArea } from "@mui/material"
 import "./style.scss"
 import API from "../../api/API";
 import store from "../../utils/store"
