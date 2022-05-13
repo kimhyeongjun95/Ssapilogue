@@ -2,5 +2,19 @@
   width: 90%;
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
   // align-items: center;
 }
+
+.post-project-btn{
+  position: absolute;
+  left: 28%;
+  top: 32%;
+}
+
+
+.body {
+
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar { display: none; }

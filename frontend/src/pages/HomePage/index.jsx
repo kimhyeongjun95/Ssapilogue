@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import API from "../../api/API";
 import Select from "../../components/Select"
 import Card from "../../components/Card"
+import Slide1 from "../../assets/Slide1.png"
+import Slide2 from "../../assets/Slide2.png"
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 import "./style.scss"
 
 const HomePage = () => {
@@ -12,13 +17,22 @@ const HomePage = () => {
   const [techSearchResult, setTechSearchResult] = useState('');
   const [option, setOption] = useState('제목');
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    speed: 550,
+    autoplaySpeed: 2000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };  
+
   const handleOption = (e) => {
     setOption(e.target.value);
   }
 
   const titleEnterSearch = async (e, value) => {
     const response = await API.get(`/api/project//search?keyword=${value}`);
-    console.log(response.data.projectList)
     setSearchResult(response.data.projectList);
     setDropResult('');
     e.target.value = "";
@@ -85,9 +99,12 @@ const HomePage = () => {
   return (
     <>
 
-      <h1>여기는 메인화면</h1>
+      <Slider {...settings}>
+        <img className="slide-image" src={Slide1} alt="slide1" />
+        <img className="slide-image" src={Slide2} alt="slide2" />
+      </Slider>
 
-      <Link to="/project/post">
+      <Link to="/project/post" className="post-project-btn">
         <button>지금 등록하기</button>
       </Link>
 
