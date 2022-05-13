@@ -69,8 +69,8 @@ const ReviewPage = () => {
   };
   const printDocument = () => {
     html2canvas(document.getElementById("printReview"), {
-      width: 850,
-      height: 700,
+      width: window.width,
+      height: 877,
     }).then(function(canvas) {
       console.log(document.getElementById("printReview"))
       var imgData = canvas.toDataURL('image/png');
