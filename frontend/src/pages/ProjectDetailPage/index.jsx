@@ -110,7 +110,6 @@ const DetailPage = () => {
   const deleteComment = async(item) => {
     try {
       await API.delete(`/api/project-comment/${item}`)
-
       setKai(kai + 1)
     } catch(e) {
       throw e;
