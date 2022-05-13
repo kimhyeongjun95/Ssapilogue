@@ -18,9 +18,7 @@ public class JasyptApplicationTest {
 
     @Test
     public void jasypt() {
-        String url = "jdbc:mysql://k6c104.p.ssafy.io:3306/ssapilogue?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&useSSL=false&allowPublicKeyRetrieval=true";
-        String username = "ssapilogue";
-        String password = "ssapilogue104";
+        String test = "test";
 
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
@@ -35,11 +33,11 @@ public class JasyptApplicationTest {
         encryptor.setConfig(config);
 
 
-        String encryptText = encryptor.encrypt(password);
+        String encryptText = encryptor.encrypt(test);
         System.out.println(encryptText);
         String decryptText = encryptor.decrypt(encryptText);
         System.out.println(decryptText);
-        Assertions.assertThat(password).isEqualTo(decryptText);
+        Assertions.assertThat(test).isEqualTo(decryptText);
     }
 
 }

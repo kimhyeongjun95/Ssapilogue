@@ -55,9 +55,6 @@ public class UserController {
     @Value("${profileImg.path}")
     private String uploadPath;
 
-    @Value("${jasypt.encryptor.password}")
-    private String encryptKey;
-
     @PostMapping
     @ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
     public ResponseEntity<Map<String, Object>> signup(
@@ -91,7 +88,6 @@ public class UserController {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
 
-        System.out.println(encryptKey);
         String encodeMmId = userInfoService.encrypt(loginUserReqDto.getUserId().getBytes());
         if (userInfoRepository.findByUserId(encodeMmId) == null) {
             throw new CustomException(ErrorCode.INVALID_USER);
