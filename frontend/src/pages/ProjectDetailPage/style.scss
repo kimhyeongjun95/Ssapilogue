@@ -197,3 +197,22 @@
     max-width: 100%;
   }
 }
+.search-main-div {
+  max-height: 15vh;
+  width: 50%;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-top:1%;
+  margin-bottom:2%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.search-p {
+  margin: 0;
+  padding: 8px;
+}
+.search-indi-div:hover {
+  background-color: #c4c4c4;
+  cursor: pointer;
+}
