@@ -131,10 +131,12 @@ const PostSurvey = () => {
             placeholder="질문 제목을 입력해주세요." 
             onChange={e => handleInput(e, idx)}
           />
-          <img className="trash" src={trash} onClick={e => deleteSurvey(e, idx)} alt="trash" />
+          <img className="trash" src={trash} onClick={() => deleteSurvey(idx)} alt="trash" />
 
           {input.surveyType === "주관식" ?
-            <></> 
+            <>
+              <input type="text" className="objective-answer" placeholder="주관식 답변" disabled />
+            </> 
             : 
             <>
               <div className="choice-input">
@@ -149,9 +151,7 @@ const PostSurvey = () => {
                     onChange={e => choiceHandleInput(e, idx, 0)}
                   />
                 </li>
-
               </div>
-              <img className="delete" src={cross} alt="cross" onClick={deleteSurvey} />
             </>
           }
         </div>
