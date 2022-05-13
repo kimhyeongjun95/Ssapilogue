@@ -10,6 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -44,6 +46,9 @@ public class BugReport {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "bugReport", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<BugReportComment> bugReportComments = new ArrayList<>();
 
     @Builder
     public BugReport(Project project, User user, String title, String content, Boolean isSolved) {
