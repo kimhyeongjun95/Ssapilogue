@@ -8,7 +8,7 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
   return (
     <div className="card">
       <div className="image-box">
-        <img className="card-thumbnail" src={thumbnail} alt="project-card" />
+        <img className="card-thumbnail" src={thumbnail} alt="thumbnail" />
       </div>
       <div className="text-box">
         <div className="card-title-content">
