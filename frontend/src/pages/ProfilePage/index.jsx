@@ -5,9 +5,9 @@ import profilePic from "../../assets/profileDefault.jpg"
 import detailImage from "../../assets/detailImage.png"
 
 const ProfilePage = () => {
+  
   const [i,setI] = useState(2)
   const [bmi, setBmi] = useState(2)
-  
 
   const user = {
     "email" : "besthyun@gmail.com",
@@ -219,7 +219,6 @@ const ProfilePage = () => {
     ]
   }
   const [myproject, setMyproject] = useState(user["projects"].slice(0,3))
-  
   const [mybmProject, setMybmProject] = useState(user["bookmarkList"].slice(0,3))
 
   const myp = myproject.map((item,key) => {

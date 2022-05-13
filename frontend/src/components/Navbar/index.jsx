@@ -4,6 +4,7 @@ import store from "../../utils/store"
 import { useNavigate } from "react-router-dom"
 import './style.scss'
 import Default from '../../assets/default.png'
+import Logo from "../../assets/logo.png"
 
 const Navbar = () => {
 
@@ -40,14 +41,15 @@ const Navbar = () => {
   return (
     <nav>
       <Link className="home" to="/">
-        <h1>SSapilogue</h1>
+        <img src={Logo} alt="logo" className="logo" />
+        {/* <h1>SSapilogue</h1> */}
       </Link>
       
 
       <div className="navbar_dropdown">
         {authorized ?
           <div className="navbar-profile-image">
-            <img src={Default} alt="" onClick={toggleHandler} />
+            <img src={Default} alt="" onClick={toggleHandler} className="person-image" />
           </div>
           :
           <Link className="login" to="/signin">
