@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import swal from 'sweetalert';
 import { compileString } from 'sass';
+import "./style.scss"
 
 const PostProjectPage = () => {
 
@@ -25,6 +26,8 @@ const PostProjectPage = () => {
   const [thumbnailUrl, setThumnailUrl] = useState('')
   const [markdown, setMarkdown] = useState('')
   const [readmeCheck, setReadmeCheck] = useState('1');
+  const [searchData, setSearchData] = useState([]);
+  const [msearchData, setmSearchData] = useState([]);
   const editorRef = React.createRef();
 
   // 기술스택 //
@@ -122,16 +125,55 @@ const PostProjectPage = () => {
   }
  
   //
-   
-  const hashType = (InputTitle,Plcaehorder, inputBox,inputValue,inputSetValue,inputSetbox,hamsu,inputId) => {
-    const handleChange = (event) => {
+  
+
+  
+  const hashType = (InputTitle,Plcaehorder, inputBox,inputValue,inputSetValue,inputSetbox,hamsu,inputId,sD,setSD) => {
+    const handleChange = async(event) => {
       inputSetValue(event.target.value);
+      if (inputId == "기술스택") {
+        const type_value = document.getElementById(inputId).value
+        if (type_value) {
+          const res = await API.get(`/api/tech-stack/search/specific?keyword=${type_value}`)
+          console.log(res.data.searchList)
+          setSD(res.data.searchList)
+        }
+      }else{
+        const type_value = document.getElementById(inputId).value
+        if (type_value) {
+          const res = await API.get(`/api/user-info/search/?keyword=${type_value}`)
+          console.log(res.data.searchList)
+          setSD(res.data.searchList)
+        }
+      }
     };
+
+    const onClickSearch = (item) => {
+      setSD([])
+      inputSetValue(item)
+    }
+    const searchMap = sD.map((item) => {
+    
+      return <div className="pp-search-indi-div">
+        <p className="search-p" onClick={() => onClickSearch(item)}>{item}</p>
+      </div>
+    });
+    console.log(searchMap)
+    
     return <div style={{width: "40%"}}>
       <p style={{marginBottom : 0}}> {InputTitle} </p>
+      { (sD.length) ?
+        <div className="pp-search-indi-all-div">
+          {searchMap}
+        </div>
+        :
+        null
+      }
+      
       <TextField
         type="text"
         size = "small"
+        id={inputId}
         className={inputId}
         style={{width:"100%"}}
         value={inputValue}
@@ -216,7 +258,8 @@ const PostProjectPage = () => {
    
   }
 
- 
+
+
 
   return (
     <>
@@ -228,8 +271,8 @@ const PostProjectPage = () => {
         {chooseType()}
         <Question InputTitle="배포주소" inputValue={bepo} inputSetValue={setBepo} />
         <Question InputTitle="* Git Repo" inputValue={repo} inputSetValue={setRepo} pilsu="1" inputId="Git repo"/>
-        {hashType("* 기술스택","기술스택을 입력해주세요",hashbox,hashtag,setHashtag,setHashbox,plusHashtag,"기술스택")}
-        {hashType("* 프로젝트 멤버","프로젝트 멤버를 입력해주세요",phashbox,phashtag,setpHashtag,setpHashbox,PplusHashtag,"프로젝트 멤버")}
+        {hashType("* 기술스택","기술스택을 입력해주세요",hashbox,hashtag,setHashtag,setHashbox,plusHashtag,"기술스택",searchData,setSearchData)}
+        {hashType("* 프로젝트 멤버","프로젝트 멤버를 입력해주세요",phashbox,phashtag,setpHashtag,setpHashbox,PplusHashtag,"프로젝트 멤버",msearchData,setmSearchData)}
 
         <input type="file" style={{ display: "none" }} onChange={onChange} ref={imageInput} accept="img/*" />
         <button style={uploadButton} onClick={onCickImageUpload}>썸네일 업로드</button>

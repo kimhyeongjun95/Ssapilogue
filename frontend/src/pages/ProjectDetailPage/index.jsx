@@ -298,6 +298,7 @@ const DetailPage = () => {
       <p className="search-p" onClick={() => onClickSearch(item)}>{item}</p>
     </div>
   });
+  
   return (
     
     <div className="project-div">
