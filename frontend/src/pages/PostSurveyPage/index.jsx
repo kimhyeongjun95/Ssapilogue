@@ -115,7 +115,7 @@ const PostSurvey = () => {
   }
 
   return (
-    <div className="survey">
+    <div className="post-box">
 
       <h2>설문조사를 등록해 주세요!</h2>
       <div className="default-survey">
