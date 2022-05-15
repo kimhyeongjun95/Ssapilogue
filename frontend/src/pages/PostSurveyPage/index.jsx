@@ -151,7 +151,6 @@ const PostSurvey = () => {
                 </li>
 
               </div>
-              <img className="delete" src={cross} alt="cross" onClick={deleteSurvey} />
             </>
           }
         </div>
