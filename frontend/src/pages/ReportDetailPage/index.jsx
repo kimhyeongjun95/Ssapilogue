@@ -39,7 +39,6 @@ const ReportDetailPage = () => {
       setWriter(res.data.bugReport.nickname)
       setProfilepic(res.data.bugReport.profileImage)
       setCreateAt(moment(res.data.bugReport.createAt).format('YYYY년 MM월 DD일'))
-      console.log(res.data.bugReport)
     }
     startReportDetail()
   },[kai,reportId])
@@ -47,7 +46,7 @@ const ReportDetailPage = () => {
   const deleteReport = async() => {
     const res = await API.delete(`/api/bug/${reportId}`)
     navigate(`/project/${projectId}/opinions/report`)
-    console.log(res)
+
   }
 
   const postComment = async() => {
@@ -62,31 +61,23 @@ const ReportDetailPage = () => {
 
   const deleteComment = async(bugCoId) => {
     const res = await API.delete(`/api/bug-comment/${bugCoId}`)
-    console.log(res)
     setKai(kai + 1)
   }
   const goEdit = () => {
-    console.log(content)
     navigate("edit", {state: {content :content ,title : title}});
   }
     
   const commentBox = comment.map((item) => {
     const regex = /@.*[원|장]/
-    // console.log(item.content.match(regex))
-    // console.log(item.content.match(regex))
     let pingping = item.content
-    let papa = []
     item.content.split(" ").map((Citem) => {
       if (Citem.match(regex)) {
         const piopio = Citem.match(regex)[0]
-        // console.log(item.match(regex)[0])
         pingping = pingping.replaceAll(piopio,`<span id="call-red">${piopio}</span>`)
         
       }
       pingping = "<p>" + pingping + "</p>"
-      console.log(pingping)
     })
-    console.log(pingping)
     return <div className="report-detail-box-div">
       <div>
         <img className="report-detail-icon" src={(item.profileImage) ? item.profileImage : defaultpic} alt="profile" />
@@ -108,11 +99,9 @@ const ReportDetailPage = () => {
   const checkTag = (event) => {
     if (!commentTrue || indicomment.includes('@')) {
       if (event.key=='@') {
-        console.log('언급시작')
         setCommentTrue(true)
 
         setStartword(document.getElementById('commentText').selectionStart)
-        console.log(startWord)
         
 
       }
@@ -120,25 +109,17 @@ const ReportDetailPage = () => {
   }
 
   async function searchWord(word) {
-    console.log(document.getElementById("commentText").value.slice(startWord+1,endWord))
-    console.log("검색",word)
     const res  = await API.get(`/api/user-info/search?keyword=${word}`)
     setSearchData(res.data.searchList)
     const date = new Date();
-    console.log(date)
-    console.log("왜이게..?",document.getElementById("commentText").value.slice(startWord+1,endWord))
-    console.log(res)
   }
 
   const onChangeComment = (e) => {
     setIndiComment(e.target.value)
     if (commentTrue === true) {
-      console.log('트루는통과')
       if (document.getElementById('commentText').selectionStart) {
         setEndword(document.getElementById('commentText').selectionStart)
         if (document.getElementById("commentText").value.slice(startWord+1,endWord)) {
-          console.log('들어왓음')
-          console.log(document.getElementById("commentText").value.slice(startWord+1,endWord))
           searchWord(document.getElementById("commentText").value.slice(startWord+1,endWord))
         }
       }

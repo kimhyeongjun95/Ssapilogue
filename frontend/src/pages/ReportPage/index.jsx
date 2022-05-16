@@ -28,7 +28,6 @@ const ReportPage = () => {
     async function isSolve() {
       store.getToken()
       const res = await API.post(`/api/bug/solved/${item}`)
-      console.log(res)
       let [a1,a2,a3] = board
       var bgChangeDiv = document.getElementById(`${item}`)
       if (res.data.isSolved) { 
@@ -38,27 +37,21 @@ const ReportPage = () => {
         bgChangeDiv.className = "white-item-div"
         setBoard([a1,a2-1,a3+1])
       }
-      console.log(board)
     }
     isSolve()
-    // let [a1, a2, a3] = board
-    // console.log(a1,a2,a3)
   }
   const bugClick = (item) => {
     navigate(`${item}`)
   }
   const bugBox = bugList.map((item,index) => {
-    console.log(item)
     let bgdiv = "white-item-div"
     let pio = true
     if (item.isSolved){
       bgdiv = "black-item-div"
       pio = true
-      console.log(bgdiv)
     }else{
       bgdiv = "white-item-div"
       pio = false
-      console.log(bgdiv)
     }
     
 

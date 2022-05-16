@@ -70,7 +70,6 @@ const DetailPage = () => {
       setThumbnail(res.data.project.thumbnail)
       setIsliked(res.data.project.isLiked)
       setIsbookmarked(res.data.project.isBookmkared)
-      console.log(res.data.project)
     }
     projectCall()
   },[kai,id])
@@ -120,21 +119,18 @@ const DetailPage = () => {
 
   const commentBox = comment.map((item) => {
     const regex = /@.*[원|장]/
-    // console.log(item.content.match(regex))
-    // console.log(item.content.match(regex))
+
     let pingping = item.content
-    let papa = []
+
     item.content.split(" ").map((Citem) => {
       if (Citem.match(regex)) {
         const piopio = Citem.match(regex)[0]
-        // console.log(item.match(regex)[0])
         pingping = pingping.replaceAll(piopio,`<span id="call-red">${piopio}</span>`)
         
       }
       pingping = "<p>" + pingping + "</p>"
-      console.log(pingping)
     })
-    console.log(pingping)
+
     return <div className="box-div">
       <div>
         <img className="comment-image" src={detailImage} alt="profile" />
@@ -220,12 +216,10 @@ const DetailPage = () => {
   const onChangeComment = (e) => {
     setIndiComment(e.target.value)
     if (commentTrue === true) {
-      console.log('트루는통과')
+
       if (document.getElementById('commentText').selectionStart) {
         setEndword(document.getElementById('commentText').selectionStart)
         if (document.getElementById("commentText").value.slice(startWord+1,endWord)) {
-          console.log('들어왓음')
-          console.log(document.getElementById("commentText").value.slice(startWord+1,endWord))
           searchWord(document.getElementById("commentText").value.slice(startWord+1,endWord))
         }
       }
@@ -239,13 +233,8 @@ const DetailPage = () => {
   const checkTag = (event) => {
     if (!commentTrue || indicomment.includes('@')) {
       if (event.key=='@') {
-        console.log('언급시작')
         setCommentTrue(true)
-
         setStartword(document.getElementById('commentText').selectionStart)
-        console.log(startWord)
-        
-
       }
     }
   }
@@ -253,17 +242,9 @@ const DetailPage = () => {
 
 
   async function searchWord(word) {
-    console.log(document.getElementById("commentText").value.slice(startWord+1,endWord))
-    console.log("검색",word)
     const res  = await API.get(`/api/user-info/search?keyword=${word}`)
     setSearchData(res.data.searchList)
     const date = new Date();
-    console.log(date)
-    console.log("왜이게..?",document.getElementById("commentText").value.slice(startWord+1,endWord))
-    console.log(res)
-    
-    
-
   }
 
   
