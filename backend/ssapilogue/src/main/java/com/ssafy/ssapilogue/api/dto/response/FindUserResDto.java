@@ -1,9 +1,6 @@
 package com.ssafy.ssapilogue.api.dto.response;
 
-import com.ssafy.ssapilogue.core.domain.Bookmark;
-import com.ssafy.ssapilogue.core.domain.Project;
-import com.ssafy.ssapilogue.core.domain.User;
-import com.ssafy.ssapilogue.core.domain.UserIdentity;
+import com.ssafy.ssapilogue.core.domain.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -48,7 +45,16 @@ public class FindUserResDto {
         greeting = user.getGreeting();
         image = user.getImage();
         userLiked = user.getLikes();
-        projects = user.getProjects().stream().map(FindMyProjectResDto::new).collect(Collectors.toList());
+        List<Project> userProjects = user.getProjects();
+        List<ProjectMember> projectMembers = user.getProjectMembers();
+        for (int i=0; i < projectMembers.size(); i++) {
+            if (projectMembers.get(i).getUser().getEmail().equals(email)) {
+                if (userProjects.contains(projectMembers.get(i).getProject()) == false) {
+                    userProjects.add(projectMembers.get(i).getProject());
+                }
+            }
+        }
+        projects = userProjects.stream().map(FindMyProjectResDto::new).collect(Collectors.toList());
         bookmarkList = user.getBookmarkList().stream().map(bookmark -> new FindMyProjectResDto(bookmark.getProject())).collect(Collectors.toList());
     }
 }

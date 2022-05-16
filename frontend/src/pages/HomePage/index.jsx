@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import API from "../../api/API";
 import Select from "../../components/Select"
-import FormControl from '@mui/material/FormControl';
+import Grid from '@mui/material/Grid';
 import { Chip } from "@mui/material"
 import Card from "../../components/Card"
 import Slide1 from "../../assets/Slide1.png"
@@ -11,6 +11,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import "./style.scss"
+import { grid } from "@mui/system";
 
 const HomePage = () => {
   
@@ -114,31 +115,31 @@ const HomePage = () => {
         </Link>
 
         <div className="home-search">
-          <FormControl sx={{ width: 140 }}>
-            <Select onChange={handleOption} option={option} />
-          </FormControl>
-          <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
+          <Select onChange={handleOption} option={option} />
+          <div style={{ width : "100%" }}>
+            <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
+            <div className="home-search-main">
+              <div className="home-search-title">
+                {dropResult && dropResult.map((search, idx) => (
+                  <div style={{ marginBottom : "3px" }} key={idx}>
+                    {search.title}
+                  </div>
+                ))}
+              </div>
+              <div className="home-search-tech">
+                {techSearchResult && techSearchResult.map((tech, idx) => (
+                  <span key={idx}>
+                    <Chip
+                      onClick={techStackClickSearch}
+                      style={{ height : "24px", marginRight : "5px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+                      label={tech} 
+                    />
+                  </span>
+                ))}
+              </div>
+            </div> 
+          </div>
         </div>
-
-        <div className="home-search-main">
-          {dropResult && dropResult.map((search, idx) => (
-            <div key={idx}>
-              {search.title}
-            </div>
-          ))}
-        </div>
-        
-        <div className="home-search-main">
-          {techSearchResult && techSearchResult.map((tech, idx) => (
-            <span key={idx}>
-              <Chip
-                onClick={techStackClickSearch}
-                style={{ height : "24px", marginRight : "3px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
-                label={tech} 
-              />
-            </span>
-          ))}
-        </div>        
 
         <div className="home-body-title">
           우리 모두의 프로젝트
@@ -157,20 +158,25 @@ const HomePage = () => {
         </div>
 
         <div className="cards-grid">
-          {searchResult && searchResult.map((search, idx) => (
-            <div key={idx}>
-              <Card
-                title={search.title} 
-                content={search.introduce}
-                category={search.category}
-                likeCnt={search.likeCnt}
-                viewCnt={search.hits}
-                commentCnt={search.commentCnt}
-                techStack={search.techStack}
-                thumbnail={search.thumbnail}
-              />
-            </div>
-          ))}
+          <Grid container>
+            {searchResult && searchResult.map((search, idx) => (
+              <Grid item xl={4} md={6} sm={12}>
+                <div className="home-card" key={idx}>
+                  <Card
+                    title={search.title} 
+                    content={search.introduce}
+                    category={search.category}
+                    likeCnt={search.likeCnt}
+                    viewCnt={search.hits}
+                    commentCnt={search.commentCnt}
+                    techStack={search.techStack}
+                    thumbnail={search.thumbnail}
+                  />
+                </div>
+              </Grid>
+            ))}
+          </Grid>
+          
         </div>
       </div>
     </>
