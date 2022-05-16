@@ -1,6 +1,5 @@
 .logo {
-  width: 15%;
-  height: 15%
+  width: 20%;
 }
 
 .person-image {
@@ -9,17 +8,17 @@
   // box-shadow: 0 0 0 1px;
   // border: 0.1px solid;
   border-radius: 70%;
-  padding: 5px;
 }
 
 nav {
   position: fixed;
   width: 100%;
+  z-index: 9999;
   top:0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 50px;
+  height: 60px;
   padding-top: 5px;
   padding-bottom: 5px;
   background-color: white;
@@ -37,10 +36,11 @@ nav {
   }
 
   .login_text {
-    margin-right: 20px;
-    margin-top: 10px;
+    margin-right: 40px;
+    margin-top: 29.75px;
     text-decoration: none;
     color: black;
+    font-weight: bold;
   }
 
   .navbar-profile-image {
@@ -48,9 +48,9 @@ nav {
     height: 50px;
     float: right;
     position: fixed;
-    top: 5px;
+    top: 10px;
     right: 0px;
-    margin-right: 3%;
+    margin-right: 47.5px;
   }
 
   .navbar_dropdown_content {
@@ -62,8 +62,8 @@ nav {
     text-align: center;
     padding: 5px;
     float: right;
-    top: 70px;
-    right: 40px;
+    top: 85px;
+    right: 20px;
   }
 
   .navbar_dropdown_content_element {

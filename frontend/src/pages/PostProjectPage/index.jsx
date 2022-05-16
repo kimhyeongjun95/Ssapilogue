@@ -1,5 +1,4 @@
 import React, {useState, useRef} from 'react';
-
 import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
 import {InputLabel,MenuItem,FormControl, Button, Chip} from "@mui/material"
@@ -7,10 +6,8 @@ import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { Link, useNavigate } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
-import { compileString } from 'sass';
 import "./style.scss"
 
 const PostProjectPage = () => {
@@ -41,11 +38,10 @@ const PostProjectPage = () => {
   const plusHashtag = (e) => {
     if (e.key === "Enter") {
       if (hashtag) {
- 
         setHashbox([...hashbox, hashtag])
- 
         setHashtag('')
-        console.log(hashbox)
+
+        setSearchData([])
       } else {
         alert("입력값이 없습니다.")
       }
@@ -55,11 +51,9 @@ const PostProjectPage = () => {
   const PplusHashtag = (e) => {
     if (e.key === "Enter") {
       if (phashtag) {
- 
         setpHashbox([...phashbox, phashtag])
- 
         setpHashtag('')
-        console.log(phashbox)
+        setmSearchData([])
       }else {
         alert("입력값이 없습니다.")
       }
@@ -83,7 +77,6 @@ const PostProjectPage = () => {
 
   const onChangeIntroFunction = () => {
     const marktext = editorRef.current.getInstance().getMarkdown()
-    console.log(marktext);
     setMarkdown(marktext)
   };
 
@@ -96,7 +89,6 @@ const PostProjectPage = () => {
  
   const onChange = async(event) => {
     const imageFile = event.target.files[0];
-    console.log(imageFile)
     const imageUrl = URL.createObjectURL(imageFile);
     setThumnailUrl(imageUrl)
     const formData = new FormData();
@@ -131,18 +123,16 @@ const PostProjectPage = () => {
   const hashType = (InputTitle,Plcaehorder, inputBox,inputValue,inputSetValue,inputSetbox,hamsu,inputId,sD,setSD) => {
     const handleChange = async(event) => {
       inputSetValue(event.target.value);
-      if (inputId == "기술스택") {
+      if (inputId === "기술스택") {
         const type_value = document.getElementById(inputId).value
         if (type_value) {
           const res = await API.get(`/api/tech-stack/search/specific?keyword=${type_value}`)
-          console.log(res.data.searchList)
           setSD(res.data.searchList)
         }
       }else{
         const type_value = document.getElementById(inputId).value
         if (type_value) {
           const res = await API.get(`/api/user-info/search/?keyword=${type_value}`)
-          console.log(res.data.searchList)
           setSD(res.data.searchList)
         }
       }
@@ -216,7 +206,6 @@ const PostProjectPage = () => {
 
   const mkChange = (e) => {
     setReadmeCheck(e.target.value)
-    console.log(typeof e.target.value)
   }
 
   
@@ -232,9 +221,6 @@ const PostProjectPage = () => {
           swal("미입력", `${party_name[party_index]} 이(가) 입력되지 않았습니다.`, "error");
           break
         }else {
-          console.log(party_name[party_index])
-          let a = document.getElementsByClassName(`${party_name[party_index]}`)
-          console.log(a[0].querySelector('input'))
           document.getElementsByClassName(`${party_name[party_index]}`)[0].querySelector('input').focus()
           flag = true
           swal("미입력", `${party_name[party_index]} 이(가) 입력되지 않았습니다.`, "error");
@@ -308,21 +294,6 @@ const PostProjectPage = () => {
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
           <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
-          {/* <Link 
-            to="/project/survey"
-            state={{
-              title: title,
-              intro: intro,
-              various: various,
-              phashbox: phashbox,
-              hashbox: hashbox,
-              bepo: bepo,
-              repo: repo,
-              thumbnail: thumbnail,
-              readmeCheck: readmeCheck,
-              markdown: markdown
-            }}
-          > */}
           <Button onClick={toSurvey} size="large" variant="contained"> 다음단계 </Button>
           {/* </Link> */}
         </div>

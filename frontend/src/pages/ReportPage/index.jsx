@@ -1,5 +1,4 @@
 import React, {useState,useEffect} from "react";
-import Undo from "../../assets/undo.png"
 import edit from "../../assets/Edit-alt.png"
 import "./style.scss"
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -28,7 +27,6 @@ const ReportPage = () => {
     async function isSolve() {
       store.getToken()
       const res = await API.post(`/api/bug/solved/${item}`)
-      console.log(res)
       let [a1,a2,a3] = board
       var bgChangeDiv = document.getElementById(`${item}`)
       if (res.data.isSolved) { 
@@ -38,27 +36,21 @@ const ReportPage = () => {
         bgChangeDiv.className = "white-item-div"
         setBoard([a1,a2-1,a3+1])
       }
-      console.log(board)
     }
     isSolve()
-    // let [a1, a2, a3] = board
-    // console.log(a1,a2,a3)
   }
   const bugClick = (item) => {
     navigate(`${item}`)
   }
   const bugBox = bugList.map((item,index) => {
-    console.log(item)
     let bgdiv = "white-item-div"
     let pio = true
     if (item.isSolved){
       bgdiv = "black-item-div"
       pio = true
-      console.log(bgdiv)
     }else{
       bgdiv = "white-item-div"
       pio = false
-      console.log(bgdiv)
     }
     
 
@@ -78,10 +70,6 @@ const ReportPage = () => {
   return (
     <>
       <div className="report-nav-div">
-        {/* <div className="back-div">
-          <img className="undo-pic" src={Undo} alt="Undo"/>
-          프로젝트로 돌아가기
-        </div> */}
         <div className="nav-div"/>
       </div>
 

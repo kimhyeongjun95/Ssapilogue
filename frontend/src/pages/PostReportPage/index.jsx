@@ -17,7 +17,6 @@ const PostReviewPage = () => {
 
   const onChangeIntroFunction = () => {
     const marktext = editorRef.current.getInstance().getMarkdown()
-    console.log(marktext);
     setMarkdown(marktext)
   };
 
@@ -35,7 +34,6 @@ const PostReviewPage = () => {
         title: val,
         content : markdown
       })
-      console.log(postReport)
       navigate(`/project/${id}/opinions/report/${postReport.data.bugId}`)
     } catch (e) {
       throw e;
