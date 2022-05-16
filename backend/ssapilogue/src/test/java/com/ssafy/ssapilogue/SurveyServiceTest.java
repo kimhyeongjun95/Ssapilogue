@@ -1,6 +1,7 @@
 package com.ssafy.ssapilogue;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateSurveyReqDto;
+import com.ssafy.ssapilogue.api.dto.request.DeleteSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindDefaultSurveyResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.api.service.SurveyService;
@@ -71,10 +72,10 @@ public class SurveyServiceTest {
 
         List<CreateSurveyReqDto> createSurveyReqDtos = new ArrayList<>();
         // 객관식
-        CreateSurveyReqDto surveyReqDto1 = new CreateSurveyReqDto("싸필로그가 만족스럽나요?", "객관식", surveyOptions);
+        CreateSurveyReqDto surveyReqDto1 = new CreateSurveyReqDto(null, "싸필로그가 만족스럽나요?", "객관식", surveyOptions);
         createSurveyReqDtos.add(surveyReqDto1);
         // 주관식
-        CreateSurveyReqDto surveyReqDto2 = new CreateSurveyReqDto("싸필로그에 대해 한줄평을 남겨주세요.", "주관식", null);
+        CreateSurveyReqDto surveyReqDto2 = new CreateSurveyReqDto(null, "싸필로그에 대해 한줄평을 남겨주세요.", "주관식", null);
         createSurveyReqDtos.add(surveyReqDto2);
 
         List<String> surveyIds = surveyService.createSurvey(savedProject.getId(), createSurveyReqDtos);
@@ -98,7 +99,10 @@ public class SurveyServiceTest {
                 .build();
         Survey savedSurvey = surveyRepository.save(survey);
 
-        surveyService.deleteSurvey(savedSurvey.getId());
+        List<String> surveyIds = new ArrayList<>();
+        surveyIds.add(savedSurvey.getId());
+
+        surveyService.deleteSurvey(new DeleteSurveyReqDto(surveyIds));
 
         Optional<Survey> findSurvey = surveyRepository.findById(savedSurvey.getId());
         assertThat(findSurvey.isPresent()).isEqualTo(false);
