@@ -28,7 +28,6 @@ const ProfilePage = () => {
     store.getToken()
     API.get("api/user")
       .then((response) => {
-        console.log(response);
         setUser(response.data.user);
         setMyproject(response.data.user["projects"].slice(0,3))
         setMybmProject(response.data.user["bookmarkList"].slice(0,3))
