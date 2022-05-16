@@ -4,6 +4,12 @@ import detailImage from "../../assets/detailImage.png"
 import "./style.scss"
 import constructionPic from "../../assets/construction.png"
 import projectPeoplePic from "../../assets/proejectPeople.png"
+import letsUp from "../../assets/letsUp.svg"
+import bookmarkPic from "../../assets/bookmark.svg"
+import likePic from "../../assets/thumb.svg"
+import alLikePic from "../../assets/thumbColor.svg"
+import alBookmark from "../../assets/bookmarkColor.svg"
+
 import gitRepo from "../../assets/git.png"
 import google from "../../assets/Google.png"
 import report from "../../assets/report.png"
@@ -29,6 +35,8 @@ const DetailPage = () => {
   const [readme, setReadme] = useState('');
   const [kai, setKai] = useState(0);
   const [intro, setIntro] = useState('');
+  const [isliked, setIsliked] = useState(false);
+  const [isbookmarked, setIsbookmarked] = useState(false);
   
   useEffect(() => {
     async function projectCall() {
@@ -45,6 +53,8 @@ const DetailPage = () => {
       setAuthorMember(res.data.project.member)
       setIntro(res.data.project.introduce)
       setThumbnail(res.data.project.thumbnail)
+      setIsliked(res.data.project.isLiked)
+      setIsbookmarked(res.data.project.isBookmkared)
       console.log(res.data.project)
     }
     projectCall()
@@ -137,7 +147,32 @@ const DetailPage = () => {
     >{item}
     </Button>
   })
+  
+  const goUp = () => {
+    window.scrollTo(0,0);
+  }
 
+  const projectLike = async() => {
+    if (isliked) {
+      await API.delete(`/api/project/${id}/like`)
+      setIsliked(false)
+    }else{
+      await API.post(`/api/project/${id}/like`)
+      setIsliked(true)
+    }
+  }
+
+  const projectBookmark = async() => {
+    
+    if (isbookmarked) {
+      await API.delete(`/api/project/${id}/bookmark`)
+      setIsbookmarked(false)
+
+    }else{
+      await API.post(`/api/project/${id}/bookmark`)
+      setIsbookmarked(true)
+    }
+  }
   
   return (
     
@@ -223,6 +258,14 @@ const DetailPage = () => {
         </div>
 
         {commentBox}
+      </div>
+      <div className="project-remote-controll">
+        <div className="remote-div">
+          <img onClick={goUp} src={letsUp} alt="likePic" />
+          <img onClick={projectLike} src={(isliked) ? alLikePic : likePic} alt="likePic" />
+          <img onClick={projectBookmark} src={(isbookmarked) ? alBookmark : bookmarkPic} alt="likePic" />
+        </div>
+
       </div>
     </div>
   )
