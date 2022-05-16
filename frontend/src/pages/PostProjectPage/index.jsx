@@ -1,5 +1,4 @@
 import React, {useState, useRef} from 'react';
-
 import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
 import {InputLabel,MenuItem,FormControl, Button, Chip} from "@mui/material"
@@ -7,10 +6,8 @@ import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { Link, useNavigate } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
-import { compileString } from 'sass';
 import "./style.scss"
 
 const PostProjectPage = () => {
@@ -41,11 +38,10 @@ const PostProjectPage = () => {
   const plusHashtag = (e) => {
     if (e.key === "Enter") {
       if (hashtag) {
- 
         setHashbox([...hashbox, hashtag])
- 
         setHashtag('')
-        console.log(hashbox)
+
+        setSearchData([])
       } else {
         alert("입력값이 없습니다.")
       }
@@ -55,11 +51,9 @@ const PostProjectPage = () => {
   const PplusHashtag = (e) => {
     if (e.key === "Enter") {
       if (phashtag) {
- 
         setpHashbox([...phashbox, phashtag])
- 
         setpHashtag('')
-        console.log(phashbox)
+        setmSearchData([])
       }else {
         alert("입력값이 없습니다.")
       }
@@ -96,7 +90,6 @@ const PostProjectPage = () => {
  
   const onChange = async(event) => {
     const imageFile = event.target.files[0];
-    console.log(imageFile)
     const imageUrl = URL.createObjectURL(imageFile);
     setThumnailUrl(imageUrl)
     const formData = new FormData();
@@ -308,21 +301,6 @@ const PostProjectPage = () => {
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
           <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
-          {/* <Link 
-            to="/project/survey"
-            state={{
-              title: title,
-              intro: intro,
-              various: various,
-              phashbox: phashbox,
-              hashbox: hashbox,
-              bepo: bepo,
-              repo: repo,
-              thumbnail: thumbnail,
-              readmeCheck: readmeCheck,
-              markdown: markdown
-            }}
-          > */}
           <Button onClick={toSurvey} size="large" variant="contained"> 다음단계 </Button>
           {/* </Link> */}
         </div>
