@@ -98,7 +98,16 @@
   flex-wrap: wrap;
 }
 
+.body {
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar { display: none; }
 .home-card {
   display: flex;
   justify-content: center;
+}
+
+.card-link {
+  text-decoration: none;
+  color: black;
 }

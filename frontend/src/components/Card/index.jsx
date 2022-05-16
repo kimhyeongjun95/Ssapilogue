@@ -3,11 +3,18 @@ import { Chip } from "@mui/material"
 import Thumbsup from "../../assets/thumbsup.png"
 import View from "../../assets/view.svg"
 import Comment from "../../assets/comment.png"
+import BookMarked from '../../assets/BookMarked.png'
+import NotBookMarked from '../../assets/NotBookMarked.png'
 
-const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStack, thumbnail }) => {
+const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStack, thumbnail, bookmark }) => {
   return (
     <div className="card">
       <div className="image-box">
+        <img 
+          className="card-bookmark"
+          src={bookmark === true ? BookMarked : NotBookMarked}
+          alt="bookmark"
+        />
         <img className="card-thumbnail" src={thumbnail} alt="thumbnail" />
       </div>
       <div className="text-box">

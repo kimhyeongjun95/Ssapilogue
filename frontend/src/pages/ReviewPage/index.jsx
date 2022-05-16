@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../../api/API";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   BarChart,
   CartesianGrid,
@@ -56,7 +56,6 @@ const ReviewPage = () => {
 
   const getReview = async (id) => {
     const response = await API.get(`/api/review/${id}`);
-    console.log(response);
     setReviews(response.data.reviewList)
   }
 
@@ -69,6 +68,7 @@ const ReviewPage = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   const printDocument = () => {
     html2canvas(document.getElementById("printReview"), {
       width: window.width,
@@ -77,7 +77,6 @@ const ReviewPage = () => {
       console.log(document.getElementById("printReview"))
       var imgData = canvas.toDataURL('image/png');
       var imgWidth = 210;
-      var pageHeight = imgWidth * 1.414;
       var imgHeight = canvas.height * imgWidth / canvas.width;
 
       var doc = new jsPDF({
@@ -92,12 +91,13 @@ const ReviewPage = () => {
     });
   } 
 
-
   return (
     <div className="review-detail">
       <div className="review-btn-box">
         <img className="review-btn" style={{marginRight: "1vw"}} src={save} alt="save" onClick={printDocument} />
-        <img className="review-btn" src={post} alt="post" />
+        <Link to={`/project/${id}/opinions/review/post`}>
+          <img className="review-btn" src={post} alt="post" />
+        </Link>
       </div>
       {/* <Box sx={{ width: '80%' }}> */}
       <Box className="review_box">

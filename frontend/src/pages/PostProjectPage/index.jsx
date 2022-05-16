@@ -6,7 +6,7 @@ import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import "./style.scss"
 import { createTheme } from '@mui/material/styles'
@@ -126,7 +126,7 @@ const PostProjectPage = () => {
   const hashType = (InputTitle,Plcaehorder, inputBox,inputValue,inputSetValue,inputSetbox,hamsu,inputId,sD,setSD) => {
     const handleChange = async(event) => {
       inputSetValue(event.target.value);
-      if (inputId == "기술스택") {
+      if (inputId === "기술스택") {
         const type_value = document.getElementById(inputId).value
         if (type_value) {
           const res = await API.get(`/api/tech-stack/search/specific?keyword=${type_value}`)
@@ -145,6 +145,8 @@ const PostProjectPage = () => {
     const onClickSearch = (item) => {
       setSD([])
       inputSetValue(item)
+      inputSetbox([...inputBox, item])
+      inputSetValue('')
     }
 
     const searchMap = sD.map((item) => {
@@ -156,13 +158,6 @@ const PostProjectPage = () => {
     
     return <div style={{width: "40%"}}>
       <p style={{marginBottom : 0}}> {InputTitle} </p>
-      { (sD.length) ?
-        <div className="pp-search-indi-all-div">
-          {searchMap}
-        </div>
-        :
-        null
-      }
       
       <TextField
         type="text"
@@ -175,6 +170,13 @@ const PostProjectPage = () => {
         onKeyPress={hamsu}
         placeholder={Plcaehorder}
       />
+      { (sD.length) ?
+        <div className="pp-search-indi-all-div">
+          {searchMap}
+        </div>
+        :
+        null
+      }
       <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap"}}>
         {alHash(inputBox,inputSetbox)}
       </div>
@@ -223,7 +225,6 @@ const PostProjectPage = () => {
           swal("미입력", `${party_name[party_index]} 이(가) 입력되지 않았습니다.`, "error");
           break
         }else {
-          let a = document.getElementsByClassName(`${party_name[party_index]}`)
           document.getElementsByClassName(`${party_name[party_index]}`)[0].querySelector('input').focus()
           flag = true
           swal("미입력", `${party_name[party_index]} 이(가) 입력되지 않았습니다.`, "error");
@@ -306,9 +307,10 @@ const PostProjectPage = () => {
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
           <ThemeProvider theme={theme}>
-            <Button color="primary" className="next-button" size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <Button color="primary" className="next-button" size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
+            </Link>
             <Button color="primary" className="next-button" onClick={toSurvey} size="large" variant="contained"> 다음단계 </Button>
-            {/* </Link> */}
           </ThemeProvider>
         </div>
 

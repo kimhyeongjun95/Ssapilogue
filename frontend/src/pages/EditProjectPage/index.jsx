@@ -115,15 +115,11 @@ const PostProjectPage = () => {
     color: "white",
     cursor: "pointer",
   }
- 
-  //
-  
 
-  
   const hashType = (InputTitle,Plcaehorder, inputBox,inputValue,inputSetValue,inputSetbox,hamsu,inputId,sD,setSD) => {
     const handleChange = async(event) => {
       inputSetValue(event.target.value);
-      if (inputId == "기술스택") {
+      if (inputId === "기술스택") {
         const type_value = document.getElementById(inputId).value
         if (type_value) {
           const res = await API.get(`/api/tech-stack/search/specific?keyword=${type_value}`)
@@ -222,7 +218,6 @@ const PostProjectPage = () => {
           swal("미입력", `${party_name[party_index]} 이(가) 입력되지 않았습니다.`, "error");
           break
         }else {
-          let a = document.getElementsByClassName(`${party_name[party_index]}`)
           document.getElementsByClassName(`${party_name[party_index]}`)[0].querySelector('input').focus()
           flag = true
           swal("미입력", `${party_name[party_index]} 이(가) 입력되지 않았습니다.`, "error");
@@ -231,7 +226,7 @@ const PostProjectPage = () => {
       }
     }
     if (!flag) {
-      const res = await API.put(`/api/project/${id}`,{
+      const res = await API.put(`/api/project/${id}`,{ // eslint-disable-line no-unused-vars
         category: various,
         deployAddress : bepo,
         gitAddress : repo,
