@@ -15,6 +15,19 @@ const PostSurvey = () => {
   const navigate = useNavigate();
   const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
 
+  
+  const addBasicForm = () => {
+    // setInputs([...inputs, { 
+    //   title: '싸필로그의 완성도는 어느 정도라고 생각하시나요?',
+    //   surveyType: "객관식", 
+    //   surveyOptions: [
+    //     "100%", "80", "60%", "40%", "20%"
+    //   ], 
+    //   count: 5 
+    // }])
+    // console.log(inputs);
+  }
+
   const whichSurvey = (e) => {
     setOption(e.target.value);
   }
@@ -70,10 +83,6 @@ const PostSurvey = () => {
     e.target.closest("div").appendChild(cover);
   }
 
-  const tracker = () => {
-    console.log(inputs);
-  }
-
   const handleInput = (e, idx) => {
     const { name, value } = e.target;
     const list = [...inputs];
@@ -119,7 +128,7 @@ const PostSurvey = () => {
 
       <h2>설문조사를 등록해 주세요!</h2>
       <div className="default-survey">
-        <button className="btn-blue" onClick={tracker}>기본 폼 가져오기</button>
+        <button className="btn-blue" onClick={addBasicForm}>기본 폼 가져오기</button>
       </div>
 
       {inputs.map((input, idx) => (

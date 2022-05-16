@@ -16,7 +16,6 @@ import ReportDetailPage from './ReportDetailPage'
 import OpinionPage from './OpinionPage';
 import EditReportPage from './EditReportPage';
 import EditProjectPage from './EditProjectPage';
-import SearchPage from '../components/Search';
 
 const Routes = () => {
   return (
@@ -32,7 +31,7 @@ const Routes = () => {
 
       <Route path="/project/:projectId" element={<ProjectDetailPage />} />
       <Route path="/project/:projectId/edit" element={<EditProjectPage />} />
-      <Route path="/project/:projectId/editsurvey" element={<EditSurveyPage />} />
+      <Route path="/project/:projectId/survey/edit" element={<EditSurveyPage />} />
 
       {/* review에 객관식 주관식 nesting 예정 */}
       <Route path="/project/:projectId/opinions" element={<OpinionPage />} >
@@ -44,7 +43,6 @@ const Routes = () => {
       <Route path="/project/:projectId/opinions/report/post" element={<PostReportPage />} />
       <Route path="/project/:projectId/opinions/report/:reportId" element={<ReportDetailPage />} />
       <Route path="/project/:projectId/opinions/report/:reportId/edit" element={<EditReportPage />} />
-      <Route path="/search" element={<SearchPage />} />
 
     </ReactRouterRoutes>
   )
