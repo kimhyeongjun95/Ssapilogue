@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import "./style.scss"
 
-function questionType( { InputTitle,inputValue ,inputSetValue, pilsu,inputId }){
+function questionType( { InputTitle,inputValue ,inputSetValue, pilsu,inputId, placeholder }){
   const handleChange = (event) => {
     inputSetValue(event.target.value);
   };
@@ -18,6 +18,7 @@ function questionType( { InputTitle,inputValue ,inputSetValue, pilsu,inputId }){
           required
           id="outlined-basic"
           variant="outlined"
+          placeholder={placeholder}
         />
       </div>
     </div>
