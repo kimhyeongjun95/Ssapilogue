@@ -68,6 +68,7 @@ const PostSurvey = () => {
     ask.placeholder = "객관식 답변";
     ask.name = "surveyOptions";
     ask.className = "objective-answer";
+    ask.required = true;
     ask.addEventListener("input", (e) => {
       choiceHandleInput(e, idx, count);
     })
@@ -152,6 +153,7 @@ const PostSurvey = () => {
             value={input.title}
             placeholder="질문 제목을 입력해주세요." 
             onChange={e => handleInput(e, idx)}
+            required
           />
           <img className="trash" src={trash} onClick={() => deleteSurvey(idx)} alt="trash" />
 
@@ -173,6 +175,7 @@ const PostSurvey = () => {
                         name="surveyOptions"
                         value={answer}
                         onChange={e => choiceHandleInput(e, idx, optIdx)}
+                        required
                       />
                     </>
                   ))}
@@ -183,6 +186,7 @@ const PostSurvey = () => {
                       name="surveyOptions"
                       value={input.surveyOptions[0]}
                       onChange={e => choiceHandleInput(e, idx, 0)}
+                      required
                     />
                   )}
                 </li>
