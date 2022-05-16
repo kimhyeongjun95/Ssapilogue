@@ -1,14 +1,16 @@
 import React, {useState, useRef} from 'react';
 import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
-import {InputLabel,MenuItem,FormControl, Button, Chip} from "@mui/material"
+import {InputLabel,MenuItem,FormControl, Chip} from "@mui/material"
 import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import "./style.scss"
+import { createTheme } from '@mui/material/styles'
+import { ThemeProvider } from '@emotion/react';
 
 const PostProjectPage = () => {
 
@@ -111,6 +113,7 @@ const PostProjectPage = () => {
     padding: 8 ,
     backgroundColor: "#3396F4",
     borderRadius: 5,
+    border: 0,
 
     color: "white",
     cursor: "pointer",
@@ -142,27 +145,19 @@ const PostProjectPage = () => {
     const onClickSearch = (item) => {
       setSD([])
       inputSetValue(item)
+      inputSetbox([...inputBox, item])
+      inputSetValue('')
     }
 
     const searchMap = sD.map((item) => {
-    
+      
       return <div className="pp-search-indi-div">
         <p className="search-p" onClick={() => onClickSearch(item)}>{item}</p>
       </div>
     });
-
-    
-
     
     return <div style={{width: "40%"}}>
       <p style={{marginBottom : 0}}> {InputTitle} </p>
-      { (sD.length) ?
-        <div className="pp-search-indi-all-div">
-          {searchMap}
-        </div>
-        :
-        null
-      }
       
       <TextField
         type="text"
@@ -175,25 +170,34 @@ const PostProjectPage = () => {
         onKeyPress={hamsu}
         placeholder={Plcaehorder}
       />
+      { (sD.length) ?
+        <div className="pp-search-indi-all-div">
+          {searchMap}
+        </div>
+        :
+        null
+      }
       <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap"}}>
         {alHash(inputBox,inputSetbox)}
-      
-        
       </div>
     </div>
   }
+    
+    
+
+    
 
   const chooseType = () => {
     const handleChange = (event) => {
       setVarious(event.target.value);
     };
-    return  <FormControl style={{marginTop:"2vh",width:"40%"}} size="small">
-      <InputLabel id="demo-select-small">* 분류</InputLabel>
+    return  <FormControl style={{width:"40%"}} size="small">
+      <p>* 분류</p>
+      <InputLabel style={{marginTop: "57px"}} id="demo-select-small">선택해주세요.</InputLabel>
       <Select
         labelId="demo-select-small"
         id="demo-select-small"
         value={various}
-        label="* 분류"
         onChange={handleChange}
       >
         <MenuItem value={"공통"}>공통</MenuItem>
@@ -249,6 +253,13 @@ const PostProjectPage = () => {
    
   }
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#3396F4',
+      }
+    }
+  })
 
 
 
@@ -256,7 +267,9 @@ const PostProjectPage = () => {
     <>
       <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
 
-        <h2 style={{width:"40%", textAlign:"center"}}>프로젝트를 등록해주세요</h2>
+        <div className="title-highlight">
+          <h1>프로젝트를 등록해 주세요!</h1>
+        </div>
         <p style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh"}}> * 는 필수항목입니다.</p>
         <Question InputTitle="* 프로젝트 이름" inputValue={title} inputSetValue={setTitle} pilsu="1" inputId="프로젝트이름"/>
         {chooseType()}
@@ -266,6 +279,7 @@ const PostProjectPage = () => {
         {hashType("* 프로젝트 멤버","프로젝트 멤버를 입력후 엔터를 눌러주세요.",phashbox,phashtag,setpHashtag,setpHashbox,PplusHashtag,"프로젝트 멤버",msearchData,setmSearchData)}
 
         <input type="file" style={{ display: "none" }} onChange={onChange} ref={imageInput} accept="img/*" />
+        <Question InputTitle="* 소개" inputValue={intro} inputSetValue={setIntro} pilsu="1" inputId="프로젝트 소개" placeholder="메인 페이지에 보여줄 한 줄 소개를 작성해주세요."/>
         <button style={uploadButton} onClick={onCickImageUpload}>썸네일 업로드</button>
         { (thumbnail) ?
           <div style={{marginTop:"2vh"}}>
@@ -274,11 +288,11 @@ const PostProjectPage = () => {
           :
           null
         }
-        <div>
-          <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />직접 입력하기
+        <div style={{marginTop:0}} className="readme-div">
+          <p>README</p>
+          <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />직접 입력하기 
           <input type="radio" checked={readmeCheck === "0"} name="theme" value={"0"} onChange={mkChange}/>github에서 가져오기
         </div>
-        <Question InputTitle="* 소개" inputValue={intro} inputSetValue={setIntro} pilsu="1" inputId="프로젝트 소개"/>
         { (readmeCheck === "1") ?
           <div style={{marginTop:"2%",width:"40%"}}>
             <Editor
@@ -291,11 +305,11 @@ const PostProjectPage = () => {
           </div>
           : null
         }
+        
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-          <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
-          <Button onClick={toSurvey} size="large" variant="contained"> 다음단계 </Button>
-          {/* </Link> */}
+          <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
+          <button className="btn-blue btn-large" onClick={toSurvey}>다음 단계</button>
         </div>
 
        

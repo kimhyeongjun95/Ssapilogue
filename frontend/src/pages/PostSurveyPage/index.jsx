@@ -65,9 +65,10 @@ const PostSurvey = () => {
 
     let ask = document.createElement("input");
     ask.value = list[idx].surveyOptions[count];
-    ask.placeholder = "객관식 답변";
+    ask.placeholder = "객관식 선택지";
     ask.name = "surveyOptions";
     ask.className = "objective-answer";
+    ask.required = true;
     ask.addEventListener("input", (e) => {
       choiceHandleInput(e, idx, count);
     })
@@ -138,8 +139,11 @@ const PostSurvey = () => {
 
   return (
     <div className="post-box">
-
-      <h2>설문조사를 등록해 주세요!</h2>
+      
+      <div className="title-highlight" style={{marginBottom: "5vh"}}>
+        <h1>설문조사를 등록해 주세요!</h1>
+      </div>
+      
       <div className="default-survey">
         <button className="btn-blue" onClick={addBasicForm}>기본 폼 가져오기</button>
       </div>
@@ -152,6 +156,7 @@ const PostSurvey = () => {
             value={input.title}
             placeholder="질문 제목을 입력해주세요." 
             onChange={e => handleInput(e, idx)}
+            required
           />
           <img className="trash" src={trash} onClick={() => deleteSurvey(idx)} alt="trash" />
 
@@ -162,27 +167,27 @@ const PostSurvey = () => {
             : 
             <>
               <div className="choice-input">
-                <img className="plus" src={plus} onClick={e => addChoice(e, idx)} alt="choice-plus" />
-
                 <li className="answer-box">
                   {input.default === true && input.surveyOptions.map((answer, optIdx) => (
                     <>
                       <input
                         className="objective-answer"
-                        placeholder="객관식 답변" 
+                        placeholder="객관식 선택지" 
                         name="surveyOptions"
                         value={answer}
                         onChange={e => choiceHandleInput(e, idx, optIdx)}
+                        required
                       />
                     </>
                   ))}
                   {input.default !== true && (
                     <input
                       className="objective-answer"
-                      placeholder="객관식 답변" 
+                      placeholder="객관식 선택지" 
                       name="surveyOptions"
                       value={input.surveyOptions[0]}
                       onChange={e => choiceHandleInput(e, idx, 0)}
+                      required
                     />
                   )}
                 </li>
@@ -200,7 +205,7 @@ const PostSurvey = () => {
       </div>
 
       <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-        <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
+        <button className="btn-white btn-large" style={{marginRight: "3vw"}}>이전 단계</button>
         <button className="btn-blue btn-large" onClick={submit}>등록</button>
       </div>
 
