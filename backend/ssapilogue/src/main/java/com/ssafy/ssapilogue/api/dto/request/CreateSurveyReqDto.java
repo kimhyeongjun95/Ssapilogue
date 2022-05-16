@@ -15,6 +15,9 @@ import java.util.List;
 @ApiModel("CreateSurveyReqDto")
 public class CreateSurveyReqDto {
 
+    @ApiModelProperty(value = "설문조사 id", required = true)
+    private String surveyId;
+
     @NotNull
     @ApiModelProperty(value = "설문조사 제목", required = true, example = "싸필로그가 유용했나요?")
     private String title;
