@@ -52,7 +52,7 @@ const DetailPage = () => {
   const [endWord, setEndword] = useState(-1)
   const [searchData, setSearchData] = useState([]);
 
-  
+
   useEffect(() => {
     async function projectCall() {
       const res = await API.get(`/api/project/${id}`)
@@ -70,7 +70,6 @@ const DetailPage = () => {
       setThumbnail(res.data.project.thumbnail)
       setIsliked(res.data.project.isLiked)
       setIsbookmarked(res.data.project.isBookmkared)
-      console.log(res.data.project)
     }
     projectCall()
   },[kai,id])
@@ -119,6 +118,19 @@ const DetailPage = () => {
 
 
   const commentBox = comment.map((item) => {
+    const regex = /@.*[원|장]/
+
+    let pingping = item.content
+
+    item.content.split(" ").map((Citem) => {
+      if (Citem.match(regex)) {
+        const piopio = Citem.match(regex)[0]
+        pingping = pingping.replaceAll(piopio,`<span id="call-red">${piopio}</span>`)
+        
+      }
+      pingping = "<p>" + pingping + "</p>"
+    })
+
     return <div className="box-div">
       <div>
         <img className="comment-image" src={detailImage} alt="profile" />
@@ -128,12 +140,12 @@ const DetailPage = () => {
           <div className="comment-nickname">
             {item.nickname}
           </div>
-          <div className="comment-created">
+          <div className="comment-created" >
             {item.createdAt}
           </div>
         </div>
-        <div className="comment-content">
-          <p>{item.content}</p>
+        <div className="comment-content" id={item.commentId} dangerouslySetInnerHTML={{__html: pingping}}>
+          
         </div>
         <div>
           <p className="project-detail-red" onClick={() => deleteComment(item.commentId)}>삭제하기</p>
@@ -204,12 +216,10 @@ const DetailPage = () => {
   const onChangeComment = (e) => {
     setIndiComment(e.target.value)
     if (commentTrue === true) {
-      console.log('트루는통과')
+
       if (document.getElementById('commentText').selectionStart) {
         setEndword(document.getElementById('commentText').selectionStart)
         if (document.getElementById("commentText").value.slice(startWord+1,endWord)) {
-          console.log('들어왓음')
-          console.log(document.getElementById("commentText").value.slice(startWord+1,endWord))
           searchWord(document.getElementById("commentText").value.slice(startWord+1,endWord))
         }
       }
@@ -223,45 +233,18 @@ const DetailPage = () => {
   const checkTag = (event) => {
     if (!commentTrue || indicomment.includes('@')) {
       if (event.key=='@') {
-        console.log('언급시작')
         setCommentTrue(true)
-
         setStartword(document.getElementById('commentText').selectionStart)
-        console.log(startWord)
-        
-
       }
     }
-
-    // if (commentTrue) {
-    //   if (event.key==" ") {
-    //     setEndword(document.getElementById('commentText').selectionStart)
-    //     setCommentTrue(false)
-        
-    //     console.log("끝",endWord)
-    //     console.log("시작",startWord)
-    //     let searchname = indicomment.slice(startWord+1,endWord)
-    //     console.log('검색',searchname)
-
-    //   }
-    // }
-    
   }
 
 
 
   async function searchWord(word) {
-    console.log(document.getElementById("commentText").value.slice(startWord+1,endWord))
-    console.log("검색",word)
     const res  = await API.get(`/api/user-info/search?keyword=${word}`)
     setSearchData(res.data.searchList)
     const date = new Date();
-    console.log(date)
-    console.log("왜이게..?",document.getElementById("commentText").value.slice(startWord+1,endWord))
-    console.log(res)
-    
-    
-
   }
 
   

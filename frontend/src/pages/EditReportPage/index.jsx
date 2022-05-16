@@ -5,6 +5,7 @@ import { Editor } from '@toast-ui/react-editor';
 import {Button} from "@mui/material"
 import "./style.scss"
 import { useNavigate, useParams,useLocation } from "react-router-dom";
+import swal from 'sweetalert';
 
 const EditReportPage = () => {
   const projectid = useParams().projectId; 
@@ -23,16 +24,15 @@ const EditReportPage = () => {
 
   const onChangeIntroFunction = () => {
     const marktext = editorRef.current.getInstance().getMarkdown()
-    console.log(marktext);
     setMarkdown(marktext)
   };
 
   const editReport = async() => {
     if (!val) {
-      return alert('제목을 입력해주세요')
+      return swal("미입력", "제목을 입력해주세요.", "error")
     }else{
       if (!markdown) {
-        return alert('마크다운을 입력해주세요!!')
+        return swal("미입력", "마크다운을 입력해주세요.", "error")
       }
     }
     try{
@@ -40,7 +40,6 @@ const EditReportPage = () => {
         title: val,
         content : markdown
       })
-      console.log(editReport)
       navigate(`/project/${projectid}/opinions/report/${reportId}`)
     } catch (e) {
       throw e;
