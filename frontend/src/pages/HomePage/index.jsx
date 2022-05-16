@@ -120,19 +120,21 @@ const HomePage = () => {
           <div style={{ width : "100%" }}>
             <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
             <div className="home-search-main">
+              <div className="home-search-label">프로젝트</div>
               <div className="home-search-title">
                 {dropResult && dropResult.map((search, idx) => (
-                  <div style={{ marginBottom : "3px" }} key={idx}>
+                  <div style={{ marginBottom : "5px", fontWeight : 'bold', color : '#484848' }} key={idx}>
                     {search.title}
                   </div>
                 ))}
               </div>
+              <div className="home-search-label">스킬태그</div>
               <div className="home-search-tech">
                 {techSearchResult && techSearchResult.map((tech, idx) => (
                   <span key={idx}>
                     <Chip
                       onClick={techStackClickSearch}
-                      style={{ height : "24px", marginRight : "5px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+                      style={{ height : "24px", margin : "5px 3px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
                       label={tech} 
                     />
                   </span>
