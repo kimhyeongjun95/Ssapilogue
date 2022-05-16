@@ -15,18 +15,6 @@ const EditSurvey = () => {
   const [toDelete, setToDelete] = useState([]);
   const navigate = useNavigate();
   
-  const addBasicForm = () => {
-    // setInputs([...inputs, { 
-    //   title: '싸필로그의 완성도는 어느 정도라고 생각하시나요?',
-    //   surveyType: "객관식", 
-    //   surveyOptions: [
-    //     "100%", "80", "60%", "40%", "20%"
-    //   ], 
-    //   count: 5 
-    // }])
-    // console.log(inputs);
-  }
-
   const whichSurvey = (e) => {
     setOption(e.target.value);
   }
@@ -62,6 +50,7 @@ const EditSurvey = () => {
     list[idx]["count"] += 1; 
     const count = list[idx]["count"];
     list[idx].surveyOptions[count] = '';
+
     let ask = document.createElement("input");
     ask.value = list[idx].surveyOptions[count];
     ask.placeholder = "객관식 답변";
@@ -70,12 +59,14 @@ const EditSurvey = () => {
     ask.addEventListener("input", (e) => {
       choiceHandleInput(e, idx, count);
     })
+
     let deleteBtn = document.createElement('img')
     deleteBtn.src = cross;
     deleteBtn.className = "delete";
     deleteBtn.addEventListener("click", (e) => {
       deleteChoice(e, idx, count);
     })
+    
     let cover = document.createElement("li");
     cover.className = "answer-box";
     cover.appendChild(ask);
@@ -97,8 +88,30 @@ const EditSurvey = () => {
     setInputs(list);
   }
 
-  const submit = async () => {
+  const refiningData = () => {
+    for (let i = 0; i < inputs.length; i++) {
+      delete inputs[i]['default']
+    }
+  }
+
+  
+  const bringSurvey = async (id) => {
     try {
+      const response = await API.get(`/api/survey/${id}`);
+      const value = response.data.surveyList
+      for (let i = 0; i < value.length; i++) {
+        value[i]['default'] = true;
+      }
+      setInputs(value)
+    } catch(e) {
+      throw e
+    } 
+  }
+
+  const submit = async () => {
+    console.log(inputs)
+    try {
+      refiningData();
       store.getToken();
       await API.post(`/api/survey/${id}`, {
         createSurveyReqDtos: inputs
@@ -114,16 +127,6 @@ const EditSurvey = () => {
       throw e;
     }
   }
-  
-  const bringSurvey = async (id) => {
-    try {
-      const response = await API.get(`/api/survey/${id}`);
-      console.log(response.data.surveyList);
-      setInputs(response.data.surveyList)
-    } catch(e) {
-      throw e
-    } 
-  }
 
   useEffect(() => {
     bringSurvey(id)
@@ -135,19 +138,31 @@ const EditSurvey = () => {
     <div className="survey">
 
       <h2>설문조사를 등록해 주세요!</h2>
-      <div className="default-survey">
+      {/* <div className="default-survey">
         <button className="btn-blue" onClick={addBasicForm}>기본 폼 가져오기</button>
-      </div>
+      </div> */}
 
       {inputs.map((input, idx) => (
         <div className="survey-box" key={idx}>
-          <input 
-            className="title-box"
-            name="title"
-            value={input.title}
-            placeholder="질문 제목을 입력해주세요." 
-            onChange={e => handleInput(e, idx)}
-          />
+          {input.default === true && (
+            <input 
+              className="title-box"
+              name="title"
+              value={input.title}
+              placeholder="질문 제목을 입력해주세요." 
+              onChange={e => handleInput(e, idx)}
+              disabled
+            />
+          )}
+          {input.default !== true && (
+            <input 
+              className="title-box"
+              name="title"
+              value={input.title}
+              placeholder="질문 제목을 입력해주세요." 
+              onChange={e => handleInput(e, idx)}
+            />
+          )}
           <img className="trash" src={trash} onClick={() => deleteSurvey(idx)} alt="trash" />
 
           {input.surveyType === "주관식" ?
@@ -160,8 +175,8 @@ const EditSurvey = () => {
                 <img className="plus" src={plus} onClick={e => addChoice(e, idx)} alt="choice-plus" />
 
                 <li className="answer-box">
-                  {input.surveyOptions.map((answer, idx) => (
-                    <>
+                  {input.default === true && input.surveyOptions.map((answer, idx) => (
+                    <div>
                       <input
                         className="objective-answer"
                         placeholder="객관식 답변" 
@@ -170,8 +185,19 @@ const EditSurvey = () => {
                         onChange={e => choiceHandleInput(e, idx, 0)}
                         disabled
                       />
-                    </>
+                    </div>
                   ))}
+                  {input.default !== true && (
+                    <div>
+                      <input
+                        className="objective-answer"
+                        placeholder="객관식 답변" 
+                        name="surveyOptions"
+                        value={input.surveyOptions[0]}
+                        onChange={e => choiceHandleInput(e, idx, 0)}
+                      />
+                    </div>
+                  )}
                 </li>
               </div>
             </>

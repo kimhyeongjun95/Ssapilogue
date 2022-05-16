@@ -16,16 +16,14 @@ const PostSurvey = () => {
   const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
 
   
-  const addBasicForm = () => {
-    // setInputs([...inputs, { 
-    //   title: '싸필로그의 완성도는 어느 정도라고 생각하시나요?',
-    //   surveyType: "객관식", 
-    //   surveyOptions: [
-    //     "100%", "80", "60%", "40%", "20%"
-    //   ], 
-    //   count: 5 
-    // }])
-    // console.log(inputs);
+  const addBasicForm = async () => {
+    const response = await API.get(`/api/survey/default/${title}`)
+    const value = response.data.defaultSurvey;
+    for (let i = 0; i < value.length; i++) {
+      value[i]['default'] = true;
+      value[i]['surveyId'] = null;
+    }
+    setInputs(value)
   }
 
   const whichSurvey = (e) => {
@@ -62,6 +60,7 @@ const PostSurvey = () => {
     list[idx]["count"] += 1; 
     const count = list[idx]["count"];
     list[idx].surveyOptions[count] = '';
+
     let ask = document.createElement("input");
     ask.value = list[idx].surveyOptions[count];
     ask.placeholder = "객관식 답변";
@@ -70,12 +69,14 @@ const PostSurvey = () => {
     ask.addEventListener("input", (e) => {
       choiceHandleInput(e, idx, count);
     })
+
     let deleteBtn = document.createElement('img')
     deleteBtn.src = cross;
     deleteBtn.className = "delete";
     deleteBtn.addEventListener("click", (e) => {
       deleteChoice(e, idx, count);
     })
+
     let cover = document.createElement("li");
     cover.className = "answer-box";
     cover.appendChild(ask);
@@ -97,8 +98,15 @@ const PostSurvey = () => {
     setInputs(list);
   }
 
+  const refiningData = () => {
+    for (let i = 0; i < 5; i++) {
+      delete inputs[i]['default']
+    }
+  }
+
   const submit = async () => {
     try {
+      refiningData();
       store.getToken();
       const projectResult = await API.post("/api/project",{
         title: title,
@@ -152,13 +160,26 @@ const PostSurvey = () => {
                 <img className="plus" src={plus} onClick={e => addChoice(e, idx)} alt="choice-plus" />
 
                 <li className="answer-box">
-                  <input
-                    className="objective-answer"
-                    placeholder="객관식 답변" 
-                    name="surveyOptions"
-                    value={input.surveyOptions[0]}
-                    onChange={e => choiceHandleInput(e, idx, 0)}
-                  />
+                  {input.default === true && input.surveyOptions.map((answer, optIdx) => (
+                    <>
+                      <input
+                        className="objective-answer"
+                        placeholder="객관식 답변" 
+                        name="surveyOptions"
+                        value={answer}
+                        onChange={e => choiceHandleInput(e, idx, optIdx)}
+                      />
+                    </>
+                  ))}
+                  {input.default !== true && (
+                    <input
+                      className="objective-answer"
+                      placeholder="객관식 답변" 
+                      name="surveyOptions"
+                      value={input.surveyOptions[0]}
+                      onChange={e => choiceHandleInput(e, idx, 0)}
+                    />
+                  )}
                 </li>
               </div>
             </>
