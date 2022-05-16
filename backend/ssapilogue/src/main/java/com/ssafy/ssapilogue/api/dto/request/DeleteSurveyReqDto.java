@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("CreateSurveyReqDto")
+@ApiModel("DeleteSurveyReqDto")
 public class DeleteSurveyReqDto {
 
     @ApiModelProperty(value = "삭제할 설문조사 id 리스트", required = true)
