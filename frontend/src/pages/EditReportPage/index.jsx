@@ -13,14 +13,9 @@ const EditReportPage = () => {
   let navigate = useNavigate();
   const locations = useLocation().state;
   const { content,title } = locations;
-  
   const editorRef = React.createRef();
   const [val, setVal] = useState(title)
   const [markdown, setMarkdown] = useState(content)
-
-
-
-  
 
   const onChangeIntroFunction = () => {
     const marktext = editorRef.current.getInstance().getMarkdown()
@@ -36,7 +31,7 @@ const EditReportPage = () => {
       }
     }
     try{
-      const editReport = await API.put(`/api/bug/${reportId}`, {
+      const editReport = await API.put(`/api/bug/${reportId}`, { // eslint-disable-line no-unused-vars
         title: val,
         content : markdown
       })
@@ -44,8 +39,8 @@ const EditReportPage = () => {
     } catch (e) {
       throw e;
     }
-
   }
+
   return (
     <div className="main-div">
       <h1>버그 리포트 등록 페이지!</h1>

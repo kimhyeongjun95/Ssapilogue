@@ -44,7 +44,7 @@ const ReportDetailPage = () => {
   },[kai,reportId])
 
   const deleteReport = async() => {
-    const res = await API.delete(`/api/bug/${reportId}`)
+    const res = await API.delete(`/api/bug/${reportId}`) // eslint-disable-line no-unused-vars
     navigate(`/project/${projectId}/opinions/report`)
 
   }
@@ -60,7 +60,7 @@ const ReportDetailPage = () => {
   }
 
   const deleteComment = async(bugCoId) => {
-    const res = await API.delete(`/api/bug-comment/${bugCoId}`)
+    const res = await API.delete(`/api/bug-comment/${bugCoId}`) // eslint-disable-line no-unused-vars
     setKai(kai + 1)
   }
   const goEdit = () => {
@@ -70,7 +70,7 @@ const ReportDetailPage = () => {
   const commentBox = comment.map((item) => {
     const regex = /@.*[원|장]/
     let pingping = item.content
-    item.content.split(" ").map((Citem) => {
+    item.content.split(" ").forEach((Citem) => {
       if (Citem.match(regex)) {
         const piopio = Citem.match(regex)[0]
         pingping = pingping.replaceAll(piopio,`<span id="call-red">${piopio}</span>`)
@@ -98,7 +98,7 @@ const ReportDetailPage = () => {
 
   const checkTag = (event) => {
     if (!commentTrue || indicomment.includes('@')) {
-      if (event.key=='@') {
+      if (event.key==='@') {
         setCommentTrue(true)
 
         setStartword(document.getElementById('commentText').selectionStart)
@@ -111,7 +111,6 @@ const ReportDetailPage = () => {
   async function searchWord(word) {
     const res  = await API.get(`/api/user-info/search?keyword=${word}`)
     setSearchData(res.data.searchList)
-    const date = new Date();
   }
 
   const onChangeComment = (e) => {
