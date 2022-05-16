@@ -46,7 +46,6 @@ const SignUpPage = () => {
   return (
     <div className="box">
       <h2>반가워요!</h2>
-      <p className="p">*는 필수항목입니다.</p>
 
       <p className="subject">소개말</p>
       <input className="input" name="greetings" onChange={handleOnChange} value={greetings}/>

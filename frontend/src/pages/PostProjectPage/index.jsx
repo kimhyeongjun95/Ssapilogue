@@ -193,12 +193,20 @@ const PostProjectPage = () => {
     };
     return  <FormControl style={{width:"40%"}} size="small">
       <p>* 분류</p>
-      <InputLabel style={{marginTop: "57px"}} id="demo-select-small">선택해주세요.</InputLabel>
+      {/* <InputLabel style={{marginTop: "57px"}} id="demo-select-small">선택해주세요.</InputLabel> */}
       <Select
         labelId="demo-select-small"
         id="demo-select-small"
         value={various}
         onChange={handleChange}
+        renderValue={(selected) => {
+          if (selected.length === 0) {
+            return <p className="select-placeholder">선택해주세요.</p>;
+          }
+          return selected.join(', ');
+        }}
+        inputProps={{ 'aria-label': 'Without label'}}
+        displayEmpty
       >
         <MenuItem value={"공통"}>공통</MenuItem>
         <MenuItem value={"특화"}>특화</MenuItem>
