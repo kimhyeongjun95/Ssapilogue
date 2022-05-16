@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import API from "../../api/API";
 import store from "../../utils/store";
 import './style.scss';
@@ -9,11 +9,11 @@ import plus from '../../assets/plus.png';
 
 const EditSurvey = () => {
 
+  const id = useParams().projectId;
   const [option, setOption] = useState('주관식');
-  const [inputs, setInputs] = useState([])
-  const locations = useLocation().state;
+  const [inputs, setInputs] = useState([]);
+  const [toDelete, setToDelete] = useState([]);
   const navigate = useNavigate();
-  // const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
   
   const addBasicForm = () => {
     // setInputs([...inputs, { 
@@ -36,9 +36,10 @@ const EditSurvey = () => {
   }
 
   const deleteSurvey = (idx) => {
-    const values = [...inputs];
-    values.splice(idx, 1);
-    setInputs(values);
+    const list = [...inputs];
+    const temp = list.splice(idx, 1);
+    setToDelete([...toDelete, temp[0].surveyId]);
+    setInputs(list);
   }
 
   const deleteChoice = (e, idx, optIdx) => {
@@ -49,11 +50,11 @@ const EditSurvey = () => {
   }
 
   const addSubjective = () => {
-    setInputs([...inputs, { title:'', surveyType: "주관식" }])
+    setInputs([...inputs, { title:'', surveyType: "주관식", surveyId: null }])
   }
 
   const addMultipleChoice = () => {
-    setInputs([...inputs, { title: '', surveyType: "객관식", surveyOptions: [], count: 0 }])
+    setInputs([...inputs, { title: '', surveyType: "객관식", surveyOptions: [], surveyId: null, count: 0 }])
   }
   
   const addChoice = (e, idx) => {
@@ -97,30 +98,36 @@ const EditSurvey = () => {
   }
 
   const submit = async () => {
-    // try {
-    //   store.getToken();
-    //   const projectResult = await API.post("/api/project",{
-    //     title: title,
-    //     introduce: intro,
-    //     category: various,
-    //     member: phashbox,
-    //     techStack: hashbox,
-    //     deployAddress: bepo,
-    //     gitAddress: repo,
-    //     thumbnail: thumbnail,
-    //     readmeCheck: readmeCheck,
-    //     readme: markdown,
-    //   })
-    //   const projectId = projectResult.data.projectId;
-    //   await API.post(`/api/survey/${projectId}`, {
-    //     createSurveyReqDtos: inputs
-    //   }) 
-    //   navigate(`/project/${projectId}`)
-    //   return;
-    // } catch (e) {
-    //   throw e;
-    // }
+    try {
+      store.getToken();
+      await API.post(`/api/survey/${id}`, {
+        createSurveyReqDtos: inputs
+      }) 
+      if (toDelete.length > 0) {
+        await API.delete(`/api/survey`, {
+          deletedSurveys: toDelete
+        })
+      }
+      navigate(`/project/${id}`)
+      return;
+    } catch (e) {
+      throw e;
+    }
   }
+  
+  const bringSurvey = async (id) => {
+    try {
+      const response = await API.get(`/api/survey/${id}`);
+      console.log(response.data.surveyList);
+      setInputs(response.data.surveyList)
+    } catch(e) {
+      throw e
+    } 
+  }
+
+  useEffect(() => {
+    bringSurvey(id)
+  }, [id])
 
 
   return (
@@ -153,13 +160,18 @@ const EditSurvey = () => {
                 <img className="plus" src={plus} onClick={e => addChoice(e, idx)} alt="choice-plus" />
 
                 <li className="answer-box">
-                  <input
-                    className="objective-answer"
-                    placeholder="객관식 답변" 
-                    name="surveyOptions"
-                    value={input.surveyOptions[0]}
-                    onChange={e => choiceHandleInput(e, idx, 0)}
-                  />
+                  {input.surveyOptions.map((answer, idx) => (
+                    <>
+                      <input
+                        className="objective-answer"
+                        placeholder="객관식 답변" 
+                        name="surveyOptions"
+                        value={answer.content}
+                        onChange={e => choiceHandleInput(e, idx, 0)}
+                        disabled
+                      />
+                    </>
+                  ))}
                 </li>
               </div>
             </>

@@ -50,11 +50,11 @@ const PostSurvey = () => {
   }
 
   const addSubjective = () => {
-    setInputs([...inputs, { title:'', surveyType: "주관식" }])
+    setInputs([...inputs, { title:'', surveyType: "주관식", surveyId: null }])
   }
 
   const addMultipleChoice = () => {
-    setInputs([...inputs, { title: '', surveyType: "객관식", surveyOptions: [], count: 0 }])
+    setInputs([...inputs, { title: '', surveyType: "객관식", surveyOptions: [], count: 0, surveyId: null }])
   }
   
   const addChoice = (e, idx) => {
