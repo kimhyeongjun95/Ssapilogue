@@ -6,7 +6,7 @@ import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import "./style.scss"
 
@@ -142,6 +142,8 @@ const PostProjectPage = () => {
     const onClickSearch = (item) => {
       setSD([])
       inputSetValue(item)
+      inputSetbox([...inputBox, item])
+      inputSetValue('')
     }
 
     const searchMap = sD.map((item) => {
@@ -156,13 +158,6 @@ const PostProjectPage = () => {
     
     return <div style={{width: "40%"}}>
       <p style={{marginBottom : 0}}> {InputTitle} </p>
-      { (sD.length) ?
-        <div className="pp-search-indi-all-div">
-          {searchMap}
-        </div>
-        :
-        null
-      }
       
       <TextField
         type="text"
@@ -175,6 +170,13 @@ const PostProjectPage = () => {
         onKeyPress={hamsu}
         placeholder={Plcaehorder}
       />
+      { (sD.length) ?
+        <div className="pp-search-indi-all-div">
+          {searchMap}
+        </div>
+        :
+        null
+      }
       <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap"}}>
         {alHash(inputBox,inputSetbox)}
       
