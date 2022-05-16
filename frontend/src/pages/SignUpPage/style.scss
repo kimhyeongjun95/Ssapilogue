@@ -5,16 +5,18 @@
   border: 1px solid #D0D4D8;
   width: 350px;
   height: 400px;
-  // padding: 50px;
   margin: 0 auto;
 }
 .input {
   width: 200px;
-  border-color: #3396F4;
+  height: 20px;
   border-radius: 5px;
+  border-color: #3396F4;
+  outline: #3396F4;
 }
 .button {
   width: 210px;
+  height: 30px;
   padding: 5px;
   margin-top: 30px;
   background-color: #3396F4;
