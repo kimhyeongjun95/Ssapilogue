@@ -10,7 +10,6 @@ const ChangeInfoPage = () => {
     github: '',
     greeting: '',
   });
-  const [nickName, setNickName] = useState('');
   const [email, setEmail] = useState('');
   const [image, setImage] = useState('');
   const { github, greeting } = inputs;
@@ -20,7 +19,6 @@ const ChangeInfoPage = () => {
     const response = await API.get("/api/user")
     setInputs(response.data.user);
     setEmail(response.data.user.nickName);
-    setNickName(response.data.user.email);
   }
 
   const handleOnChange = (e) => {
@@ -42,7 +40,6 @@ const ChangeInfoPage = () => {
   const changeInfo = async() => {
     await API.put("/api/user", {
       email: email,
-      nickname: nickName,
       github: github,
       greeting: greeting,
       image: image,
