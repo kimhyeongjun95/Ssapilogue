@@ -79,3 +79,16 @@
 .power {
   width: 50%;
 }
+
+.review-btn-box {
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 3vh;
+}
+
+.review-btn {
+  width: 30px;
+  cursor: pointer;
+}

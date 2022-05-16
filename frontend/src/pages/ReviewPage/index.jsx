@@ -15,6 +15,8 @@ import moment from 'moment';
 import "./style.scss"
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import save from '../../assets/save.png';
+import post from '../../assets/Edit-alt.png';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -93,8 +95,9 @@ const ReviewPage = () => {
 
   return (
     <div className="review-detail">
-      <div>
-        <button onClick={printDocument}>Print</button>
+      <div className="review-btn-box">
+        <img className="review-btn" style={{marginRight: "1vw"}} src={save} alt="save" onClick={printDocument} />
+        <img className="review-btn" src={post} alt="post" />
       </div>
       {/* <Box sx={{ width: '80%' }}> */}
       <Box className="review_box">
