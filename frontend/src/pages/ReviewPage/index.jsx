@@ -77,7 +77,6 @@ const ReviewPage = () => {
       console.log(document.getElementById("printReview"))
       var imgData = canvas.toDataURL('image/png');
       var imgWidth = 210;
-      var pageHeight = imgWidth * 1.414;
       var imgHeight = canvas.height * imgWidth / canvas.width;
 
       var doc = new jsPDF({
