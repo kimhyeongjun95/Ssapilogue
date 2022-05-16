@@ -11,7 +11,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import "./style.scss"
-import { grid } from "@mui/system";
 
 const HomePage = () => {
   
@@ -38,6 +37,7 @@ const HomePage = () => {
     const response = await API.get(`/api/project//search?keyword=${value}`);
     setSearchResult(response.data.projectList);
     setDropResult('');
+    console.log(response);
     e.target.value = "";
   }
 
@@ -171,7 +171,8 @@ const HomePage = () => {
                     commentCnt={search.commentCnt}
                     techStack={search.techStack}
                     thumbnail={search.thumbnail}
-                  />
+                    bookmark={search.isBookmarked}
+                  />  
                 </div>
               </Grid>
             ))}
