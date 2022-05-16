@@ -3,6 +3,7 @@ import API from "../../api/API";
 import store from "../../utils/store";
 import profilePic from "../../assets/profileDefault.jpg"
 import "./style.scss"
+import { useNavigate } from "react-router-dom";
 
 const ChangeInfoPage = () => {
 
@@ -12,6 +13,7 @@ const ChangeInfoPage = () => {
   });
   const [email, setEmail] = useState('');
   const [image, setImage] = useState('');
+  const navigate = useNavigate();
   const { github, greeting } = inputs;
 
   const getInfo = async () => {
@@ -44,6 +46,7 @@ const ChangeInfoPage = () => {
       greeting: greeting,
       image: image,
     })
+    navigate('/profile')
   }
   
   const withDraw = () => {
