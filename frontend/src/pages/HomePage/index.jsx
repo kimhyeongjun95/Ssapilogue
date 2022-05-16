@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import API from "../../api/API";
-import Select from "../../components/Select"
+import SelectTitleStack from "../../components/Select/TitleStack.jsx"
+import SelectType from '../../components/Select/Type.jsx'
 import Grid from '@mui/material/Grid';
 import { Chip } from "@mui/material"
 import Card from "../../components/Card"
@@ -17,7 +18,8 @@ const HomePage = () => {
   const [searchResult, setSearchResult] = useState('');
   const [dropResult, setDropResult] = useState('');
   const [techSearchResult, setTechSearchResult] = useState('');
-  const [option, setOption] = useState('제목');
+  const [searchOption, setSearchOption] = useState("제목");
+  const [typeOption, setTypeOption] = useState("전체");
 
   const settings = {
     dots: true,
@@ -29,8 +31,12 @@ const HomePage = () => {
     slidesToScroll: 1,
   };  
 
-  const handleOption = (e) => {
-    setOption(e.target.value);
+  const handleSearchOption = (e) => {
+    setSearchOption(e.target.value);
+  }
+
+  const handleTypeOption = (e) => {
+    setTypeOption(e.target.value);
   }
 
   const titleEnterSearch = async (e, value) => {
@@ -74,14 +80,14 @@ const HomePage = () => {
 
   const initialSearch = async () => {
     const response = await API.get('api/project')
-    console.log(response);
+    console.log(response.data.projectList);
     setSearchResult(response.data.projectList)
   }
 
   const search = async(e) => {
     const value = e.target.value;
     try {
-      if (option === "제목") {
+      if (searchOption === "제목") {
         setTechSearchResult('');
         if (e.key === "Enter") {
           titleEnterSearch(e, value);
@@ -91,7 +97,7 @@ const HomePage = () => {
         return;
       }
 
-      if (option === "기술스택") {
+      if (searchOption === "기술스택") {
         if (e.key === "Enter") {
           techProjectEnterSearch(e, value);
           return;
@@ -125,7 +131,7 @@ const HomePage = () => {
         </Link>
 
         <div className="home-search">
-          <Select onChange={handleOption} option={option} />
+          <SelectTitleStack defaultValue="" onChange={handleSearchOption} option={searchOption} />
           <div style={{ width : "100%" }}>
             <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
             <div className="home-search-main">
@@ -164,7 +170,7 @@ const HomePage = () => {
             <div>최신순</div>
             <div>인기순</div>
           </div>
-          <Select />
+          <SelectType defaultValue="" onChange={handleTypeOption} option={typeOption}  />
         </div>
 
         <div className="cards-grid">
