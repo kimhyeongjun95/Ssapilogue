@@ -11,6 +11,12 @@
   height : 20vw;
   min-height: 150px;
 }
+.thumbImage {
+  width: 100%;
+  height : 20vw;
+  min-height: 150px;
+  object-fit: cover;
+}
 
 .project-body-div {
   display: flex;
@@ -155,6 +161,9 @@
   color : #484848;
   font-weight: bold;
 }
+.option-category:hover {
+  cursor: pointer;
+}
 .project-detail-red {
   color: red;
   width: 20%;
@@ -190,7 +199,9 @@
   font-size: 20px;
   font-weight: bold;
 }
-
+.link-a:hover {
+  cursor: pointer;
+}
 .readme-div {
   margin-top: 50px;
   img {
@@ -226,4 +237,10 @@
   padding-right : 3px;
   overflow: hidden;
   
+}
+.which-one {
+  font-weight: bold;
+}
+.which-one:hover {
+  cursor: pointer;
 }
