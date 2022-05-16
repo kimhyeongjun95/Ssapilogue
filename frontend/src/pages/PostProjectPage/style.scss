@@ -12,12 +12,12 @@
 }
 
 .pp-search-indi-all-div {
-  border : 1px solid black;
-  border-radius: 10px;
+  border : 1px solid #ADADAD;
+  border-radius: 5px;
   margin-top: 1%;
   margin-bottom: 0.5%;
   max-height: 15vh;
-  width: 50%;
+  width: 100%;
   overflow: scroll;
   overflow-x: hidden;
 }
@@ -27,3 +27,8 @@
   cursor: pointer;
 }
 
+.readme-div {
+  width: 40%;
+  height: 100%;
+  margin-top: 0;
+}
