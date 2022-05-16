@@ -74,6 +74,7 @@ const HomePage = () => {
 
   const initialSearch = async () => {
     const response = await API.get('api/project')
+    console.log(response);
     setSearchResult(response.data.projectList)
   }
 
@@ -171,17 +172,19 @@ const HomePage = () => {
             {searchResult && searchResult.map((search, idx) => (
               <Grid item xl={4} md={6} sm={12}>
                 <div className="home-card" key={idx}>
-                  <Card
-                    title={search.title} 
-                    content={search.introduce}
-                    category={search.category}
-                    likeCnt={search.likeCnt}
-                    viewCnt={search.hits}
-                    commentCnt={search.commentCnt}
-                    techStack={search.techStack}
-                    thumbnail={search.thumbnail}
-                    bookmark={search.isBookmarked}
-                  />  
+                  <Link to={`project/${search.projectId}`} className="card-link">
+                    <Card
+                      title={search.title} 
+                      content={search.introduce}
+                      category={search.category}
+                      likeCnt={search.likeCnt}
+                      viewCnt={search.hits}
+                      commentCnt={search.commentCnt}
+                      techStack={search.techStack}
+                      thumbnail={search.thumbnail}
+                      bookmark={search.isBookmarked}
+                    />  
+                  </Link>
                 </div>
               </Grid>
             ))}
