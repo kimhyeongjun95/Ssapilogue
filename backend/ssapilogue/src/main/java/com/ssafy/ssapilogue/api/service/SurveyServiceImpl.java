@@ -6,9 +6,11 @@ import com.ssafy.ssapilogue.api.dto.response.FindSurveyOptionResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.api.exception.CustomException;
 import com.ssafy.ssapilogue.api.exception.ErrorCode;
+import com.ssafy.ssapilogue.core.domain.Review;
 import com.ssafy.ssapilogue.core.domain.Survey;
 import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.domain.SurveyType;
+import com.ssafy.ssapilogue.core.repository.ReviewRepository;
 import com.ssafy.ssapilogue.core.repository.SurveyOptionRepository;
 import com.ssafy.ssapilogue.core.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -26,6 +29,8 @@ public class SurveyServiceImpl implements SurveyService {
     private final SurveyRepository surveyRepository;
 
     private final SurveyOptionRepository surveyOptionRepository;
+
+    private final ReviewRepository reviewRepository;
 
     private final SurveyOptionService surveyOptionService;
 
@@ -90,6 +95,12 @@ public class SurveyServiceImpl implements SurveyService {
             for (SurveyOption surveyOption : survey.getSurveyOptions()) {
                 surveyOptionService.deleteSurveyOption(surveyOption.getId());
             }
+        }
+
+        // 리뷰 삭제
+        List<Review> reviews = reviewRepository.findAllBySurveyOrderByCreatedAtDesc(survey);
+        for (Review review : reviews) {
+            reviewRepository.deleteById(review.getId());
         }
 
         surveyRepository.deleteById(surveyId);

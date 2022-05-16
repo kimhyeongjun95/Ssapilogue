@@ -24,10 +24,10 @@ public class FindSubjectiveReviewResDto {
     @ApiModelProperty(value = "리뷰 작성일", example = "2022-02-01 23:59")
     private String createAt;
 
-    public FindSubjectiveReviewResDto(Review review, User user, String createAt) {
+    public FindSubjectiveReviewResDto(Review review, String nickname, String profileImage, String createAt) {
         content = review.getContent();
-        nickname = user.getNickname();
-        profileImage = user.getImage();
+        this.nickname = nickname;
+        this.profileImage = profileImage;
         this.createAt = createAt;
     }
 }

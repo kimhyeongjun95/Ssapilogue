@@ -46,6 +46,7 @@ dependencies {
 	implementation 'commons-io:commons-io:2.11.0'
 
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
 }
 
 tasks.named('test') {

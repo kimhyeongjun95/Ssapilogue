@@ -20,6 +20,9 @@ public class FindReviewResDto {
     @ApiModelProperty(value = "설문조사 제목", example = "싸피로그가 유용했나요?")
     private String surveyTitle;
 
+    @ApiModelProperty(value = "설문조사 타입", example = "객관식")
+    private String surveyType;
+
     @ApiModelProperty(value = "총 리뷰 개수", example = "20")
     private Integer totalCount;
 

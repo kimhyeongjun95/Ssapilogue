@@ -10,3 +10,19 @@
 .question-style::placeholder {
   color: #ADADAD;
 }
+
+.pp-search-indi-all-div {
+  border : 1px solid black;
+  border-radius: 10px;
+  margin-top: 1%;
+  margin-bottom: 0.5%;
+  max-height: 15vh;
+  width: 50%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.pp-search-indi-div:hover {
+  background-color: #c4c4c4;
+  cursor: pointer;
+}

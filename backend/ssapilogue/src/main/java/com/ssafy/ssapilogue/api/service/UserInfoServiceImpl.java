@@ -135,7 +135,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             // 토큰 새로 발급받아서 수정하기
             RequestEntity<Void> req = RequestEntity
                     .get(uri)
-                    .header("authorization", "Bearer wzn76seko3fq789ajhfgrhkkhe")
+                    .header("authorization", "Bearer z7oxi8ed3pf15fqskkpmcikf4y")
                     .build();
 
             ResponseEntity<String> result = restTemplate.exchange(req, String.class);
@@ -164,7 +164,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             // 토큰 새로 발급받아서 수정하기
             RequestEntity<Void> userReq = RequestEntity
                     .get(uri)
-                    .header("authorization", "Bearer wzn76seko3fq789ajhfgrhkkhe")
+                    .header("authorization", "Bearer z7oxi8ed3pf15fqskkpmcikf4y")
                     .build();
 
             ResponseEntity<String> result = userRestTemplate.exchange(userReq, String.class);

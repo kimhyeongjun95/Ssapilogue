@@ -1,8 +1,7 @@
 import TextField from "@mui/material/TextField";
 import "./style.scss"
-import { useFormControl } from '@mui/material/FormControl';
 
-function questionType( { InputTitle,inputValue ,inputSetValue, pilsu }){
+function questionType( { InputTitle,inputValue ,inputSetValue, pilsu,inputId }){
   const handleChange = (event) => {
     inputSetValue(event.target.value);
   };
@@ -10,10 +9,11 @@ function questionType( { InputTitle,inputValue ,inputSetValue, pilsu }){
     return <div className="main-div">
       <div className="input-div">
         <p className="p-style"> {InputTitle} </p>
-        <input
-          className="question-style"
+        <TextField
+          style={{width:"100%"}}
           size = "small"
           value={inputValue}
+          className={inputId}
           onChange={handleChange}
           required
           id="outlined-basic"
@@ -25,10 +25,11 @@ function questionType( { InputTitle,inputValue ,inputSetValue, pilsu }){
     return <div className="main-div">
       <div className="input-div">
         <p className="p-style"> {InputTitle} </p>
-        <input
-          className="question-style"
+        <TextField
+          style={{width:"100%"}}
           size = "small"
           value={inputValue}
+          className={inputId}
           onChange={handleChange}
           id="outlined-basic"
           variant="outlined"
