@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import API from "../../api/API";
-import Select from "../../components/Select"
+import SelectTitleStack from "../../components/Select/TitleStack.jsx"
+import SelectType from '../../components/Select/Type.jsx'
 import Grid from '@mui/material/Grid';
 import { Chip } from "@mui/material"
 import Card from "../../components/Card"
@@ -14,46 +15,61 @@ import "./style.scss"
 
 const HomePage = () => {
   
-  const [searchResult, setSearchResult] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
+  const [entireResult, setEntireResult] = useState([]);
   const [dropResult, setDropResult] = useState('');
   const [techSearchResult, setTechSearchResult] = useState('');
-  const [option, setOption] = useState('제목');
+
+  const [searchOption, setSearchOption] = useState("제목");
+  const [typeOption, setTypeOption] = useState("");
 
   const settings = {
     dots: true,
     infinite: true,
     autoplay: true,
     speed: 550,
+    arrows: false,
     autoplaySpeed: 2000,
     slidesToShow: 1,
     slidesToScroll: 1,
   };  
 
-  const handleOption = (e) => {
-    setOption(e.target.value);
+  const handleSearchOption = (e) => {
+    setSearchOption(e.target.value);
+  }
+
+  const handleTypeOption = (e) => {
+    setTypeOption(e.target.value);
   }
 
   const titleEnterSearch = async (e, value) => {
     const response = await API.get(`/api/project//search?keyword=${value}`);
     setSearchResult(response.data.projectList);
     setDropResult('');
-    console.log(response);
     e.target.value = "";
+    setEntireResult(response.data.projectList);
+    typeFilter();
   }
 
   const titleAutoSearch = async (value) => {
     const response = await API.get(`/api/project/search/title?keyword=${value}`);
     setDropResult(response.data.searchList);
+    setEntireResult(response.data.searchList);
+    typeFilter();
   }
 
   const techProjectAutoSearch = async (value) => {
     const response = await API.get(`/api/tech-stack/search/title?keyword=${value}`);
     setDropResult(response.data.searchList);
+    setEntireResult(response.data.searchList);
+    typeFilter();
   }
 
   const techStackAutoSearch = async (value) => {
     const response = await API.get(`/api/tech-stack/search/specific?keyword=${value}`);
     setTechSearchResult(response.data.searchList);
+    setEntireResult(response.data.searchList);
+    typeFilter();
   }
 
   const techProjectEnterSearch = async (e, value) => {
@@ -62,20 +78,31 @@ const HomePage = () => {
     setDropResult('');
     setTechSearchResult('');
     e.target.value = "";
+    setEntireResult(response.data.projectList);
+    typeFilter();
   }
 
   const techStackClickSearch = async (e) => {
     const value = e.target.innerText;
-    const response = await API.get(`/api/tech-stack//search/specific/project?keyword=${value}`);
+    const response = await API.get(`/api/tech-stack/search/specific/project?keyword=${value}`);
     setSearchResult(response.data.projectList);
     setDropResult('');
     setTechSearchResult('');
+    setEntireResult(response.data.projectList);
+    typeFilter();
+  }
+
+  const initialSearch = async () => {
+    const response = await API.get('api/project')
+    setSearchResult(response.data.projectList)
+    setEntireResult(response.data.projectList);
+    typeFilter();
   }
 
   const search = async(e) => {
     const value = e.target.value;
     try {
-      if (option === "제목") {
+      if (searchOption === "제목") {
         setTechSearchResult('');
         if (e.key === "Enter") {
           titleEnterSearch(e, value);
@@ -85,7 +112,7 @@ const HomePage = () => {
         return;
       }
 
-      if (option === "기술스택") {
+      if (searchOption === "기술스택") {
         if (e.key === "Enter") {
           techProjectEnterSearch(e, value);
           return;
@@ -98,6 +125,38 @@ const HomePage = () => {
       throw e;
     }
   }
+
+  const typeFilter = () => {
+    if (typeOption === "전체") {
+      setSearchResult(entireResult);
+    }
+
+    if (typeOption === "공통") {
+      const result = entireResult.filter(search => search.category === "공통")
+      setSearchResult(result);
+    }
+
+    if (typeOption === "특화") {
+      const result = entireResult.filter(search => search.category === "특화")
+      setSearchResult(result);
+    }
+
+    if (typeOption === "자율") {
+      const result = entireResult.filter(search => search.category === "자율")
+      setSearchResult(result);
+    }
+
+
+  }
+
+  useEffect(() => {
+    initialSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    typeFilter();
+  }, [typeOption])
 
   return (
     <>
@@ -115,7 +174,7 @@ const HomePage = () => {
         </Link>
 
         <div className="home-search">
-          <Select onChange={handleOption} option={option} />
+          <SelectTitleStack defaultValue="" onChange={handleSearchOption} option={searchOption} />
           <div style={{ width : "100%" }}>
             <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
             <div className="home-search-main">
@@ -154,25 +213,27 @@ const HomePage = () => {
             <div>최신순</div>
             <div>인기순</div>
           </div>
-          <Select />
+          <SelectType defaultValue="" onChange={handleTypeOption} option={typeOption}  />
         </div>
 
         <div className="cards-grid">
           <Grid container>
             {searchResult && searchResult.map((search, idx) => (
-              <Grid item xl={4} md={6} sm={12}>
+              <Grid item xl={4} md={6} sm={12} key={idx}>
                 <div className="home-card" key={idx}>
-                  <Card
-                    title={search.title} 
-                    content={search.introduce}
-                    category={search.category}
-                    likeCnt={search.likeCnt}
-                    viewCnt={search.hits}
-                    commentCnt={search.commentCnt}
-                    techStack={search.techStack}
-                    thumbnail={search.thumbnail}
-                    bookmark={search.isBookmarked}
-                  />  
+                  <Link to={`project/${search.projectId}`} className="card-link">
+                    <Card
+                      title={search.title} 
+                      content={search.introduce}
+                      category={search.category}
+                      likeCnt={search.likeCnt}
+                      viewCnt={search.hits}
+                      commentCnt={search.commentCnt}
+                      techStack={search.techStack}
+                      thumbnail={search.thumbnail}
+                      bookmark={search.isBookmarked}
+                    />  
+                  </Link>
                 </div>
               </Grid>
             ))}

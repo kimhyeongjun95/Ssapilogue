@@ -1,6 +1,9 @@
 .report-detail-main {
   margin-left: 15%;
 }
+.report-nav-red {
+  color :red;
+}
 .report-detail-main-div {
   border : 1px solid black;
   border-radius: 10px;
@@ -159,4 +162,7 @@
     cursor: pointer;
     transform: scale(1.1);
   }
+}
+.comment-submit {
+  margin-bottom : 5%;
 }
