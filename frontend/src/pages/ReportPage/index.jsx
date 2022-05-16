@@ -9,15 +9,27 @@ import moment from 'moment';
 const ReportPage = () => {
   const [board, setBoard] = useState([0,0,0]);
   const [bugList,setBugList] = useState([]);
+  const [projectOwner, setProjectOwner] = useState(false)
   const id = useParams().projectId;
-
+  const token = store.getToken()
   let navigate = useNavigate();
 
   useEffect( () => {
     async function bugrecall() {
+      let myEmail = ''
+      let ptEmail = ''
+
       const res = await API.get(`/api/bug/${id}`);
       setBoard([res.data.bugList["totalCount"],res.data.bugList["solvedCount"],res.data.bugList["unsolvedCount"]])
       setBugList(res.data.bugList['bugReports'])
+      // 프로젝트와 내가 같은 사용자인지 비교
+      const response = await API.get('/api/user', { header: token })
+      myEmail = response.data.user.email
+      const prores = await API.get(`/api/project/${id}`)
+      ptEmail = prores.data.project.email
+      if (myEmail === ptEmail) {
+        setProjectOwner(true)
+      }
     }
     bugrecall()
     return
@@ -56,7 +68,10 @@ const ReportPage = () => {
 
     return <div className={bgdiv} id={item.bugId}>
       <div className="menu-solved">
-        <input type="checkbox" defaultChecked={pio} onClick={() => inputClick(item.bugId)} size="big"></input>
+        { (projectOwner) ?
+          <input type="checkbox" defaultChecked={pio} onClick={() => inputClick(item.bugId)} size="big"></input>
+          : <input type="checkbox" disabled="disabled" defaultChecked={pio} onClick={() => inputClick(item.bugId)} size="big"></input>
+        }
       </div>
       <p className="menu-title" onClick={() => bugClick(item.bugId)}>{item.title}</p>
       <p className="menu-date">{moment(item.createAt).format('YYYY년 MM월 DD일')}</p>
