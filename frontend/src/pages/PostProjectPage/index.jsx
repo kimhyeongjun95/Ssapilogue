@@ -77,7 +77,6 @@ const PostProjectPage = () => {
 
   const onChangeIntroFunction = () => {
     const marktext = editorRef.current.getInstance().getMarkdown()
-    console.log(marktext);
     setMarkdown(marktext)
   };
 
@@ -128,14 +127,12 @@ const PostProjectPage = () => {
         const type_value = document.getElementById(inputId).value
         if (type_value) {
           const res = await API.get(`/api/tech-stack/search/specific?keyword=${type_value}`)
-          console.log(res.data.searchList)
           setSD(res.data.searchList)
         }
       }else{
         const type_value = document.getElementById(inputId).value
         if (type_value) {
           const res = await API.get(`/api/user-info/search/?keyword=${type_value}`)
-          console.log(res.data.searchList)
           setSD(res.data.searchList)
         }
       }
@@ -209,7 +206,6 @@ const PostProjectPage = () => {
 
   const mkChange = (e) => {
     setReadmeCheck(e.target.value)
-    console.log(typeof e.target.value)
   }
 
   
@@ -225,9 +221,7 @@ const PostProjectPage = () => {
           swal("미입력", `${party_name[party_index]} 이(가) 입력되지 않았습니다.`, "error");
           break
         }else {
-          console.log(party_name[party_index])
           let a = document.getElementsByClassName(`${party_name[party_index]}`)
-          console.log(a[0].querySelector('input'))
           document.getElementsByClassName(`${party_name[party_index]}`)[0].querySelector('input').focus()
           flag = true
           swal("미입력", `${party_name[party_index]} 이(가) 입력되지 않았습니다.`, "error");
