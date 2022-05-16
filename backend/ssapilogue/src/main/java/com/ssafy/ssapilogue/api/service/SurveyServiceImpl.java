@@ -1,6 +1,7 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateSurveyReqDto;
+import com.ssafy.ssapilogue.api.dto.request.DeleteSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindDefaultSurveyResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyOptionResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
@@ -88,24 +89,26 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public void deleteSurvey(String surveyId) {
-        // 객관식인 경우, SurveyOption 삭제
-        Survey survey = surveyRepository.findById(surveyId)
-                .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
+    public void deleteSurvey(DeleteSurveyReqDto deleteSurveyReqDto) {
+        for (String surveyId : deleteSurveyReqDto.getSurveyIds()) {
+            // 객관식인 경우, SurveyOption 삭제
+            Survey survey = surveyRepository.findById(surveyId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
 
-        if (survey.getSurveyType() == SurveyType.객관식) {
-            for (SurveyOption surveyOption : survey.getSurveyOptions()) {
-                surveyOptionService.deleteSurveyOption(surveyOption.getId());
+            if (survey.getSurveyType() == SurveyType.객관식) {
+                for (SurveyOption surveyOption : survey.getSurveyOptions()) {
+                    surveyOptionService.deleteSurveyOption(surveyOption.getId());
+                }
             }
-        }
 
-        // 리뷰 삭제
-        List<Review> reviews = reviewRepository.findAllBySurveyOrderByCreatedAtDesc(survey);
-        for (Review review : reviews) {
-            reviewRepository.deleteById(review.getId());
-        }
+            // 리뷰 삭제
+            List<Review> reviews = reviewRepository.findAllBySurveyOrderByCreatedAtDesc(survey);
+            for (Review review : reviews) {
+                reviewRepository.deleteById(review.getId());
+            }
 
-        surveyRepository.deleteById(surveyId);
+            surveyRepository.deleteById(surveyId);
+        }
     }
 
     @Override
