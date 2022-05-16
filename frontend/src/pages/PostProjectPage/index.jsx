@@ -191,12 +191,11 @@ const PostProjectPage = () => {
     };
     return  <FormControl style={{width:"40%"}} size="small">
       <p>* 분류</p>
-      <InputLabel id="demo-select-small"></InputLabel>
+      <InputLabel style={{marginTop: "57px"}} id="demo-select-small">선택해주세요.</InputLabel>
       <Select
         labelId="demo-select-small"
         id="demo-select-small"
         value={various}
-        label="* 분류"
         onChange={handleChange}
       >
         <MenuItem value={"공통"}>공통</MenuItem>
