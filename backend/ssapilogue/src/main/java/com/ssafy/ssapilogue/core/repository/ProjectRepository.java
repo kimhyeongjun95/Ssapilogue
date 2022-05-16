@@ -11,6 +11,6 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long>, ProjectQueryRepository {
 
     List<Project> findAllByOrderByIdDesc();
-    List<Project> findByCategoryOrderByIdDesc(Category category);
     List<Project> findBySplitTitleContainingOrderByIdDesc(@Param("keyword") String keyword);
+    List<Project> findTop5BySplitTitleContainingOrderByIdDesc(@Param("keyword") String keyword);
 }
