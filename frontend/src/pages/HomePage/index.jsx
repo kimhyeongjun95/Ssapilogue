@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import API from "../../api/API";
 import Select from "../../components/Select"
@@ -72,6 +72,11 @@ const HomePage = () => {
     setTechSearchResult('');
   }
 
+  const initialSearch = async () => {
+    const response = await API.get('api/project')
+    setSearchResult(response.data.projectList)
+  }
+
   const search = async(e) => {
     const value = e.target.value;
     try {
@@ -98,6 +103,10 @@ const HomePage = () => {
       throw e;
     }
   }
+
+  useEffect(() => {
+    initialSearch();
+  }, [])
 
   return (
     <>
