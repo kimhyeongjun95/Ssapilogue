@@ -144,8 +144,6 @@ const HomePage = () => {
       const result = entireResult.filter(search => search.category === "자율")
       setSearchResult(result);
     }
-
-
   }
 
   useEffect(() => {
@@ -178,13 +176,18 @@ const HomePage = () => {
             <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
             <div className="home-search-main">
               <div className="home-search-title">
+
                 {dropResult && dropResult.map((search, idx) => (
                   <div style={{ marginBottom : "3px" }} key={idx}>
-                    {search.title}
+                    <Link to={`project/${search.projectId}`} className="card-link">
+                      {search.title}
+                    </Link>
                   </div>
                 ))}
+
               </div>
               <div className="home-search-tech">
+
                 {techSearchResult && techSearchResult.map((tech, idx) => (
                   <span key={idx}>
                     <Chip
@@ -194,6 +197,7 @@ const HomePage = () => {
                     />
                   </span>
                 ))}
+
               </div>
             </div> 
           </div>
