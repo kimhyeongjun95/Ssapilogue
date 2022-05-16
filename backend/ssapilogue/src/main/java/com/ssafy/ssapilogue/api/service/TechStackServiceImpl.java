@@ -11,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -36,7 +34,9 @@ public class TechStackServiceImpl implements TechStackService{
             projectStacks.addAll(projectStackRepository.findByTechStack(techStack));
         }
 
-        List<Project> projects = projectStacks.stream().map(ProjectStack::getProject).collect(Collectors.toList());
+        List<Project> tempProjects = projectStacks.stream().map(ProjectStack::getProject).collect(Collectors.toList());
+        Set<Project> projectSet = new HashSet<>(tempProjects);
+        List<Project> projects = new ArrayList<>(projectSet);
 
         List<FindProjectResDto> findProjectResDtos = new ArrayList<>();
         if (userEmail.isEmpty()) {
@@ -99,9 +99,19 @@ public class TechStackServiceImpl implements TechStackService{
             projectStacks.addAll(projectStackRepository.findByTechStack(techStack));
         }
 
-        List<Project> projects = projectStacks.stream().map(ProjectStack::getProject).collect(Collectors.toList());
+        List<Project> tempProjects = projectStacks.stream().map(ProjectStack::getProject).collect(Collectors.toList());
+        Set<Project> projectSet = new HashSet<>(tempProjects);
+        List<Project> projects = new ArrayList<>(projectSet);
 
-        return projects.stream().map(FindProjectTitleResDto::new).collect(Collectors.toList());
+        List<Project> subProjects = new ArrayList<>();
+        for (Project project : projects) {
+            subProjects.add(project);
+            if (subProjects.size() == 5) {
+                break;
+            }
+        }
+
+        return subProjects.stream().map(FindProjectTitleResDto::new).collect(Collectors.toList());
     }
 
     // 기술스택 자동완성

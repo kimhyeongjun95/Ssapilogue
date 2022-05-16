@@ -9,8 +9,6 @@ import bookmarkPic from "../../assets/bookmark.svg"
 import likePic from "../../assets/thumb.svg"
 import alLikePic from "../../assets/thumbColor.svg"
 import alBookmark from "../../assets/bookmarkColor.svg"
-import SearchPage from "../../components/Search/index"
-
 import gitRepo from "../../assets/git.png"
 import google from "../../assets/Google.png"
 import report from "../../assets/report.png"
@@ -28,7 +26,6 @@ const DetailPage = () => {
   let navigate = useNavigate();
 
   // 변수관리 hook
-  const [tag, setTag] = useState('')
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [stack, setStack] = useState([]);
@@ -122,7 +119,7 @@ const DetailPage = () => {
 
     let pingping = item.content
 
-    item.content.split(" ").map((Citem) => {
+    item.content.split(" ").forEach((Citem) => {
       if (Citem.match(regex)) {
         const piopio = Citem.match(regex)[0]
         pingping = pingping.replaceAll(piopio,`<span id="call-red">${piopio}</span>`)
@@ -232,7 +229,7 @@ const DetailPage = () => {
 
   const checkTag = (event) => {
     if (!commentTrue || indicomment.includes('@')) {
-      if (event.key=='@') {
+      if (event.key==='@') {
         setCommentTrue(true)
         setStartword(document.getElementById('commentText').selectionStart)
       }
@@ -244,7 +241,6 @@ const DetailPage = () => {
   async function searchWord(word) {
     const res  = await API.get(`/api/user-info/search?keyword=${word}`)
     setSearchData(res.data.searchList)
-    const date = new Date();
   }
 
   

@@ -1,5 +1,4 @@
 import React, {useState,useEffect} from "react";
-import Undo from "../../assets/undo.png"
 import edit from "../../assets/Edit-alt.png"
 import "./style.scss"
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -71,10 +70,6 @@ const ReportPage = () => {
   return (
     <>
       <div className="report-nav-div">
-        {/* <div className="back-div">
-          <img className="undo-pic" src={Undo} alt="Undo"/>
-          프로젝트로 돌아가기
-        </div> */}
         <div className="nav-div"/>
       </div>
 

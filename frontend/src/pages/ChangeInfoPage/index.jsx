@@ -3,6 +3,7 @@ import API from "../../api/API";
 import store from "../../utils/store";
 import profilePic from "../../assets/profileDefault.jpg"
 import "./style.scss"
+import { useNavigate } from "react-router-dom";
 
 const ChangeInfoPage = () => {
 
@@ -10,9 +11,9 @@ const ChangeInfoPage = () => {
     github: '',
     greeting: '',
   });
-  const [nickName, setNickName] = useState('');
   const [email, setEmail] = useState('');
   const [image, setImage] = useState('');
+  const navigate = useNavigate();
   const { github, greeting } = inputs;
 
   const getInfo = async () => {
@@ -20,7 +21,6 @@ const ChangeInfoPage = () => {
     const response = await API.get("/api/user")
     setInputs(response.data.user);
     setEmail(response.data.user.nickName);
-    setNickName(response.data.user.email);
   }
 
   const handleOnChange = (e) => {
@@ -42,11 +42,11 @@ const ChangeInfoPage = () => {
   const changeInfo = async() => {
     await API.put("/api/user", {
       email: email,
-      nickname: nickName,
       github: github,
       greeting: greeting,
       image: image,
     })
+    navigate('/profile')
   }
   
   const withDraw = () => {
