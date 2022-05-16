@@ -82,13 +82,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User login(LoginUserReqDto loginUserReqDto) {
-        String encodeMmId = userInfoService.encrypt(loginUserReqDto.getUserId().getBytes());
-        if (userInfoRepository.findByUserId(encodeMmId) == null) {
-            throw new CustomException(ErrorCode.INVALID_USER);
-        }
-
         User findUser = userRepository.findByEmail(loginUserReqDto.getEmail());
-        if (findUser == null) throw new CustomException(ErrorCode.NO_USER);
 
         passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         boolean check = passwordEncoder.matches(loginUserReqDto.getPassword(), findUser.getPassword());

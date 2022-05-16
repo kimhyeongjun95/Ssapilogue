@@ -1,6 +1,7 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
+import com.ssafy.ssapilogue.api.dto.request.DeleteSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindCommentResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
@@ -43,6 +44,8 @@ public class ProjectServiceImpl implements ProjectService {
     private final LikedRepository likedRepository;
     private final BookmarkRepsitory bookmarkRepsitory;
     private final ProjectCommentRepository projectCommentRepository;
+    private final SurveyRepository surveyRepository;
+    private final SurveyService surveyService;
 
     private static final int HANGEUL_BASE = 0xAC00;    // '가'
     private static final int HANGEUL_END = 0xD7AF;
@@ -309,6 +312,15 @@ public class ProjectServiceImpl implements ProjectService {
         int likeCnt = project.getLikedList().size();
         if (project.getUser().getEmail().equals(userEmail)) {
             project.getUser().changeLikes(-likeCnt);
+
+            // 설문조사 삭제
+            List<Survey> surveys = surveyRepository.findAllByProjectId(project.getId());
+            List<String> surveyIds = new ArrayList<>();
+            for (Survey survey : surveys) {
+                surveyIds.add(survey.getId());
+            }
+            surveyService.deleteSurvey(new DeleteSurveyReqDto(surveyIds));
+
             projectRepository.deleteById(projectId);
         }
     }

@@ -1,6 +1,108 @@
-.cards-grid {
-  width: 90%;
+.slide-image {
+  min-width: 500px;
+}
+
+.home-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  min-width: 500px;
+}
+
+.post-project-btn {
+  height: 36px;
+  min-width: 200px;
+  width: 20vw;
+  background-color: #3396F4;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  border: 0px;
+  border-radius: 5px;
+}
+
+.home-search {
+  display: flex;
+  margin-top: 20px;
+  width: 80%;
+}
+
+.MuiOutlinedInput-root {
+  height: 50px;
+}
+
+.home-search-input {
+  margin-left: 10px;
+  padding-left: 12px;
+  width: 97.5%;
+  height: 46px;
+  background-color: #fafafa;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.home-search-main {
+  margin-left: 10px;
+  width: calc(97.5% + 12px);
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.home-search-title {
+  max-height: 126px;
+  border-bottom: 1px solid black;
+  overflow: scroll;
+  overflow-x: hidden;
+  margin-bottom: 5px;
+  padding: 10px 2%;
+}
+
+.home-search-tech {
+  padding: 1% 2%;
+}
+
+.home-body-title {
+  font-size: 36px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.home-body-content {
+  font-size: 16px;
+  color: #484848;
+  margin-top: 20px;
+}
+
+.home-card-option {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.home-card-sort {
+  width: 120px;
   display: flex;
   justify-content: space-around;
-  // align-items: center;
+  align-items: center;
+  margin-left: 50px;
+  font-weight: bold;
+}
+
+.cards-grid {
+  width: 80%;
+  max-width: 1500px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.body {
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar { display: none; }
+.home-card {
+  display: flex;
+  justify-content: center;
 }

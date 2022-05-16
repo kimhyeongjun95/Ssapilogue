@@ -27,7 +27,7 @@
   justify-content: space-between;
   background-color: #C3E2F9;
   padding-left: 20px;
-  padding-right: 20px;
+  padding-right: 20px; 
   height: 50px;
 }
 
@@ -74,4 +74,21 @@
 .review_chart_box {
   display: flex;
   justify-content: center;
+}
+
+.power {
+  width: 50%;
+}
+
+.review-btn-box {
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 3vh;
+}
+
+.review-btn {
+  width: 30px;
+  cursor: pointer;
 }

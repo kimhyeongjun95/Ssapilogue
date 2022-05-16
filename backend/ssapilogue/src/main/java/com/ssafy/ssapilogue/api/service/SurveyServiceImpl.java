@@ -1,14 +1,17 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateSurveyReqDto;
+import com.ssafy.ssapilogue.api.dto.request.DeleteSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindDefaultSurveyResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyOptionResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.api.exception.CustomException;
 import com.ssafy.ssapilogue.api.exception.ErrorCode;
+import com.ssafy.ssapilogue.core.domain.Review;
 import com.ssafy.ssapilogue.core.domain.Survey;
 import com.ssafy.ssapilogue.core.domain.SurveyOption;
 import com.ssafy.ssapilogue.core.domain.SurveyType;
+import com.ssafy.ssapilogue.core.repository.ReviewRepository;
 import com.ssafy.ssapilogue.core.repository.SurveyOptionRepository;
 import com.ssafy.ssapilogue.core.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -26,6 +30,8 @@ public class SurveyServiceImpl implements SurveyService {
     private final SurveyRepository surveyRepository;
 
     private final SurveyOptionRepository surveyOptionRepository;
+
+    private final ReviewRepository reviewRepository;
 
     private final SurveyOptionService surveyOptionService;
 
@@ -53,46 +59,56 @@ public class SurveyServiceImpl implements SurveyService {
         List<String> surveyIds = new ArrayList<>();
 
         for (CreateSurveyReqDto createSurveyReqDto : createSurveyReqDtos) {
-            Survey survey = Survey.builder()
-                    .projectId(projectId)
-                    .title(createSurveyReqDto.getTitle())
-                    .surveyType(SurveyType.valueOf(createSurveyReqDto.getSurveyType()))
-                    .build();
+            if (createSurveyReqDto.getSurveyId() == null) {
+                Survey survey = Survey.builder()
+                        .projectId(projectId)
+                        .title(createSurveyReqDto.getTitle())
+                        .surveyType(SurveyType.valueOf(createSurveyReqDto.getSurveyType()))
+                        .build();
 
-            Survey saveSurvey = surveyRepository.save(survey);
+                Survey saveSurvey = surveyRepository.save(survey);
 
-            // 객관식인 경우, SurveyOption 추가
-            if (saveSurvey.getSurveyType() == SurveyType.객관식) {
-                List<SurveyOption> surveyOptions = new ArrayList<>();
+                // 객관식인 경우, SurveyOption 추가
+                if (saveSurvey.getSurveyType() == SurveyType.객관식) {
+                    List<SurveyOption> surveyOptions = new ArrayList<>();
 
-                for (String content : createSurveyReqDto.getSurveyOptions()) {
-                    if (content != null) {
-                        SurveyOption surveyOption = surveyOptionService.createSurveyOption(saveSurvey.getId(), content);
-                        surveyOptions.add(surveyOption);
+                    for (String content : createSurveyReqDto.getSurveyOptions()) {
+                        if (content != null) {
+                            SurveyOption surveyOption = surveyOptionService.createSurveyOption(saveSurvey.getId(), content);
+                            surveyOptions.add(surveyOption);
+                        }
                     }
-                }
 
-                saveSurvey.addSurveyOptions(surveyOptions);
-                surveyRepository.save(saveSurvey);
+                    saveSurvey.addSurveyOptions(surveyOptions);
+                    surveyRepository.save(saveSurvey);
+                }
+                surveyIds.add(saveSurvey.getId());
             }
-            surveyIds.add(saveSurvey.getId());
         }
         return surveyIds;
     }
 
     @Override
-    public void deleteSurvey(String surveyId) {
-        // 객관식인 경우, SurveyOption 삭제
-        Survey survey = surveyRepository.findById(surveyId)
-                .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
+    public void deleteSurvey(DeleteSurveyReqDto deleteSurveyReqDto) {
+        for (String surveyId : deleteSurveyReqDto.getSurveyIds()) {
+            // 객관식인 경우, SurveyOption 삭제
+            Survey survey = surveyRepository.findById(surveyId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.SURVEY_NOT_FOUND));
 
-        if (survey.getSurveyType() == SurveyType.객관식) {
-            for (SurveyOption surveyOption : survey.getSurveyOptions()) {
-                surveyOptionService.deleteSurveyOption(surveyOption.getId());
+            if (survey.getSurveyType() == SurveyType.객관식) {
+                for (SurveyOption surveyOption : survey.getSurveyOptions()) {
+                    surveyOptionService.deleteSurveyOption(surveyOption.getId());
+                }
             }
-        }
 
-        surveyRepository.deleteById(surveyId);
+            // 리뷰 삭제
+            List<Review> reviews = reviewRepository.findAllBySurveyOrderByCreatedAtDesc(survey);
+            for (Review review : reviews) {
+                reviewRepository.deleteById(review.getId());
+            }
+
+            surveyRepository.deleteById(surveyId);
+        }
     }
 
     @Override

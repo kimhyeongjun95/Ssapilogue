@@ -10,6 +10,8 @@ services:
       context: ./backend
     volumes:
       - ../images:/images
+    environment:
+      - JASYPT_PASSWORD=ssapilogue104EShjDKkhHS
     ports:
       - "8080:8080"
   nginx:

@@ -14,13 +14,15 @@
   display: flex;
   flex-direction: row;
   height: 100%;
+  box-shadow: 3px 3px 3px 3px gray;
+  border-radius: 20px; 
 }
 .img-div {
   display: flex;
   flex-direction: column;
-  width: 40%;
   align-items: center;
   justify-content: center;
+  width: 40%;
   margin-bottom:3vh;
 }
 .card-div {
@@ -30,14 +32,26 @@
   flex-wrap: wrap;
 }
 .profile-pic {
-  border-radius: 70%;
+  border-radius: 50%;
   object-fit: cover;
-  width: 70%;
-  height: 70%;
+  width: 50%;
+  height: 50%;
 }
 .my-project-div {
   margin-top : 5%;
 }
 .my-post-h {
   text-align: center;
+}
+.likes-heart {
+  width: 45px;
+  display: inline-block;
+  position: relative;
+  top: 15px;
+}
+.heart-box {
+  display: inline;
+}
+.likes-count {
+  display: inline-block;
 }

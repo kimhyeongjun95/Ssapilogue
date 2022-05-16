@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -40,13 +41,14 @@ public class ReviewServiceImpl implements ReviewService{
         List<Survey> surveys = surveyRepository.findAllByProjectId(projectId);
         for (Survey survey : surveys) {
             String surveyTitle = survey.getTitle();
+            SurveyType surveyType = survey.getSurveyType();
 
-            List<Review> reviews = reviewRepository.findAllBySurvey(survey);
+            List<Review> reviews = reviewRepository.findAllBySurveyOrderByCreatedAtDesc(survey);
             Integer totalCount = reviews.size();
 
             List<FindObjectiveReviewResDto> objectiveReviews = new ArrayList<>();
             List<FindSubjectiveReviewResDto> subjectiveReviews = new ArrayList<>();
-            if (survey.getSurveyType() == SurveyType.객관식) {
+            if (surveyType == SurveyType.객관식) {
                 List<SurveyOption> surveyOptions = survey.getSurveyOptions();
                 for (SurveyOption surveyOption : surveyOptions) {
                     Integer count = reviewRepository.countAllBySurveyOption(surveyOption);
@@ -54,16 +56,20 @@ public class ReviewServiceImpl implements ReviewService{
                 }
             } else {
                 for (Review review : reviews) {
-                    User user = userRepository.findByEmail(review.getUserEmail());
+                    Optional<User> user = Optional.ofNullable(userRepository.findByEmail(review.getUserEmail()));
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                     String createdAt = review.getCreatedAt().format(formatter);
 
-                    subjectiveReviews.add(new FindSubjectiveReviewResDto(review, user, createdAt));
+                    if (user.isPresent() == false) {
+                        subjectiveReviews.add(new FindSubjectiveReviewResDto(review, null, null, createdAt));
+                    } else {
+                        subjectiveReviews.add(new FindSubjectiveReviewResDto(review, user.get().getNickname(), user.get().getImage(), createdAt));
+                    }
                 }
             }
 
-            findReviewResDtos.add(new FindReviewResDto(index, surveyTitle, totalCount, objectiveReviews, subjectiveReviews));
+            findReviewResDtos.add(new FindReviewResDto(index, surveyTitle, String.valueOf(surveyType), totalCount, objectiveReviews, subjectiveReviews));
             index ++;
         }
         return findReviewResDtos;
