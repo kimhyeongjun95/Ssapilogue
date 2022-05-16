@@ -1,0 +1,28 @@
+.post-question-style {
+  width: 97.3%;
+  height: 3.5vh;
+  min-height: 31.5px;
+  border : 1px solid #ADADAD;
+  border-radius: 5px;
+  padding-left: 2%;
+  margin-top: 2%;
+}
+.question-style::placeholder {
+  color: #ADADAD;
+}
+
+.pp-search-indi-all-div {
+  border : 1px solid black;
+  border-radius: 10px;
+  margin-top: 1%;
+  margin-bottom: 0.5%;
+  max-height: 15vh;
+  width: 50%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.pp-search-indi-div:hover {
+  background-color: #c4c4c4;
+  cursor: pointer;
+}

@@ -115,7 +115,7 @@ const PostSurvey = () => {
   }
 
   return (
-    <div className="survey">
+    <div className="post-box">
 
       <h2>설문조사를 등록해 주세요!</h2>
       <div className="default-survey">
@@ -138,7 +138,7 @@ const PostSurvey = () => {
             : 
             <>
               <div className="choice-input">
-                <img className="plus" src={plus} onClick={e => addChoice(e, idx)} />
+                <img className="plus" src={plus} onClick={e => addChoice(e, idx)} alt="choice-plus" />
 
                 <li className="answer-box">
                   <input
@@ -151,13 +151,12 @@ const PostSurvey = () => {
                 </li>
 
               </div>
-              <img className="delete" src={cross} alt="cross" onClick={deleteSurvey} />
             </>
           }
         </div>
       ))}
 
-      <img className="plus" src={plus} onClick={addSurvey}/>
+      <img className="plus" src={plus} onClick={addSurvey} alt="plus-survey" />
 
       <div className="survey-type">
         <button className={option === "주관식" ? "btn-blue" : "btn-white"} onClick={whichSurvey} value="주관식">주관식</button>

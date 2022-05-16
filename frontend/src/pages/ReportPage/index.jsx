@@ -78,15 +78,10 @@ const ReportPage = () => {
   return (
     <>
       <div className="report-nav-div">
-        <div className="back-div">
+        {/* <div className="back-div">
           <img className="undo-pic" src={Undo} alt="Undo"/>
           프로젝트로 돌아가기
-        </div>
-        <div className="choose-div">
-          <h1> review </h1>
-          <div></div>
-          <h1> bug report</h1>
-        </div>
+        </div> */}
         <div className="nav-div"/>
       </div>
 
