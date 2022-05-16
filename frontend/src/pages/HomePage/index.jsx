@@ -42,6 +42,21 @@ const HomePage = () => {
     setTypeOption(e.target.value);
   }
 
+  const handlePopular = (e) => {
+    const value = e.target.innerText;
+
+    if (value === "인기순") {
+      const result = entireResult.sort((a, b) => b.likeCnt - a.likeCnt)
+      setSearchOption(result);
+      return;
+    }
+    
+    if (value === "최신순") {
+      setSearchResult(entireResult)
+      return;
+    }
+  }
+
   const titleEnterSearch = async (e, value) => {
     const response = await API.get(`/api/project//search?keyword=${value}`);
     setSearchResult(response.data.projectList);
@@ -145,8 +160,6 @@ const HomePage = () => {
       const result = entireResult.filter(search => search.category === "자율")
       setSearchResult(result);
     }
-
-
   }
 
   useEffect(() => {
@@ -179,13 +192,18 @@ const HomePage = () => {
             <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
             <div className="home-search-main">
               <div className="home-search-title">
+
                 {dropResult && dropResult.map((search, idx) => (
                   <div style={{ marginBottom : "3px" }} key={idx}>
-                    {search.title}
+                    <Link to={`project/${search.projectId}`} className="card-link">
+                      {search.title}
+                    </Link>
                   </div>
                 ))}
+
               </div>
               <div className="home-search-tech">
+
                 {techSearchResult && techSearchResult.map((tech, idx) => (
                   <span key={idx}>
                     <Chip
@@ -195,6 +213,7 @@ const HomePage = () => {
                     />
                   </span>
                 ))}
+
               </div>
             </div> 
           </div>
@@ -210,8 +229,8 @@ const HomePage = () => {
         
         <div className="home-card-option">
           <div className="home-card-sort">
-            <div>최신순</div>
-            <div>인기순</div>
+            <div onClick={handlePopular}>최신순</div>
+            <div onClick={handlePopular}>인기순</div>
           </div>
           <SelectType defaultValue="" onChange={handleTypeOption} option={typeOption}  />
         </div>
@@ -220,7 +239,7 @@ const HomePage = () => {
           <Grid container>
             {searchResult && searchResult.map((search, idx) => (
               <Grid item xl={4} md={6} sm={12} key={idx}>
-                <div className="home-card" key={idx}>
+                <div className="home-card" >
                   <Link to={`project/${search.projectId}`} className="card-link">
                     <Card
                       title={search.title} 
