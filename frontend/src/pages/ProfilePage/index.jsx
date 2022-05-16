@@ -3,6 +3,8 @@ import "./style.scss"
 import API from "../../api/API";
 import store from "../../utils/store"
 import Card from "../../components/Card";
+import heart from "../../assets/heart.png"
+
 
 const ProfilePage = () => {
 
@@ -38,7 +40,10 @@ const ProfilePage = () => {
       <div className="profile-div">
         <div className="profile-box">
           <div className="img-div">
-            <p> 좋아요 : {user.userLiked}개</p>
+            <div className="heart-box">
+              <img className="likes-heart" src={heart} alt="heart" />
+              <p className="likes-count">{user.userLiked}개</p>
+            </div>
             <img className="profile-pic" src={user.image} alt="profilePic" />
           </div>
           <div className="introduce-div">
