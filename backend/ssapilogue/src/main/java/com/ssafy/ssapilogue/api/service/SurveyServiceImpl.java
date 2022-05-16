@@ -58,29 +58,31 @@ public class SurveyServiceImpl implements SurveyService {
         List<String> surveyIds = new ArrayList<>();
 
         for (CreateSurveyReqDto createSurveyReqDto : createSurveyReqDtos) {
-            Survey survey = Survey.builder()
-                    .projectId(projectId)
-                    .title(createSurveyReqDto.getTitle())
-                    .surveyType(SurveyType.valueOf(createSurveyReqDto.getSurveyType()))
-                    .build();
+            if (createSurveyReqDto.getSurveyId() == null) {
+                Survey survey = Survey.builder()
+                        .projectId(projectId)
+                        .title(createSurveyReqDto.getTitle())
+                        .surveyType(SurveyType.valueOf(createSurveyReqDto.getSurveyType()))
+                        .build();
 
-            Survey saveSurvey = surveyRepository.save(survey);
+                Survey saveSurvey = surveyRepository.save(survey);
 
-            // 객관식인 경우, SurveyOption 추가
-            if (saveSurvey.getSurveyType() == SurveyType.객관식) {
-                List<SurveyOption> surveyOptions = new ArrayList<>();
+                // 객관식인 경우, SurveyOption 추가
+                if (saveSurvey.getSurveyType() == SurveyType.객관식) {
+                    List<SurveyOption> surveyOptions = new ArrayList<>();
 
-                for (String content : createSurveyReqDto.getSurveyOptions()) {
-                    if (content != null) {
-                        SurveyOption surveyOption = surveyOptionService.createSurveyOption(saveSurvey.getId(), content);
-                        surveyOptions.add(surveyOption);
+                    for (String content : createSurveyReqDto.getSurveyOptions()) {
+                        if (content != null) {
+                            SurveyOption surveyOption = surveyOptionService.createSurveyOption(saveSurvey.getId(), content);
+                            surveyOptions.add(surveyOption);
+                        }
                     }
-                }
 
-                saveSurvey.addSurveyOptions(surveyOptions);
-                surveyRepository.save(saveSurvey);
+                    saveSurvey.addSurveyOptions(surveyOptions);
+                    surveyRepository.save(saveSurvey);
+                }
+                surveyIds.add(saveSurvey.getId());
             }
-            surveyIds.add(saveSurvey.getId());
         }
         return surveyIds;
     }
