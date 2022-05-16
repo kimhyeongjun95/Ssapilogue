@@ -52,7 +52,7 @@ const DetailPage = () => {
   const [endWord, setEndword] = useState(-1)
   const [searchData, setSearchData] = useState([]);
 
-  
+
   useEffect(() => {
     async function projectCall() {
       const res = await API.get(`/api/project/${id}`)
@@ -119,6 +119,22 @@ const DetailPage = () => {
 
 
   const commentBox = comment.map((item) => {
+    const regex = /@.*[원|장]/
+    // console.log(item.content.match(regex))
+    // console.log(item.content.match(regex))
+    let pingping = item.content
+    let papa = []
+    item.content.split(" ").map((Citem) => {
+      if (Citem.match(regex)) {
+        const piopio = Citem.match(regex)[0]
+        // console.log(item.match(regex)[0])
+        pingping = pingping.replaceAll(piopio,`<span id="call-red">${piopio}</span>`)
+        
+      }
+      pingping = "<p>" + pingping + "</p>"
+      console.log(pingping)
+    })
+    console.log(pingping)
     return <div className="box-div">
       <div>
         <img className="comment-image" src={detailImage} alt="profile" />
@@ -128,12 +144,12 @@ const DetailPage = () => {
           <div className="comment-nickname">
             {item.nickname}
           </div>
-          <div className="comment-created">
+          <div className="comment-created" >
             {item.createdAt}
           </div>
         </div>
-        <div className="comment-content">
-          <p>{item.content}</p>
+        <div className="comment-content" id={item.commentId} dangerouslySetInnerHTML={{__html: pingping}}>
+          
         </div>
         <div>
           <p className="project-detail-red" onClick={() => deleteComment(item.commentId)}>삭제하기</p>
@@ -232,20 +248,6 @@ const DetailPage = () => {
 
       }
     }
-
-    // if (commentTrue) {
-    //   if (event.key==" ") {
-    //     setEndword(document.getElementById('commentText').selectionStart)
-    //     setCommentTrue(false)
-        
-    //     console.log("끝",endWord)
-    //     console.log("시작",startWord)
-    //     let searchname = indicomment.slice(startWord+1,endWord)
-    //     console.log('검색',searchname)
-
-    //   }
-    // }
-    
   }
 
 

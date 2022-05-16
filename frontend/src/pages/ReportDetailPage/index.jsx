@@ -22,6 +22,13 @@ const ReportDetailPage = () => {
   const [createAt, setCreateAt] = useState('');
   const [kai, setKai] = useState(0);
 
+  // 댓글기능
+  const [indicomment, setIndiComment] = useState('')
+  const [commentTrue, setCommentTrue] = useState(false)
+  const [startWord, setStartword] = useState(-1)
+  const [endWord, setEndword] = useState(-1)
+  const [searchData, setSearchData] = useState([]);
+
   useEffect(() => {
     async function startReportDetail() {
       const res = await API.get(`/api/bug/detail/${reportId}`)
@@ -49,6 +56,7 @@ const ReportDetailPage = () => {
       content : commentText
     })
     document.getElementById('commentText').value = ''
+    setIndiComment('')
     setKai(kai + 1)
   }
 
@@ -63,13 +71,31 @@ const ReportDetailPage = () => {
   }
     
   const commentBox = comment.map((item) => {
+    const regex = /@.*[원|장]/
+    // console.log(item.content.match(regex))
+    // console.log(item.content.match(regex))
+    let pingping = item.content
+    let papa = []
+    item.content.split(" ").map((Citem) => {
+      if (Citem.match(regex)) {
+        const piopio = Citem.match(regex)[0]
+        // console.log(item.match(regex)[0])
+        pingping = pingping.replaceAll(piopio,`<span id="call-red">${piopio}</span>`)
+        
+      }
+      pingping = "<p>" + pingping + "</p>"
+      console.log(pingping)
+    })
+    console.log(pingping)
     return <div className="report-detail-box-div">
       <div>
         <img className="report-detail-icon" src={(item.profileImage) ? item.profileImage : defaultpic} alt="profile" />
       </div>
       <div>
         {item.nickname} {item.createdAt}
-        <p>{item.content}</p>
+        <div className="comment-content" id={item.commentId} dangerouslySetInnerHTML={{__html: pingping}}>
+          
+        </div>
         <div>
           <p className="report-detail-red" onClick={() => deleteComment(item.bugCoId)}>삭제하기</p>
         </div>
@@ -78,6 +104,63 @@ const ReportDetailPage = () => {
 
     </div>
   })
+
+  const checkTag = (event) => {
+    if (!commentTrue || indicomment.includes('@')) {
+      if (event.key=='@') {
+        console.log('언급시작')
+        setCommentTrue(true)
+
+        setStartword(document.getElementById('commentText').selectionStart)
+        console.log(startWord)
+        
+
+      }
+    }
+  }
+
+  async function searchWord(word) {
+    console.log(document.getElementById("commentText").value.slice(startWord+1,endWord))
+    console.log("검색",word)
+    const res  = await API.get(`/api/user-info/search?keyword=${word}`)
+    setSearchData(res.data.searchList)
+    const date = new Date();
+    console.log(date)
+    console.log("왜이게..?",document.getElementById("commentText").value.slice(startWord+1,endWord))
+    console.log(res)
+  }
+
+  const onChangeComment = (e) => {
+    setIndiComment(e.target.value)
+    if (commentTrue === true) {
+      console.log('트루는통과')
+      if (document.getElementById('commentText').selectionStart) {
+        setEndword(document.getElementById('commentText').selectionStart)
+        if (document.getElementById("commentText").value.slice(startWord+1,endWord)) {
+          console.log('들어왓음')
+          console.log(document.getElementById("commentText").value.slice(startWord+1,endWord))
+          searchWord(document.getElementById("commentText").value.slice(startWord+1,endWord))
+        }
+      }
+    }
+  }
+  const searchMap = searchData.map((item) => {
+    
+    return <div className="search-indi-div">
+      <p className="search-p" onClick={() => onClickSearch(item)}>{item}</p>
+    </div>
+  });
+  const onClickSearch = (item) => {
+    var changeComment = document.getElementById("commentText").value.replace(document.getElementById("commentText").value.slice(startWord+1,endWord), item + " ")
+    document.getElementById("commentText").value = changeComment
+    setIndiComment(changeComment)
+    allCancel()
+  }
+
+  function allCancel() {
+    setCommentTrue(false)
+    setSearchData([])
+  }
 
   return (
     <div className="report-detail-main">
@@ -105,7 +188,16 @@ const ReportDetailPage = () => {
       <div className="report-detail-comment-div">
         <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
         <div>
-          <textarea id="commentText" className="comment-box" maxLength={400}></textarea>
+          { !(searchData.length === 0) ?
+            
+            <div className="search-main-div">
+              <p>{searchMap}</p>
+            </div>
+
+            : 
+            null
+          }
+          <textarea id="commentText" value={indicomment} className="comment-box" maxLength={400} onKeyPress={checkTag} onChange={onChangeComment}></textarea>
           <button className="comment-submit" type="submit" onClick={postComment}>댓글 작성</button>
         </div>
       </div>

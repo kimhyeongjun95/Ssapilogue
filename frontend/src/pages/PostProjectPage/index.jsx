@@ -148,17 +148,21 @@ const PostProjectPage = () => {
       }
     };
 
+    
     const onClickSearch = (item) => {
       setSD([])
       inputSetValue(item)
     }
+
     const searchMap = sD.map((item) => {
     
       return <div className="pp-search-indi-div">
         <p className="search-p" onClick={() => onClickSearch(item)}>{item}</p>
       </div>
     });
-    console.log(searchMap)
+
+    
+
     
     return <div style={{width: "40%"}}>
       <p style={{marginBottom : 0}}> {InputTitle} </p>
@@ -215,6 +219,7 @@ const PostProjectPage = () => {
     console.log(typeof e.target.value)
   }
 
+  
   const toSurvey = () => {
     let party = [title, various, repo, hashbox,phashbox,intro]
     let flag = false
@@ -224,7 +229,7 @@ const PostProjectPage = () => {
       {
         if ( party_index === 1) {
           flag = true
-          swal("미입력", `${party_name[party_index]}이(가) 입력되지 않았습니다.`, "error");
+          swal("미입력", `${party_name[party_index]} 이(가) 입력되지 않았습니다.`, "error");
           break
         }else {
           console.log(party_name[party_index])
@@ -232,7 +237,7 @@ const PostProjectPage = () => {
           console.log(a[0].querySelector('input'))
           document.getElementsByClassName(`${party_name[party_index]}`)[0].querySelector('input').focus()
           flag = true
-          swal("미입력", `${party_name[party_index]}이(가) 입력되지 않았습니다.`, "error");
+          swal("미입력", `${party_name[party_index]} 이(가) 입력되지 않았습니다.`, "error");
           break
         }
       }
@@ -271,8 +276,8 @@ const PostProjectPage = () => {
         {chooseType()}
         <Question InputTitle="배포주소" inputValue={bepo} inputSetValue={setBepo} />
         <Question InputTitle="* Git Repo" inputValue={repo} inputSetValue={setRepo} pilsu="1" inputId="Git repo"/>
-        {hashType("* 기술스택","기술스택을 입력해주세요",hashbox,hashtag,setHashtag,setHashbox,plusHashtag,"기술스택",searchData,setSearchData)}
-        {hashType("* 프로젝트 멤버","프로젝트 멤버를 입력해주세요",phashbox,phashtag,setpHashtag,setpHashbox,PplusHashtag,"프로젝트 멤버",msearchData,setmSearchData)}
+        {hashType("* 기술스택","기술스택을 입력후 엔터를 눌러주세요.",hashbox,hashtag,setHashtag,setHashbox,plusHashtag,"기술스택",searchData,setSearchData)}
+        {hashType("* 프로젝트 멤버","프로젝트 멤버를 입력후 엔터를 눌러주세요.",phashbox,phashtag,setpHashtag,setpHashbox,PplusHashtag,"프로젝트 멤버",msearchData,setmSearchData)}
 
         <input type="file" style={{ display: "none" }} onChange={onChange} ref={imageInput} accept="img/*" />
         <button style={uploadButton} onClick={onCickImageUpload}>썸네일 업로드</button>
