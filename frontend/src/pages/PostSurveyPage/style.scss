@@ -1,5 +1,6 @@
 $blue : #3396F4;
 $gray : #E8E7E7;
+$sky-blue : #C3E2F9;
 
 .post-box {
   display: flex;
@@ -50,22 +51,26 @@ hr {
 .plus {
   height: 23px;
   margin-bottom: 1%;
+  cursor: pointer;
 }
 
 .delete {
   height: 10px;
   margin-left: 5%;
+  cursor: pointer;
 }
 
 .trash {
   height: 22px;
-  margin-left: 5%;
+  margin-left: 3%;
+  cursor: pointer;
 }
 
 .survey-box {
-  width: 40%;
-  margin-bottom: 5%;
+  width: 30%;
+  margin-bottom: 4vh;
   padding: 15px;
+  padding-right: 0px;
   border: 1px solid #C4C4C4;
   border-radius: 5px;
   box-shadow: 2px 2px 2px $gray;
@@ -73,6 +78,7 @@ hr {
 
 .title-box {
   width: 85%;
+  margin-bottom: 20px;
   padding: 5px;
   background-color: $gray;
   border: 0px;
@@ -91,7 +97,8 @@ hr {
   border-left: 0;
   border-right: 0;
   border-bottom: 1px solid;
-  margin-bottom: 2%;
+  outline: none;
+  margin-bottom: 1.5vh;
 }
 
 .survey-type {
@@ -101,8 +108,22 @@ hr {
 }
 
 .default-survey {
-  width: 40%;
-  margin-bottom: 4%;
+  width: 30%;
+  margin-bottom: 5vh;
   display: flex;
   justify-content: flex-end;
+}
+
+.title-highlight {
+  width: 420px;
+  height: 76px;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(to top, $sky-blue 45%, transparent 45%);
+}
+
+.option-plus {
+  height: 18px;
+  margin-left: 4.3%;
+  cursor: pointer;
 }
