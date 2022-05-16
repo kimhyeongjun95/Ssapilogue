@@ -66,7 +66,7 @@ const EditSurvey = () => {
     deleteBtn.addEventListener("click", (e) => {
       deleteChoice(e, idx, count);
     })
-    
+
     let cover = document.createElement("li");
     cover.className = "answer-box";
     cover.appendChild(ask);
@@ -90,7 +90,8 @@ const EditSurvey = () => {
 
   const refiningData = () => {
     for (let i = 0; i < inputs.length; i++) {
-      delete inputs[i]['default']
+      delete inputs[i]['default'];
+      delete inputs[i]['answer'];
     }
   }
 
@@ -109,18 +110,18 @@ const EditSurvey = () => {
   }
 
   const submit = async () => {
-    console.log(inputs)
+    console.log(inputs);
     try {
       refiningData();
       store.getToken();
       await API.post(`/api/survey/${id}`, {
         createSurveyReqDtos: inputs
       }) 
-      if (toDelete.length > 0) {
-        await API.delete(`/api/survey`, {
-          deletedSurveys: toDelete
-        })
-      }
+      // if (toDelete.length > 0) {
+      //   await API.delete(`/api/survey`, {
+      //     deletedSurveys: toDelete
+      //   })
+      // }
       navigate(`/project/${id}`)
       return;
     } catch (e) {

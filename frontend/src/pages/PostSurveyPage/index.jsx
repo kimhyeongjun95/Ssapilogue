@@ -11,6 +11,7 @@ const PostSurvey = () => {
 
   const [option, setOption] = useState('주관식');
   const [inputs, setInputs] = useState([])
+  const [hasLoaded, setHasLoaded] = useState(false);
   const locations = useLocation().state;
   const navigate = useNavigate();
   const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
@@ -23,6 +24,7 @@ const PostSurvey = () => {
       value[i]['default'] = true;
       value[i]['surveyId'] = null;
     }
+    setHasLoaded(true);
     setInputs(value)
   }
 
@@ -106,7 +108,9 @@ const PostSurvey = () => {
 
   const submit = async () => {
     try {
-      refiningData();
+      if (hasLoaded) {
+        refiningData();
+      }
       store.getToken();
       const projectResult = await API.post("/api/project",{
         title: title,
@@ -121,6 +125,7 @@ const PostSurvey = () => {
         readme: markdown,
       })
       const projectId = projectResult.data.projectId;
+      console.log(inputs);
       await API.post(`/api/survey/${projectId}`, {
         createSurveyReqDtos: inputs
       }) 
