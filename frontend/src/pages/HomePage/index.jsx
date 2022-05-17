@@ -246,8 +246,8 @@ const HomePage = () => {
         
         <div className="home-card-option">
           <div className="home-card-sort">
-            <div onClick={handlePopular}>최신순</div>
-            <div onClick={handlePopular}>인기순</div>
+            <div onClick={handlePopular} className="home-card-p">최신순</div>
+            <div onClick={handlePopular} className="home-card-p">인기순</div>
           </div>
           <SelectType defaultValue="" onChange={handleTypeOption} option={typeOption}  />
         </div>

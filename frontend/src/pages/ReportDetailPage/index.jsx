@@ -104,7 +104,7 @@ const ReportDetailPage = () => {
         <div className="comment-content" id={item.commentId} dangerouslySetInnerHTML={{__html: pingping}}>
           
         </div>
-        { (myEmail === item.eamil) ?
+        { (myEmail === item.email) ?
           <div>
             <p className="report-detail-red" onClick={() => deleteComment(item.bugCoId)}>삭제하기</p>
           </div>
@@ -179,11 +179,11 @@ const ReportDetailPage = () => {
         </div>
         <hr />
         <div className="report-hr-div">
-          <p> 작성일  {createAt}</p>
-        </div>
-        <div className="report-detail-writer-div">
-          <img src={(profilepic) ? profilepic : defaultpic} alt="writerProfilePic" />
-          <p>{writer}</p>
+          <div className="report-detail-writer-div">
+            <img src={(profilepic) ? profilepic : defaultpic} alt="writerProfilePic" />
+            <p>{writer}</p>
+          </div>
+          <p style={{ marginRight: '15px', marginTop: '10px'}}> 작성일  {createAt}</p>
         </div>
         <div className="report-detail-content-div" dangerouslySetInnerHTML={{
           __html: markdownIt().render(content),

@@ -65,6 +65,7 @@ const PostReviewPage = () => {
                   name="answer" 
                   value={review.answer} 
                   onChange={e => handleInput(e, idx)} 
+                  style={{fontFamily:'GmarketSansMedium'}}
                 />
               </>
               :

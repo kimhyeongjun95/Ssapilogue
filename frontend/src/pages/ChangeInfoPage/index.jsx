@@ -80,7 +80,7 @@ const ChangeInfoPage = () => {
             </div>
           </label>
           <input id="file-input" type="file" style={{display: "none"}} onChange={uploadImage} />
-          <h5>프로필 사진을 변경하려면 사진을 클릭하세요</h5>
+          <h5 className="change-img-h5">프로필 사진을 변경하려면 사진을 클릭하세요.</h5>
         </div>
 
         <div className="change-input-box">
