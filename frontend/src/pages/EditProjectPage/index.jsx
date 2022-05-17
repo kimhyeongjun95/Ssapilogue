@@ -6,32 +6,36 @@ import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import swal from 'sweetalert';
 import "./style.scss"
+import { createTheme } from '@mui/material/styles'
+import { ThemeProvider } from '@emotion/react';
 
 const PostProjectPage = () => {
   const id = useParams().projectId;
   const navigate = useNavigate()
+  const { editTitle, editCategory, editStack, editMember, editRepo, 
+    editBepo, editReadme, editAuthormember, editIntro, editThumbnail } = useLocation().state
   // 상태관리
-  const [title, setTitle] = useState('')
-  const [bepo, setBepo] = useState('') 
-  const [repo, setRepo] = useState('')
-  const [various, setVarious] = useState('');
-  const [intro, setIntro] = useState('')
-  const [thumbnail, setThumnail] = useState('')
-  const [thumbnailUrl, setThumnailUrl] = useState('')
-  const [markdown, setMarkdown] = useState('')
+  const [title, setTitle] = useState(editTitle)
+  const [bepo, setBepo] = useState(editBepo) 
+  const [repo, setRepo] = useState(editRepo)
+  const [various, setVarious] = useState(editCategory);
+  const [intro, setIntro] = useState(editIntro)
+  const [thumbnail, setThumnail] = useState(editThumbnail)
+  const [thumbnailUrl, setThumnailUrl] = useState(editThumbnail)
+  const [markdown, setMarkdown] = useState(editReadme)
   const [readmeCheck, setReadmeCheck] = useState('1');
   const [searchData, setSearchData] = useState([]);
   const [msearchData, setmSearchData] = useState([]);
   const editorRef = React.createRef();
 
   // 기술스택 //
-  const [hashbox, setHashbox] = useState([])
+  const [hashbox, setHashbox] = useState(editStack)
   const [hashtag, setHashtag] = useState('')
   // 프로젝트 맴버 //
-  const [phashbox, setpHashbox] = useState([])
+  const [phashbox, setpHashbox] = useState(editMember)
   const [phashtag, setpHashtag] = useState('')
 
   // 라벨링
@@ -68,7 +72,7 @@ const PostProjectPage = () => {
  
   const alHash = (inputBox,inputSetbox) => inputBox.map( (item,index) => {
  
-    return <Chip style={{ margin : "1%", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+    return <Chip style={{ margin : "1%", backgroundColor : "#3396F4", color:'white', fontFamily: 'GmarketSansMedium'}}
       label={item}
       onDelete={hashDelete(index,inputBox,inputSetbox)} 
     />
@@ -114,6 +118,8 @@ const PostProjectPage = () => {
 
     color: "white",
     cursor: "pointer",
+    fontFamily: "GmarketSansMedium",
+    border: "none"
   }
 
   const hashType = (InputTitle,Plcaehorder, inputBox,inputValue,inputSetValue,inputSetbox,hamsu,inputId,sD,setSD) => {
@@ -143,7 +149,7 @@ const PostProjectPage = () => {
 
     const searchMap = sD.map((item) => {
     
-      return <div className="pp-search-indi-div">
+      return <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap", fontFamily: "GmarketSansMedium"}}>
         <p className="search-p" onClick={() => onClickSearch(item)}>{item}</p>
       </div>
     });
@@ -152,7 +158,7 @@ const PostProjectPage = () => {
 
     
     return <div style={{width: "40%"}}>
-      <p style={{marginBottom : 0}}> {InputTitle} </p>
+      <p style={{marginBottom : 0, fontFamily:"GmarketSansMedium"}}> {InputTitle} </p>
       { (sD.length) ?
         <div className="pp-search-indi-all-div">
           {searchMap}
@@ -166,16 +172,14 @@ const PostProjectPage = () => {
         size = "small"
         id={inputId}
         className={inputId}
-        style={{width:"100%"}}
+        style={{width:"100%", fontFamily:"GmarketSansMedium"}}
         value={inputValue}
         onChange={handleChange}
         onKeyPress={hamsu}
         placeholder={Plcaehorder}
       />
-      <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap"}}>
-        {alHash(inputBox,inputSetbox)}
-      
-        
+      <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap", fontFamily: "GmarketSansMedium"}}>
+        {alHash(inputBox,inputSetbox)}  
       </div>
     </div>
   }
@@ -185,20 +189,24 @@ const PostProjectPage = () => {
       setVarious(event.target.value);
     };
     return  <FormControl style={{marginTop:"2vh",width:"40%"}} size="small">
-      <InputLabel id="demo-select-small">* 분류</InputLabel>
+      <p style={{ fontFamily : "GmarketSansMedium"}}>* 분류</p>
       <Select
         labelId="demo-select-small"
         id="demo-select-small"
         value={various}
-        label="* 분류"
         onChange={handleChange}
+        displayEmpty
       >
-        <MenuItem value={"공통"}>공통</MenuItem>
-        <MenuItem value={"특화"}>특화</MenuItem>
-        <MenuItem value={"자율"}>자율</MenuItem>
-        <MenuItem value={"토이"}>토이</MenuItem>
+        <MenuItem disalbed value="">
+          <em style={{ fontFamily : "GmarketSansLight", fontStyle: "normal"}}>선택해주세요.</em>
+        </MenuItem>
+        <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"공통"}>공통</MenuItem>
+        <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"특화"}>특화</MenuItem>
+        <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"자율"}>자율</MenuItem>
+        <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"토이"}>토이</MenuItem>
       </Select>
-    </FormControl>
+    </FormControl>  
+        
   }
 
   const mkChange = (e) => {
@@ -242,7 +250,13 @@ const PostProjectPage = () => {
     }
   }
 
-
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#3396F4',
+      }
+    }
+  })
 
 
   return (
@@ -258,6 +272,7 @@ const PostProjectPage = () => {
         {hashType("* 기술스택","기술스택을 입력후 엔터를 눌러주세요.",hashbox,hashtag,setHashtag,setHashbox,plusHashtag,"기술스택",searchData,setSearchData)}
         {hashType("* 프로젝트 멤버","프로젝트 멤버를 입력후 엔터를 눌러주세요.",phashbox,phashtag,setpHashtag,setpHashbox,PplusHashtag,"프로젝트 멤버",msearchData,setmSearchData)}
 
+        <Question InputTitle="* 소개" inputValue={intro} inputSetValue={setIntro} pilsu="1" inputId="프로젝트 소개"/>
         <input type="file" style={{ display: "none" }} onChange={onChange} ref={imageInput} accept="img/*" />
         <button style={uploadButton} onClick={onCickImageUpload}>썸네일 업로드</button>
         { (thumbnail) ?
@@ -267,15 +282,18 @@ const PostProjectPage = () => {
           :
           null
         }
-        <div>
-          <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />직접 입력하기
-          <input type="radio" checked={readmeCheck === "0"} name="theme" value={"0"} onChange={mkChange}/>github에서 가져오기
+        <div style={{marginTop:0}} className="readme-div">
+          <p style={{ fontFamily:"GmarketSansMedium"}}>README</p>
+          <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />
+          <p className="radio-p">직접 입력하기</p> 
+          <input type="radio" checked={readmeCheck === "0"} name="theme" value={"0"} onChange={mkChange}/>
+          <p className="radio-p">github에서 가져오기</p>
         </div>
-        <Question InputTitle="* 소개" inputValue={intro} inputSetValue={setIntro} pilsu="1" inputId="프로젝트 소개"/>
         { (readmeCheck === "1") ?
           <div style={{marginTop:"2%",width:"40%"}}>
             <Editor
               initialEditType="markdown"
+              initialValue={markdown}
               height="40vh"
               placeholder='마크다운을 붙여주세요.'
               onChange={onChangeIntroFunction}
@@ -286,8 +304,9 @@ const PostProjectPage = () => {
         }
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-          <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
-          
+          <Link to={`/project/${id}`} style={{textDecoration: "none"}}>
+            <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
+          </Link>
           <Button size="large" variant="contained" onClick={editProject}> 등록하기 </Button>
         </div>
 

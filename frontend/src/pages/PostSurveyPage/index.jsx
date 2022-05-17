@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import API from "../../api/API";
 import store from "../../utils/store";
 import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
 import plus from '../../assets/plus.png';
+import swal from 'sweetalert'
 
 const PostSurvey = () => {
 
@@ -15,7 +16,6 @@ const PostSurvey = () => {
   const locations = useLocation().state;
   const navigate = useNavigate();
   const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
-
   
   const addBasicForm = async () => {
     const response = await API.get(`/api/survey/default/${title}`)
@@ -107,10 +107,32 @@ const PostSurvey = () => {
     }
   }
 
+  const checkRequired = () => {
+    for (let i = 0; i < inputs.length; i++) {
+      if (inputs[i].surveyType === "주관식") {
+        if (inputs[i].title.length === 0) {
+          return false
+        }
+      }
+
+      if (inputs[i].surveyType === "객관식") {
+        for (let j = 0; j < inputs[i].surveyOptions.length; j++) {
+          if (inputs[i].surveyOptions[j].length === 0) {
+            return false
+          }
+        }
+      }
+    }
+    return true;
+  }
+
   const submit = async () => {
     try {
       if (hasLoaded) {
         refiningData();
+      }
+      if (!checkRequired()) {
+        swal("빈칸을 모두 채워주세요!", "빈칸을 모두 채우고 다시 한번 확인해주세요.","error")
       }
       store.getToken();
       const projectResult = await API.post("/api/project",{
@@ -138,9 +160,8 @@ const PostSurvey = () => {
   }
 
   return (
-    <div className="post-box">
-      
-      <div className="title-highlight" style={{marginBottom: "5vh"}}>
+    <div className="post-box">      
+      <div className="title-highlight" style={{marginBottom: "5vh",  fontFamily: 'GmarketSansMedium'}}>
         <h1>설문조사를 등록해 주세요!</h1>
       </div>
       
@@ -156,13 +177,14 @@ const PostSurvey = () => {
             value={input.title}
             placeholder="질문 제목을 입력해주세요." 
             onChange={e => handleInput(e, idx)}
+            style={{ fontFamily: 'GmarketSansMedium' }}
             required
           />
-          <img className="trash" src={trash} onClick={() => deleteSurvey(idx)} alt="trash" />
+          <img className="survey-trash" src={trash} onClick={() => deleteSurvey(idx)} alt="trash" />
 
           {input.surveyType === "주관식" ?
             <>
-              <input type="text" className="objective-answer" placeholder="주관식 답변" disabled />
+              <input type="text" style={{ fontFamily: 'GmarketSansMedium', marginTop: '10px'}} className="objective-answer" placeholder="주관식 답변" disabled />
             </> 
             : 
             <>
@@ -176,6 +198,7 @@ const PostSurvey = () => {
                         name="surveyOptions"
                         value={answer}
                         onChange={e => choiceHandleInput(e, idx, optIdx)}
+                        style={{ fontFamily: 'GmarketSansMedium'}}
                         required
                       />
                     </>
@@ -187,9 +210,11 @@ const PostSurvey = () => {
                       name="surveyOptions"
                       value={input.surveyOptions[0]}
                       onChange={e => choiceHandleInput(e, idx, 0)}
+                      style={{ fontFamily: 'GmarketSansMedium'}}
                       required
                     />
                   )}
+                  <img className="option-plus" src={plus} onClick={e => addChoice(e, idx)} alt="choice-plus" />
                 </li>
               </div>
             </>
@@ -205,7 +230,23 @@ const PostSurvey = () => {
       </div>
 
       <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-        <button className="btn-white btn-large" style={{marginRight: "3vw"}}>이전 단계</button>
+        <Link 
+          to='/project/post' 
+          state={{
+            btitle: title,
+            bintro: intro,
+            bvarious: various,
+            bphashbox: phashbox,
+            bhashbox: hashbox,
+            bbepo: bepo,
+            brepo: repo,
+            bthumbnail: thumbnail,
+            breadmeCheck: readmeCheck,
+            bmarkdown: markdown
+          }}
+        >
+          <button className="btn-white btn-large" style={{marginRight: "3vw"}}>이전 단계</button>
+        </Link>
         <button className="btn-blue btn-large" onClick={submit}>등록</button>
       </div>
 

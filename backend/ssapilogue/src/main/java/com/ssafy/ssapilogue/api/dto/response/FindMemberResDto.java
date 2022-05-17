@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @ApiModel("FindMemberResDto")
 public class FindMemberResDto {
 
-    @ApiModelProperty(value = "멤버 id", example = "xxxxxxxxx")
-    private String userId;
+    @ApiModelProperty(value = "멤버 username", example = "khyunchoi")
+    private String username;
 
     @ApiModelProperty(value = "멤버 닉네임", example = "동균")
     private String nickname;
 
     public FindMemberResDto(User user) {
-        userId = user.getUserId();
+        username = user.getUsername();
         nickname = user.getNickname();
     }
 }

@@ -16,7 +16,7 @@
   width: 20vw;
   background-color: #3396F4;
   color: white;
-  font-weight: bold;
+  font-family: 'GmarketSansMedium';
   font-size: 18px;
   border: 0px;
   border-radius: 5px;
@@ -31,6 +31,7 @@
   display: flex;
   margin-top: 20px;
   width: 80%;
+  font-family: 'GmarketSansLight';
 }
 
 .MuiOutlinedInput-root {
@@ -45,6 +46,7 @@
   background-color: #fafafa;
   border: 1px solid #ADADAD;
   border-radius: 5px;
+  font-family:'GmarketSansMedium';
 }
 
 .home-search-main {
@@ -75,14 +77,15 @@
 
 .home-body-title {
   font-size: 36px;
-  font-weight: bold;
   margin-top: 30px;
+  font-family: 'GmarketSansBold';
 }
 
 .home-body-content {
   font-size: 16px;
   color: #484848;
   margin-top: 20px;
+  font-family: 'GmarketSansMedium';
 }
 
 .home-card-option {
@@ -99,6 +102,7 @@
   align-items: center;
   margin-left: 50px;
   font-weight: bold;
+  font-family: 'GmarketSansLight';
 }
 
 .cards-grid {
@@ -119,6 +123,9 @@
   color: black;
 }
 
+.home-card-p {
+  font-family: 'GmarketSansLight';
+}
 .home-sun:hover {
   cursor: pointer;
 }

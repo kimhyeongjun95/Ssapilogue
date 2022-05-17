@@ -20,6 +20,7 @@
   width: 100%;
   overflow: scroll;
   overflow-x: hidden;
+  // font-family: 'GmarketSansLight';
 }
 
 .pp-search-indi-div:hover {
@@ -35,4 +36,11 @@
 
 .select-placeholder {
   color: #c4c4c4;
+}
+
+.radio-p {
+  font-family: 'GmarketSansMedium';
+  display: inline;
+  margin-left: 5px;
+  margin-right: 5px;
 }
