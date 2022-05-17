@@ -147,9 +147,9 @@ const PostSurvey = () => {
       </div>
 
       {inputs.map((input, idx) => (
-        <div className="post-survey-box" key={idx}>
+        <div className="survey-box" key={idx}>
           <input 
-            className="post-title-box"
+            className="title-box"
             name="title"
             value={input.title}
             placeholder="질문 제목을 입력해주세요." 

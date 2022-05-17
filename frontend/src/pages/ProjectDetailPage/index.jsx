@@ -391,7 +391,7 @@ const DetailPage = () => {
               </span>
               { (isWriter) ?
                 <span className="option-div">
-                  <div className="option-category" onClick={receiveReadme}>ReadMe 갱신</div>
+                  <div className="option-category-readme" onClick={receiveReadme}>README 갱신</div>
                   <div className="option-category">
                     <Link 
                       className="to-edit" 
