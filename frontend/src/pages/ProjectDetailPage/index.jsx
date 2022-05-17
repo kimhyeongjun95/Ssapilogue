@@ -358,6 +358,44 @@ const DetailPage = () => {
         }
       });
   }
+  const whichEdit = () => {
+    swal("프로젝트와 설문조사 중 무엇을 수정하고 싶으세요?", {
+      buttons: {
+        review: {
+          text: "설문",
+          value: "survey",
+        },
+        bugreport: {
+          text: "프로젝트",
+          value: "project",
+        },
+      },
+    })
+      .then((value) => {
+        switch (value) {
+          
+        case "project":
+          navigate(`/project/${id}/edit`,{state : {
+            editTitle : title,
+            editCategory: category,
+            editStack: stack,
+            editMember: member,
+            editRepo : repo,
+            editBepo : bepo,
+            editReadme : readme,
+            edittAuthormember : authormember,
+            editIntro : intro,
+            editThumbnail : thumbnail
+          }})
+          break;
+     
+        case "survey":
+          navigate(`/project/${id}/survey/edit`)
+          break;
+     
+        }
+      });
+  }
   
   return (
     <>
@@ -383,24 +421,7 @@ const DetailPage = () => {
                 <span className="option-div">
                   <div className="option-category-readme" onClick={receiveReadme}>README 갱신</div>
                   <div className="option-category">
-                    <Link 
-                      className="to-edit" 
-                      to="edit"
-                      state={{
-                        editTitle : title,
-                        editCategory: category,
-                        editStack: stack,
-                        editMember: member,
-                        editRepo : repo,
-                        editBepo : bepo,
-                        editReadme : readme,
-                        edittAuthormember : authormember,
-                        editIntro : intro,
-                        editThumbnail : thumbnail
-                      }}
-                    >
-                      수정
-                    </Link>
+                    <span onClick={whichEdit}> 수정 </span>
                   </div>
                   <div onClick={deleteProject} className="option-category-red">삭제</div>
                 </span>
