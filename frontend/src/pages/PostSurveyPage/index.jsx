@@ -15,7 +15,6 @@ const PostSurvey = () => {
   const locations = useLocation().state;
   const navigate = useNavigate();
   const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
-
   
   const addBasicForm = async () => {
     const response = await API.get(`/api/survey/default/${title}`)

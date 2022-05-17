@@ -18,10 +18,11 @@ const store = {
   },
   getToken() {
     const token = localStorage.getItem("jwt");
-	  API.defaults.headers.common['Authorization'] = `${token}`;
     if (token) {
+      API.defaults.headers.common['Authorization'] = `${token}`;
       return true;
     }
+    delete API.defaults.headers.common['Authorization']
     return false;
   },
 }
