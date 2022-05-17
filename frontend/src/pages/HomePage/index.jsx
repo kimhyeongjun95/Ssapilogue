@@ -19,6 +19,7 @@ const HomePage = () => {
   const [entireResult, setEntireResult] = useState([]);
   const [dropResult, setDropResult] = useState('');
   const [techSearchResult, setTechSearchResult] = useState('');
+  const [drop, setDrop] = useState(false);
 
   const [searchOption, setSearchOption] = useState("제목");
   const [typeOption, setTypeOption] = useState("");
@@ -116,6 +117,7 @@ const HomePage = () => {
 
   const search = async(e) => {
     const value = e.target.value;
+    handleSearchBar(value);
     try {
       if (searchOption === "제목") {
         setTechSearchResult('');
@@ -162,6 +164,14 @@ const HomePage = () => {
     }
   }
 
+  const handleSearchBar = (e) => {
+    if (e.length === 0) {
+      setDrop(false);
+      return;
+    }
+    setDrop(true);
+  }
+
   useEffect(() => {
     initialSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -190,7 +200,7 @@ const HomePage = () => {
           <SelectTitleStack defaultValue="" onChange={handleSearchOption} option={searchOption} />
           <div style={{ width : "100%" }}>
             <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
-            { (dropResult.length || techSearchResult.length) ?
+            { drop ?
               <div className="home-search-main">
                 <div className="home-search-label">프로젝트</div>
                 <div className="home-search-title">
@@ -220,7 +230,8 @@ const HomePage = () => {
                 </div>
               </div>
               :
-              null
+              <>
+              </>
             }
           </div>
         </div>
