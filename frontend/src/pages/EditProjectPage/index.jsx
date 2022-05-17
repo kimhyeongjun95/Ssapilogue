@@ -6,32 +6,34 @@ import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import swal from 'sweetalert';
 import "./style.scss"
 
 const PostProjectPage = () => {
   const id = useParams().projectId;
   const navigate = useNavigate()
+  const { editTitle, editCategory, editStack, editMember, editRepo, 
+    editBepo, editReadme, editAuthormember, editIntro, editThumbnail } = useLocation().state
   // 상태관리
-  const [title, setTitle] = useState('')
-  const [bepo, setBepo] = useState('') 
-  const [repo, setRepo] = useState('')
-  const [various, setVarious] = useState('');
-  const [intro, setIntro] = useState('')
-  const [thumbnail, setThumnail] = useState('')
-  const [thumbnailUrl, setThumnailUrl] = useState('')
-  const [markdown, setMarkdown] = useState('')
+  const [title, setTitle] = useState(editTitle)
+  const [bepo, setBepo] = useState(editBepo) 
+  const [repo, setRepo] = useState(editRepo)
+  const [various, setVarious] = useState(editCategory);
+  const [intro, setIntro] = useState(editIntro)
+  const [thumbnail, setThumnail] = useState(editThumbnail)
+  const [thumbnailUrl, setThumnailUrl] = useState(editThumbnail)
+  const [markdown, setMarkdown] = useState(editReadme)
   const [readmeCheck, setReadmeCheck] = useState('1');
   const [searchData, setSearchData] = useState([]);
   const [msearchData, setmSearchData] = useState([]);
   const editorRef = React.createRef();
 
   // 기술스택 //
-  const [hashbox, setHashbox] = useState([])
+  const [hashbox, setHashbox] = useState(editStack)
   const [hashtag, setHashtag] = useState('')
   // 프로젝트 맴버 //
-  const [phashbox, setpHashbox] = useState([])
+  const [phashbox, setpHashbox] = useState(editMember)
   const [phashtag, setpHashtag] = useState('')
 
   // 라벨링
@@ -286,8 +288,9 @@ const PostProjectPage = () => {
         }
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-          <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
-          
+          <Link to={`/project/${id}`} style={{textDecoration: "none"}}>
+            <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
+          </Link>
           <Button size="large" variant="contained" onClick={editProject}> 등록하기 </Button>
         </div>
 
