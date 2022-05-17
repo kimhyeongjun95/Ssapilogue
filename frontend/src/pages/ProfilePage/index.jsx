@@ -81,7 +81,7 @@ const ProfilePage = () => {
               <p className="likes-count">{user.userLiked}개</p>
             </div>
             { (user.image) ?
-              <img className="profile-pic" src={user.image} alt="profilePic" />
+              <img className="user-profile-pic" src={user.image} alt="profilePic" />
               :
               <img className="profile-pic" src={Default} alt="profilePic" />
             }
