@@ -22,6 +22,7 @@ export default function BasicSelect({ option, onChange }) {
           <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"특화"}>특화</MenuItem>
           <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"자율"}>자율</MenuItem>
           <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"토이"}>토이</MenuItem>
+          <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"관통"}>관통</MenuItem>
         </Select>
       </FormControl>
     </Box>

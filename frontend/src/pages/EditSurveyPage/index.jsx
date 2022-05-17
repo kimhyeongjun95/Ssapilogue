@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import API from "../../api/API";
 import store from "../../utils/store";
 import './style.scss';
@@ -136,6 +136,7 @@ const EditSurvey = () => {
       refiningData();
       if (!checkRequired()) {
         swal("빈칸을 모두 채워주세요!", "빈칸을 모두 채우고 다시 한번 확인해주세요.","error")
+        return;
       }
       store.getToken();
       await API.post(`/api/survey/${id}`, {

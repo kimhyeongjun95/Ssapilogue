@@ -22,6 +22,7 @@ const Navbar = () => {
   }
 
   const signOut = () => {
+    store.setImage("");
     store.setToken("logout");
   }
 
@@ -37,7 +38,7 @@ const Navbar = () => {
 
   useEffect(() => {
     signInCheck();
-    setUserPic(window.localStorage.getItem('userPic'))
+    setUserPic(store.setImage('userPic'))
   }, [])
 
   return (
@@ -51,9 +52,9 @@ const Navbar = () => {
         {authorized ?
           <div className="navbar-profile-image">
             { (userPic) ?
-              <img src={userPic} alt="" onClick={toggleHandler} className="person-image" />
+              <img src={userPic} alt="userPic" onClick={toggleHandler} className="person-image" />
               :
-              <img src={Default} alt="" onClick={toggleHandler} className="person-image" />
+              <img src={Default} alt="defaultPic" onClick={toggleHandler} className="person-image" />
             }
           </div>
           :

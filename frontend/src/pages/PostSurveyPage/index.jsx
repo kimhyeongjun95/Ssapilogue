@@ -133,6 +133,7 @@ const PostSurvey = () => {
       }
       if (!checkRequired()) {
         swal("빈칸을 모두 채워주세요!", "빈칸을 모두 채우고 다시 한번 확인해주세요.","error")
+        return;
       }
       store.getToken();
       const projectResult = await API.post("/api/project",{

@@ -28,8 +28,13 @@ const store = {
   },
 
   setImage(url) {
+    if (url === "") {
+      localStorage.setItem("userPic", null);
+    }
     localStorage.setItem("userPic", url);  
   }
+
+
 }
 
 export default store;
