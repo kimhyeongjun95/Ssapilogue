@@ -190,7 +190,20 @@ const HomePage = () => {
       </Slider>
 
       <div className="home-body">     
-        <Link to="/project/post" >
+        <Link 
+          to="/project/post" 
+          state={{ 
+            btitle: "",
+            bintro: "",
+            bvarious: "",
+            bphashbox: [],
+            bhashbox: [],
+            bbepo: "",
+            brepo: "",
+            bthumbnail: "",
+            breadmeCheck: "1",
+            bmarkdown: ""
+          }}>
           <button className="post-project-btn">
             지금 등록하기
           </button>

@@ -293,6 +293,7 @@ const PostProjectPage = () => {
           <div style={{marginTop:"2%",width:"40%"}}>
             <Editor
               initialEditType="markdown"
+              initialValue={markdown}
               height="40vh"
               placeholder='마크다운을 붙여주세요.'
               onChange={onChangeIntroFunction}

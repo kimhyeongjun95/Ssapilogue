@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef,useEffect} from 'react';
 import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
 import {InputLabel,MenuItem,FormControl, Chip} from "@mui/material"
@@ -6,34 +6,56 @@ import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation} from 'react-router-dom';
 import swal from 'sweetalert';
 import "./style.scss"
 import { createTheme } from '@mui/material/styles'
-import { ThemeProvider } from '@emotion/react';
 
 const PostProjectPage = () => {
+  const locations = useLocation().state;
+  // useEffect(() => {
+  //   console.log(fromi)
+  // },[])
+  const { btitle, bintro, bvarious, bphashbox, bhashbox, bbepo, brepo, bthumbnail, breadmeCheck, bmarkdown } = locations
+  
+  // useEffect(() => {
+  //   if(locations) {
+  //     console.log(locations.length)
+  //     const { btitle, bintro, bvarious, bphashbox, bhashbox, bbepo, brepo, bthumbnail, breadmeCheck, bmarkdown } = locations
+  //     // setTitle(btitle)
+  //     // setBepo(bbepo)
+  //     // setRepo(brepo)
+  //     // setIntro(bintro)
+  //     // setVarious(bvarious)
+  //     // setHashbox(bhashbox)
+  //     // setpHashbox(bphashbox)
+  //     // setThumnail(bthumbnail)
+  //     // setReadmeCheck(breadmeCheck)
+  //     // setMarkdown(bmarkdown)
+  //   }
+  // },[])
 
   const navigate = useNavigate()
   // 상태관리
-  const [title, setTitle] = useState('')
-  const [bepo, setBepo] = useState('') 
-  const [repo, setRepo] = useState('')
-  const [various, setVarious] = useState('');
-  const [intro, setIntro] = useState('')
-  const [thumbnail, setThumnail] = useState('')
-  const [thumbnailUrl, setThumnailUrl] = useState('')
-  const [markdown, setMarkdown] = useState('')
-  const [readmeCheck, setReadmeCheck] = useState('1');
+  const [title, setTitle] = useState(btitle)
+  const [bepo, setBepo] = useState(bbepo) 
+  const [repo, setRepo] = useState(brepo)
+  const [various, setVarious] = useState(bvarious);
+  const [intro, setIntro] = useState(bintro)
+  const [thumbnail, setThumnail] = useState(bthumbnail)
+  const [thumbnailUrl, setThumnailUrl] = useState(bthumbnail)
+  const [markdown, setMarkdown] = useState(bmarkdown)
+  const [readmeCheck, setReadmeCheck] = useState(breadmeCheck);
   const [searchData, setSearchData] = useState([]);
   const [msearchData, setmSearchData] = useState([]);
   const editorRef = React.createRef();
+  
 
   // 기술스택 //
-  const [hashbox, setHashbox] = useState([])
+  const [hashbox, setHashbox] = useState(bhashbox)
   const [hashtag, setHashtag] = useState('')
   // 프로젝트 맴버 //
-  const [phashbox, setpHashbox] = useState([])
+  const [phashbox, setpHashbox] = useState(bphashbox)
   const [phashtag, setpHashtag] = useState('')
 
   // 라벨링
@@ -131,12 +153,16 @@ const PostProjectPage = () => {
         if (type_value) {
           const res = await API.get(`/api/tech-stack/search/specific?keyword=${type_value}`)
           setSD(res.data.searchList)
+        }else{
+          setSD([])
         }
       }else{
         const type_value = document.getElementById(inputId).value
         if (type_value) {
           const res = await API.get(`/api/user-info/search/?keyword=${type_value}`)
           setSD(res.data.searchList)
+        }else{
+          setSD([])
         }
       }
     };
@@ -305,6 +331,7 @@ const PostProjectPage = () => {
             <Editor
               initialEditType="markdown"
               height="40vh"
+              initialValue={markdown}
               placeholder='마크다운을 붙여주세요.'
               onChange={onChangeIntroFunction}
               ref={editorRef}
@@ -322,7 +349,9 @@ const PostProjectPage = () => {
             </Link>
             <Button color="primary" className="next-button" onClick={toSurvey} size="large" style={{ fontFamily: 'GmarketSansMedium'}} variant="contained"> 다음단계 </Button>
           </ThemeProvider> */}
-          <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
+          </Link>
           <button className="btn-blue btn-large" onClick={toSurvey}>다음 단계</button>
         </div>
 

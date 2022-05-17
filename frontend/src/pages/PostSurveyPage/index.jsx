@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import API from "../../api/API";
 import store from "../../utils/store";
 import './style.scss';
@@ -208,7 +208,23 @@ const PostSurvey = () => {
       </div>
 
       <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-        <button className="btn-white btn-large" style={{marginRight: "3vw"}}>이전 단계</button>
+        <Link 
+          to='/project/post' 
+          state={{
+            btitle: title,
+            bintro: intro,
+            bvarious: various,
+            bphashbox: phashbox,
+            bhashbox: hashbox,
+            bbepo: bepo,
+            brepo: repo,
+            bthumbnail: thumbnail,
+            breadmeCheck: readmeCheck,
+            bmarkdown: markdown
+          }}
+        >
+          <button className="btn-white btn-large" style={{marginRight: "3vw"}}>이전 단계</button>
+        </Link>
         <button className="btn-blue btn-large" onClick={submit}>등록</button>
       </div>
 
