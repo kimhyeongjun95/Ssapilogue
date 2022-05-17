@@ -3,7 +3,6 @@ import API from "../../api/API";
 import store from "../../utils/store";
 import DefaultImage from "../../assets/default.png"
 import "./style.scss"
-import { useNavigate } from "react-router-dom";
 
 const ChangeInfoPage = () => {
 
@@ -13,7 +12,6 @@ const ChangeInfoPage = () => {
   });
   const [email, setEmail] = useState('');
   const [image, setImage] = useState('');
-  const navigate = useNavigate();
   const { github, greeting } = inputs;
 
   const getInfo = async () => {
@@ -57,9 +55,15 @@ const ChangeInfoPage = () => {
   
   const withDraw = () => {
     store.getToken();
-    API.delete("api/user");
-    store.setToken("logout");
-    return;
+    const res = prompt('회원탈퇴를 하시려면 "회원탈퇴"라고 적어주세요.')
+    if (res === "회원탈퇴") {
+      store.setImage("");
+      API.delete("api/user");
+      store.setToken("logout");
+      return;
+    } else {
+      alert("제대로 입력해 주세요!")
+    }
   }
 
   useEffect(() => {

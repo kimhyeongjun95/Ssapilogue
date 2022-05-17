@@ -27,7 +27,7 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
           <p className="card-content">{content}</p>
         </div>
         <div className="card-stack">
-          {techStack.map((stack, idx) => (
+          {techStack && techStack.map((stack, idx) => (
             <span className="card-stack-span" key={idx}>
               <Chip 
                 style={{ height : "24px", backgroundColor : "#3396F4", color:'white', fontFamily : 'GmarketSansMedium'}}

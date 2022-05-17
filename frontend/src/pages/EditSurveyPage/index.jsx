@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import API from "../../api/API";
 import store from "../../utils/store";
 import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
 import plus from '../../assets/plus.png';
+import swal from 'sweetalert'
 
 const EditSurvey = () => {
 
@@ -14,6 +15,7 @@ const EditSurvey = () => {
   const [inputs, setInputs] = useState([]);
   const [toDelete, setToDelete] = useState([]);
   const navigate = useNavigate();
+
   
   const whichSurvey = (e) => {
     setOption(e.target.value);
@@ -94,11 +96,11 @@ const EditSurvey = () => {
       delete inputs[i]['answer'];
     }
   }
-
   
   const bringSurvey = async (id) => {
     try {
-      const response = await API.get(`/api/survey/${id}`);
+      const response = await API.get(`/api/survey/edit/${id}`);
+      console.log(response);
       const value = response.data.surveyList
       for (let i = 0; i < value.length; i++) {
         value[i]['default'] = true;
@@ -109,19 +111,42 @@ const EditSurvey = () => {
     } 
   }
 
+  const checkRequired = () => {
+    for (let i = 0; i < inputs.length; i++) {
+      if (inputs[i].surveyType === "주관식") {
+        if (inputs[i].title.length === 0) {
+          return false
+        }
+      }
+
+      if (inputs[i].surveyType === "객관식") {
+        for (let j = 0; j < inputs[i].surveyOptions.length; j++) {
+          if (inputs[i].surveyOptions[j].length === 0) {
+            return false
+          }
+        }
+      }
+    }
+    return true;
+  }
+
   const submit = async () => {
     console.log(inputs);
     try {
       refiningData();
+      if (!checkRequired()) {
+        swal("빈칸을 모두 채워주세요!", "빈칸을 모두 채우고 다시 한번 확인해주세요.","error")
+        return;
+      }
       store.getToken();
       await API.post(`/api/survey/${id}`, {
         createSurveyReqDtos: inputs
       }) 
-      // if (toDelete.length > 0) {
-      //   await API.delete(`/api/survey`, {
-      //     deletedSurveys: toDelete
-      //   })
-      // }
+      if (toDelete.length > 0) {
+        await API.delete(`/api/survey`, {
+          deletedSurveys: toDelete
+        })
+      }
       navigate(`/project/${id}`)
       return;
     } catch (e) {
@@ -136,12 +161,11 @@ const EditSurvey = () => {
 
   return (
 
-    <div className="survey">
+    <div className="post-box">
 
-      <h2>설문조사를 등록해 주세요!</h2>
-      {/* <div className="default-survey">
-        <button className="btn-blue" onClick={addBasicForm}>기본 폼 가져오기</button>
-      </div> */}
+      <div className="title-highlight" style={{marginBottom: "5vh",  fontFamily: 'GmarketSansMedium'}}>
+        <h1>설문조사를 등록해 주세요!</h1>
+      </div>
 
       {inputs.map((input, idx) => (
         <div className="survey-box" key={idx}>
@@ -173,7 +197,6 @@ const EditSurvey = () => {
             : 
             <>
               <div className="choice-input">
-                <img className="plus" src={plus} onClick={e => addChoice(e, idx)} alt="choice-plus" />
 
                 <li className="answer-box">
                   {input.default === true && input.surveyOptions.map((answer, idx) => (
@@ -182,7 +205,7 @@ const EditSurvey = () => {
                         className="objective-answer"
                         placeholder="객관식 답변" 
                         name="surveyOptions"
-                        value={answer.content}
+                        value={answer}
                         onChange={e => choiceHandleInput(e, idx, 0)}
                         disabled
                       />
@@ -197,6 +220,7 @@ const EditSurvey = () => {
                         value={input.surveyOptions[0]}
                         onChange={e => choiceHandleInput(e, idx, 0)}
                       />
+                      <img className="option-plus" src={plus} onClick={e => addChoice(e, idx)} alt="choice-plus" />
                     </div>
                   )}
                 </li>

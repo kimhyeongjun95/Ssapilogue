@@ -22,6 +22,7 @@ const Navbar = () => {
   }
 
   const signOut = () => {
+    store.setImage("");
     store.setToken("logout");
   }
 
@@ -37,14 +38,13 @@ const Navbar = () => {
 
   useEffect(() => {
     signInCheck();
-    setUserPic(window.localStorage.getItem('userPic'))
+    setUserPic(store.setImage('userPic'))
   }, [])
 
   return (
     <nav>
       <Link className="home" to="/">
         <img src={Logo} alt="logo" className="logo" />
-        {/* <h1>SSapilogue</h1> */}
       </Link>
       
 
@@ -52,9 +52,9 @@ const Navbar = () => {
         {authorized ?
           <div className="navbar-profile-image">
             { (userPic) ?
-              <img src={userPic} alt="" onClick={toggleHandler} className="person-image" />
+              <img src={userPic} alt="userPic" onClick={toggleHandler} className="person-image" />
               :
-              <img src={Default} alt="" onClick={toggleHandler} className="person-image" />
+              <img src={Default} alt="defaultPic" onClick={toggleHandler} className="person-image" />
             }
           </div>
           :

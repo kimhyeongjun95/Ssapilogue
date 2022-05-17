@@ -263,7 +263,10 @@ const PostProjectPage = () => {
     <>
       <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
 
-        <h2 style={{width:"40%", textAlign:"center"}}>프로젝트를 등록해주세요</h2>
+        <div className="title-highlight">
+          <h1>프로젝트를 등록해 주세요!</h1>
+        </div>
+        
         <p style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh"}}> * 는 필수항목입니다.</p>
         <Question InputTitle="* 프로젝트 이름" inputValue={title} inputSetValue={setTitle} pilsu="1" inputId="프로젝트이름"/>
         {chooseType()}

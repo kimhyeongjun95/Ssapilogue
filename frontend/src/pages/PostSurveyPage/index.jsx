@@ -6,6 +6,7 @@ import './style.scss';
 import trash from '../../assets/trashDelete.png';
 import cross from '../../assets/crossDelete.png';
 import plus from '../../assets/plus.png';
+import swal from 'sweetalert'
 
 const PostSurvey = () => {
 
@@ -106,10 +107,33 @@ const PostSurvey = () => {
     }
   }
 
+  const checkRequired = () => {
+    for (let i = 0; i < inputs.length; i++) {
+      if (inputs[i].surveyType === "주관식") {
+        if (inputs[i].title.length === 0) {
+          return false
+        }
+      }
+
+      if (inputs[i].surveyType === "객관식") {
+        for (let j = 0; j < inputs[i].surveyOptions.length; j++) {
+          if (inputs[i].surveyOptions[j].length === 0) {
+            return false
+          }
+        }
+      }
+    }
+    return true;
+  }
+
   const submit = async () => {
     try {
       if (hasLoaded) {
         refiningData();
+      }
+      if (!checkRequired()) {
+        swal("빈칸을 모두 채워주세요!", "빈칸을 모두 채우고 다시 한번 확인해주세요.","error")
+        return;
       }
       store.getToken();
       const projectResult = await API.post("/api/project",{
@@ -166,8 +190,6 @@ const PostSurvey = () => {
             : 
             <>
               <div className="choice-input">
-                <img className="plus" src={plus} style={{ marginTop: '10px'}}onClick={e => addChoice(e, idx)} alt="choice-plus" />
-
                 <li className="answer-box">
                   {input.default === true && input.surveyOptions.map((answer, optIdx) => (
                     <>
@@ -193,6 +215,7 @@ const PostSurvey = () => {
                       required
                     />
                   )}
+                  <img className="option-plus" src={plus} onClick={e => addChoice(e, idx)} alt="choice-plus" />
                 </li>
               </div>
             </>

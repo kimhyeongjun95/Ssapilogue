@@ -22,7 +22,7 @@ const HomePage = () => {
   const [drop, setDrop] = useState(false);
 
   const [searchOption, setSearchOption] = useState("제목");
-  const [typeOption, setTypeOption] = useState("");
+  const [typeOption, setTypeOption] = useState("전체");
 
   const settings = {
     dots: true,
@@ -45,17 +45,20 @@ const HomePage = () => {
 
   const handlePopular = (e) => {
     const value = e.target.innerText;
-
     if (value === "인기순") {
-      const result = entireResult.sort((a, b) => b.likeCnt - a.likeCnt)
-      setSearchOption(result);
+      const result = searchResult.sort((a, b) => b.likeCnt - a.likeCnt);
+      setSearchResult(result);
+      setSearchResult([...searchResult])
       return;
     }
     
     if (value === "최신순") {
-      setSearchResult(entireResult)
+      const result = searchResult.sort((a, b) => b.projectId - a.projectId);
+      setSearchResult(result)
+      setSearchResult([...searchResult])
       return;
     }
+
   }
 
   const titleEnterSearch = async (e, value) => {
@@ -69,6 +72,7 @@ const HomePage = () => {
 
   const titleAutoSearch = async (value) => {
     const response = await API.get(`/api/project/search/title?keyword=${value}`);
+    console.log(response);
     setDropResult(response.data.searchList);
     setEntireResult(response.data.searchList);
     typeFilter();
@@ -83,6 +87,7 @@ const HomePage = () => {
 
   const techStackAutoSearch = async (value) => {
     const response = await API.get(`/api/tech-stack/search/specific?keyword=${value}`);
+    console.log(response);
     setTechSearchResult(response.data.searchList);
     setEntireResult(response.data.searchList);
     typeFilter();
@@ -110,9 +115,10 @@ const HomePage = () => {
 
   const initialSearch = async () => {
     const response = await API.get('api/project')
+    // console.log(response);
+    typeFilter();
     setSearchResult(response.data.projectList)
     setEntireResult(response.data.projectList);
-    typeFilter();
   }
 
   const search = async(e) => {
@@ -167,6 +173,13 @@ const HomePage = () => {
       const result = entireResult.filter(search => search.category === "토이")
       setSearchResult(result);
     }
+
+    if (typeOption === "관통") {
+      const result = entireResult.filter(search => search.category === "관통")
+      setSearchResult(result);
+    }
+
+
   }
 
   const handleSearchBar = (e) => {
@@ -182,9 +195,9 @@ const HomePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    typeFilter();
-  }, [typeOption])
+  // useEffect(() => {
+  //   typeFilter();
+  // }, [typeOption])
 
   return (
     <>
