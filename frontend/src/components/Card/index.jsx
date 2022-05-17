@@ -11,16 +11,6 @@ import store from '../../utils/store'
 
 const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStack, thumbnail, bookmark, projectId }) => {
 
-  // const handleBookMark = async () => {
-  //   store.getToken();
-  //   await API.post(`/api/project/${projectId}/bookmark`);
-  // }
-
-  // const handleUnBookMark = async () => {
-  //   store.getToken();
-  //   await API.delete(`/api/project/${projectId}/bookmark`);
-  // }
-
   return (
     <div className="card">
       <div className="image-box">
@@ -28,7 +18,6 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
           className="card-bookmark"
           src={bookmark === true ? BookMarked : NotBookMarked}
           alt="bookmark"
-          // onClick={bookmark === true ? handleUnBookMark() : handleBookMark()}
         />
         { (thumbnail) ?
           <img className="card-thumbnail" src={thumbnail} alt="thumbnail" />
