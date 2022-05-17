@@ -192,13 +192,13 @@ const DetailPage = () => {
 
 
   const stackBox = stack.map((item) => {
-    return <Button variant="contained" style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+    return <Button variant="contained" style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#3396F4", color:'white', fontFamily: 'GmarketSansMedium'}}
       
     >{item}</Button>
   })
 
   const memberBox = member.map((item) => {
-    return <Button variant="contained" style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#00CAF4", color:'white', fontWeight:'bold'}}
+    return <Button variant="contained" style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#00CAF4", color:'white', fontFamily: 'GmarketSansMedium'}}
     >{item}
     </Button>
   })
@@ -371,7 +371,7 @@ const DetailPage = () => {
               </span>
               { (isWriter) ?
                 <span className="option-div">
-                  <div className="option-category" onClick={receiveReadme}>ReadMe 갱신</div>
+                  <div className="option-category-readme" onClick={receiveReadme}>README 갱신</div>
                   <div className="option-category">
                     <Link 
                       className="to-edit" 

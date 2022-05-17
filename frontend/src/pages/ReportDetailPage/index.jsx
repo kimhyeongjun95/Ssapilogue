@@ -179,11 +179,11 @@ const ReportDetailPage = () => {
         </div>
         <hr />
         <div className="report-hr-div">
-          <p> 작성일  {createAt}</p>
-        </div>
-        <div className="report-detail-writer-div">
-          <img src={(profilepic) ? profilepic : defaultpic} alt="writerProfilePic" />
-          <p>{writer}</p>
+          <div className="report-detail-writer-div">
+            <img src={(profilepic) ? profilepic : defaultpic} alt="writerProfilePic" />
+            <p>{writer}</p>
+          </div>
+          <p style={{ marginRight: '15px', marginTop: '10px'}}> 작성일  {createAt}</p>
         </div>
         <div className="report-detail-content-div" dangerouslySetInnerHTML={{
           __html: markdownIt().render(content),

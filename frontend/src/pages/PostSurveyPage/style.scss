@@ -60,7 +60,7 @@ hr {
   cursor: pointer;
 }
 
-.trash {
+.survey-trash {
   height: 22px;
   margin-left: 3%;
   cursor: pointer;
@@ -76,7 +76,7 @@ hr {
   box-shadow: 2px 2px 2px $gray;
 }
 
-.title-box {
+.post-title-box {
   width: 85%;
   margin-bottom: 20px;
   padding: 5px;
@@ -84,6 +84,7 @@ hr {
   border: 0px;
   border-radius: 5px;
   color: #484848;
+  display: inline;
 }
 
 .answer-box {

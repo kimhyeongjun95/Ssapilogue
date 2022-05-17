@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: 'GmarketSansMedium';
 }
 
 .review_box {
@@ -34,26 +35,44 @@
 .review_content_title {
   width: 60%;
   text-align: center;
+  font-family: 'GmarketSansMedium';
 }
 
 .review_date_title {
   width: 20%;
   text-align: center;
+  font-family: 'GmarketSansMedium';
 }
 
 .review_writer_title {
   width: 20%;
   padding-right: 5%;
   text-align: center;
+  font-family: 'GmarketSansMedium';
+}
+
+.review_date {
+  width: 20%;
+  text-align: center;
+  font-family: 'GmarketSansLight';
+}
+
+.review_writer {
+  width: 20%;
+  padding-right: 5%;
+  text-align: center;
+  font-family: 'GmarketSansLight';
 }
 
 .review_content {
   width: 60%;
   padding-left: 5%;
+  font-family: 'GmarketSansLight';
 }
 
 .review_title_box {
   padding: 0px;
+  font-family: 'GmarketSansMedium';
 }
 
 .review_title_count_options {
@@ -64,11 +83,13 @@
   padding-right: 20px;
   height: 50px;
   margin-bottom: 40px;
+  font-family: 'GmarketSansMedium';
 }
 
 .review_title {
   position: relative;
   top: -5px;
+  font-family: 'GmarketSansLight';
 }
 
 .review_chart_box {
@@ -90,5 +111,11 @@
 
 .review-btn {
   width: 30px;
+  cursor: pointer;
+}
+
+.review-btn-save {
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 }

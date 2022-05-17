@@ -40,7 +40,7 @@
   }
 
   .card-title {
-    font-weight: bold;
+    font-family: 'GmarketSansBold';
     font-size: 24px;
     height: 32px;
     overflow: hidden;
@@ -49,6 +49,7 @@
   }
 
   .card-content {
+    font-family: 'GmarketSansMedium';
     color: grey;
     font-size: 17px;
     height: 45px;
@@ -117,6 +118,8 @@
   }
 
   .count-number {
-    margin-left: 10%;
+    margin-left: 15%;
+    margin-top: 10%;
+    font-family : 'GmarketSansMedium';
   }
 }

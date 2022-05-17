@@ -137,9 +137,8 @@ const PostSurvey = () => {
   }
 
   return (
-    <div className="post-box">
-      
-      <div className="title-highlight" style={{marginBottom: "5vh"}}>
+    <div className="post-box">      
+      <div className="title-highlight" style={{marginBottom: "5vh",  fontFamily: 'GmarketSansMedium'}}>
         <h1>설문조사를 등록해 주세요!</h1>
       </div>
       
@@ -155,17 +154,20 @@ const PostSurvey = () => {
             value={input.title}
             placeholder="질문 제목을 입력해주세요." 
             onChange={e => handleInput(e, idx)}
+            style={{ fontFamily: 'GmarketSansMedium' }}
             required
           />
-          <img className="trash" src={trash} onClick={() => deleteSurvey(idx)} alt="trash" />
+          <img className="survey-trash" src={trash} onClick={() => deleteSurvey(idx)} alt="trash" />
 
           {input.surveyType === "주관식" ?
             <>
-              <input type="text" className="objective-answer" placeholder="주관식 답변" disabled />
+              <input type="text" style={{ fontFamily: 'GmarketSansMedium', marginTop: '10px'}} className="objective-answer" placeholder="주관식 답변" disabled />
             </> 
             : 
             <>
               <div className="choice-input">
+                <img className="plus" src={plus} style={{ marginTop: '10px'}}onClick={e => addChoice(e, idx)} alt="choice-plus" />
+
                 <li className="answer-box">
                   {input.default === true && input.surveyOptions.map((answer, optIdx) => (
                     <>
@@ -175,6 +177,7 @@ const PostSurvey = () => {
                         name="surveyOptions"
                         value={answer}
                         onChange={e => choiceHandleInput(e, idx, optIdx)}
+                        style={{ fontFamily: 'GmarketSansMedium'}}
                         required
                       />
                     </>
@@ -186,6 +189,7 @@ const PostSurvey = () => {
                       name="surveyOptions"
                       value={input.surveyOptions[0]}
                       onChange={e => choiceHandleInput(e, idx, 0)}
+                      style={{ fontFamily: 'GmarketSansMedium'}}
                       required
                     />
                   )}

@@ -94,7 +94,7 @@ const ReviewPage = () => {
   return (
     <div className="review-detail">
       <div className="review-btn-box">
-        <img className="review-btn" style={{marginRight: "1vw"}} src={save} alt="save" onClick={printDocument} />
+        <img className="review-btn-save" style={{marginRight: "1vw"}} src={save} alt="save" onClick={printDocument} />
         <Link to={`/project/${id}/opinions/review/post`}>
           <img className="review-btn" src={post} alt="post" />
         </Link>
@@ -103,14 +103,15 @@ const ReviewPage = () => {
       <Box className="review_box">
         <Box>
           <Tabs 
-            TabIndicatorProps={{ style: { backgroundColor: "#C3E2F9" } }} 
+            TabIndicatorProps={{ style: { backgroundColor: "#C3E2F9", fontFamily: "GmarketSansMedium" } }} 
             value={value} 
             onChange={handleChange} 
             indicatorColor="secondary"
             aria-label="basic tabs example"
+            style={{fontFamily: "GmarketSansMedium"}}
           >
             {reviews.map((review, idx) => (
-              <Tab key={idx} label={idx+1} {...a11yProps(idx+1)} />
+              <Tab style={{fontFamily: "GmarketSansMedium"}} key={idx} label={idx+1} {...a11yProps(idx+1)} />
             ))}
           </Tabs>
         </Box>
@@ -131,8 +132,8 @@ const ReviewPage = () => {
                   {review.subjectiveReviews.map((res, idx) => (
                     <div className="review_contents" key={idx}>
                       <p className="review_content">{res.content}</p>
-                      <p className="review_date_title">{moment(res.createAt).format('YYYY년 MM월 DD일')}</p>
-                      <p className="review_writer_title">{res.nickname}</p>
+                      <p className="review_date">{moment(res.createAt).format('YYYY년 MM월 DD일')}</p>
+                      <p className="review_writer">{res.nickname}</p>
                     </div>
                   ))}
                 </>
@@ -145,7 +146,7 @@ const ReviewPage = () => {
                     <h4 className="review_title">TOTAL: {review.totalCount}명</h4>
                   </div>
                   <div className="review_chart_box">
-                    <BarChart width={750} height={250} data={review.objectiveReviews} >
+                    <BarChart style={{ fontFamily: 'GmarketSansMedium'}}width={750} height={250} data={review.objectiveReviews} >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="optionContent" />
                       <YAxis />
