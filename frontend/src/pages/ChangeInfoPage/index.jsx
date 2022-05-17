@@ -57,6 +57,7 @@ const ChangeInfoPage = () => {
     store.getToken();
     const res = prompt('회원탈퇴를 하시려면 "회원탈퇴"라고 적어주세요.')
     if (res === "회원탈퇴") {
+      store.setImage("");
       API.delete("api/user");
       store.setToken("logout");
       return;
