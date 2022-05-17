@@ -72,7 +72,6 @@ const HomePage = () => {
 
   const titleAutoSearch = async (value) => {
     const response = await API.get(`/api/project/search/title?keyword=${value}`);
-    console.log(response);
     setDropResult(response.data.searchList);
     setEntireResult(response.data.searchList);
     typeFilter();
@@ -87,7 +86,6 @@ const HomePage = () => {
 
   const techStackAutoSearch = async (value) => {
     const response = await API.get(`/api/tech-stack/search/specific?keyword=${value}`);
-    console.log(response);
     setTechSearchResult(response.data.searchList);
     setEntireResult(response.data.searchList);
     typeFilter();
@@ -115,7 +113,6 @@ const HomePage = () => {
 
   const initialSearch = async () => {
     const response = await API.get('api/project')
-    // console.log(response);
     typeFilter();
     setSearchResult(response.data.projectList)
     setEntireResult(response.data.projectList);
