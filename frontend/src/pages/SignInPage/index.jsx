@@ -23,13 +23,18 @@ const SignInPage = () => {
     });
   };
 
+  const handleKeys = (e) => {
+    if (e.code === "Enter") {
+      signIn();
+    }
+  }
+
   const signIn = async () => {
     try {
       store.setToken("");
       const result = await API.post("/api/v4/users/login", {login_id: id,password: pw,})
       const res = await API.post("/api/user/login", { email:result.data.email, password:pw, userId:result.data.id })
       const direct = res.data.status;
-      console.log(direct)
       if (direct === "NO USER") {
         swal("회원정보 없음", "회원가입 페이지로 보내드릴게요!",'info' )
         navigate("/signup", {state: {email: result.data.email, pw: pw, userId: result.data.id }});
@@ -38,11 +43,8 @@ const SignInPage = () => {
       if (direct === "SUCCESS") {
         const token = res.data.token;
         store.setToken(token);
-        async function userpic() {
-          const res = await API.get('/api/user', { header: store.getToken()})
-          window.localStorage.setItem('userPic',res.data.user.image)
-        }
-        userpic()
+        const response = await API.get('/api/user')
+        store.setImage(response.data.user.image)
         window.location.replace("/")
         return;
       }
@@ -56,9 +58,9 @@ const SignInPage = () => {
     <div className="box">
       <img className="mattermost" src={mattermost} alt="mattermost" />
       <p className="id">아이디</p>
-      <input className="input" name="id" onChange={handleOnChange} value={id}/>
+      <input className="input" name="id" onChange={handleOnChange} onKeyDown={e => handleKeys(e)} value={id}/>
       <p className="password">비밀번호</p>
-      <input className="input" name="pw" onChange={handleOnChange} type="password" value={pw}/>
+      <input className="input" name="pw" onChange={handleOnChange} onKeyDown={e => handleKeys(e)} type="password" value={pw}/>
       <button className="button" onClick={signIn}>로그인</button>
     </div>
   )

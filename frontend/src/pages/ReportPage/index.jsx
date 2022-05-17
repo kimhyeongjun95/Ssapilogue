@@ -114,7 +114,7 @@ const ReportPage = () => {
         <div className="report-menu-div">
           <p className="menu-solved">해결</p>
           <p className="menu-title2">제목</p>
-          <p className="menu-date">날짜</p>
+          <p className="menu-title3">날짜</p>
           <p>제보자</p>
         </div>
         <div>

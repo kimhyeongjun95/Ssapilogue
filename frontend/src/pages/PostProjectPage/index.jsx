@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef,useEffect} from 'react';
 import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
 import {InputLabel,MenuItem,FormControl, Chip} from "@mui/material"
@@ -6,34 +6,56 @@ import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation} from 'react-router-dom';
 import swal from 'sweetalert';
 import "./style.scss"
 import { createTheme } from '@mui/material/styles'
-import { ThemeProvider } from '@emotion/react';
 
 const PostProjectPage = () => {
+  const locations = useLocation().state;
+  // useEffect(() => {
+  //   console.log(fromi)
+  // },[])
+  const { btitle, bintro, bvarious, bphashbox, bhashbox, bbepo, brepo, bthumbnail, breadmeCheck, bmarkdown } = locations
+  
+  // useEffect(() => {
+  //   if(locations) {
+  //     console.log(locations.length)
+  //     const { btitle, bintro, bvarious, bphashbox, bhashbox, bbepo, brepo, bthumbnail, breadmeCheck, bmarkdown } = locations
+  //     // setTitle(btitle)
+  //     // setBepo(bbepo)
+  //     // setRepo(brepo)
+  //     // setIntro(bintro)
+  //     // setVarious(bvarious)
+  //     // setHashbox(bhashbox)
+  //     // setpHashbox(bphashbox)
+  //     // setThumnail(bthumbnail)
+  //     // setReadmeCheck(breadmeCheck)
+  //     // setMarkdown(bmarkdown)
+  //   }
+  // },[])
 
   const navigate = useNavigate()
   // 상태관리
-  const [title, setTitle] = useState('')
-  const [bepo, setBepo] = useState('') 
-  const [repo, setRepo] = useState('')
-  const [various, setVarious] = useState('');
-  const [intro, setIntro] = useState('')
-  const [thumbnail, setThumnail] = useState('')
-  const [thumbnailUrl, setThumnailUrl] = useState('')
-  const [markdown, setMarkdown] = useState('')
-  const [readmeCheck, setReadmeCheck] = useState('1');
+  const [title, setTitle] = useState(btitle)
+  const [bepo, setBepo] = useState(bbepo) 
+  const [repo, setRepo] = useState(brepo)
+  const [various, setVarious] = useState(bvarious);
+  const [intro, setIntro] = useState(bintro)
+  const [thumbnail, setThumnail] = useState(bthumbnail)
+  const [thumbnailUrl, setThumnailUrl] = useState(bthumbnail)
+  const [markdown, setMarkdown] = useState(bmarkdown)
+  const [readmeCheck, setReadmeCheck] = useState(breadmeCheck);
   const [searchData, setSearchData] = useState([]);
   const [msearchData, setmSearchData] = useState([]);
   const editorRef = React.createRef();
+  
 
   // 기술스택 //
-  const [hashbox, setHashbox] = useState([])
+  const [hashbox, setHashbox] = useState(bhashbox)
   const [hashtag, setHashtag] = useState('')
   // 프로젝트 맴버 //
-  const [phashbox, setpHashbox] = useState([])
+  const [phashbox, setpHashbox] = useState(bphashbox)
   const [phashtag, setpHashtag] = useState('')
 
   // 라벨링
@@ -70,7 +92,7 @@ const PostProjectPage = () => {
  
   const alHash = (inputBox,inputSetbox) => inputBox.map( (item,index) => {
  
-    return <Chip style={{ margin : "1%", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+    return <Chip style={{ margin : "1%", backgroundColor : "#3396F4", color:'white', fontFamily: 'GmarketSansMedium'}}
       label={item}
       onDelete={hashDelete(index,inputBox,inputSetbox)} 
     />
@@ -131,12 +153,16 @@ const PostProjectPage = () => {
         if (type_value) {
           const res = await API.get(`/api/tech-stack/search/specific?keyword=${type_value}`)
           setSD(res.data.searchList)
+        }else{
+          setSD([])
         }
       }else{
         const type_value = document.getElementById(inputId).value
         if (type_value) {
           const res = await API.get(`/api/user-info/search/?keyword=${type_value}`)
           setSD(res.data.searchList)
+        }else{
+          setSD([])
         }
       }
     };
@@ -157,14 +183,14 @@ const PostProjectPage = () => {
     });
     
     return <div style={{width: "40%"}}>
-      <p style={{marginBottom : 0}}> {InputTitle} </p>
+      <p style={{marginBottom : 0, fontFamily:"GmarketSansMedium"}}> {InputTitle} </p>
       
       <TextField
         type="text"
         size = "small"
         id={inputId}
         className={inputId}
-        style={{width:"100%"}}
+        style={{width:"100%", fontFamily:"GmarketSansMedium"}}
         value={inputValue}
         onChange={handleChange}
         onKeyPress={hamsu}
@@ -177,7 +203,7 @@ const PostProjectPage = () => {
         :
         null
       }
-      <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap"}}>
+      <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap", fontFamily: "GmarketSansMedium"}}>
         {alHash(inputBox,inputSetbox)}
       </div>
     </div>
@@ -192,26 +218,21 @@ const PostProjectPage = () => {
       setVarious(event.target.value);
     };
     return  <FormControl style={{width:"40%"}} size="small">
-      <p>* 분류</p>
-      {/* <InputLabel style={{marginTop: "57px"}} id="demo-select-small">선택해주세요.</InputLabel> */}
+      <p style={{ fontFamily : "GmarketSansMedium"}}>* 분류</p>
       <Select
         labelId="demo-select-small"
         id="demo-select-small"
         value={various}
         onChange={handleChange}
-        renderValue={(selected) => {
-          if (selected.length === 0) {
-            return <p className="select-placeholder">선택해주세요.</p>;
-          }
-          return selected.join(', ');
-        }}
-        inputProps={{ 'aria-label': 'Without label'}}
         displayEmpty
       >
-        <MenuItem value={"공통"}>공통</MenuItem>
-        <MenuItem value={"특화"}>특화</MenuItem>
-        <MenuItem value={"자율"}>자율</MenuItem>
-        <MenuItem value={"토이"}>토이</MenuItem>
+        <MenuItem disalbed value="">
+          <em style={{ fontFamily : "GmarketSansLight", fontStyle: "normal"}}>선택해주세요.</em>
+        </MenuItem>
+        <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"공통"}>공통</MenuItem>
+        <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"특화"}>특화</MenuItem>
+        <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"자율"}>자율</MenuItem>
+        <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"토이"}>토이</MenuItem>
       </Select>
     </FormControl>
   }
@@ -278,7 +299,9 @@ const PostProjectPage = () => {
         <div className="title-highlight">
           <h1>프로젝트를 등록해 주세요!</h1>
         </div>
-        <p style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh"}}> * 는 필수항목입니다.</p>
+
+        <p style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh", fontFamily:"GmarketSansLight"}}> * 는 필수항목입니다.</p>
+        
         <Question InputTitle="* 프로젝트 이름" inputValue={title} inputSetValue={setTitle} pilsu="1" inputId="프로젝트이름"/>
         {chooseType()}
         <Question InputTitle="배포주소" inputValue={bepo} inputSetValue={setBepo} />
@@ -297,18 +320,22 @@ const PostProjectPage = () => {
           null
         }
         <div style={{marginTop:0}} className="readme-div">
-          <p>README</p>
-          <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />직접 입력하기 
-          <input type="radio" checked={readmeCheck === "0"} name="theme" value={"0"} onChange={mkChange}/>github에서 가져오기
+          <p style={{ fontFamily:"GmarketSansMedium"}}>README</p>
+          <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />
+          <p className="radio-p">직접 입력하기</p> 
+          <input type="radio" checked={readmeCheck === "0"} name="theme" value={"0"} onChange={mkChange}/>
+          <p className="radio-p">github에서 가져오기</p>
         </div>
         { (readmeCheck === "1") ?
           <div style={{marginTop:"2%",width:"40%"}}>
             <Editor
               initialEditType="markdown"
               height="40vh"
+              initialValue={markdown}
               placeholder='마크다운을 붙여주세요.'
               onChange={onChangeIntroFunction}
               ref={editorRef}
+              style={{ fontFamily: "GmarketSansLight"}}
             /> 
           </div>
           : null
@@ -316,7 +343,15 @@ const PostProjectPage = () => {
         
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-          <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
+          {/* <ThemeProvider theme={theme}>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <Button color="primary" className="next-button" size="large" style={{marginRight:"3vw", fontFamily: 'GmarketSansMedium'}} variant="outlined"> 취소 </Button>
+            </Link>
+            <Button color="primary" className="next-button" onClick={toSurvey} size="large" style={{ fontFamily: 'GmarketSansMedium'}} variant="contained"> 다음단계 </Button>
+          </ThemeProvider> */}
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
+          </Link>
           <button className="btn-blue btn-large" onClick={toSurvey}>다음 단계</button>
         </div>
 

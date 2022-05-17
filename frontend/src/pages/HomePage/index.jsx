@@ -19,9 +19,10 @@ const HomePage = () => {
   const [entireResult, setEntireResult] = useState([]);
   const [dropResult, setDropResult] = useState('');
   const [techSearchResult, setTechSearchResult] = useState('');
+  const [drop, setDrop] = useState(false);
 
   const [searchOption, setSearchOption] = useState("제목");
-  const [typeOption, setTypeOption] = useState("");
+  const [typeOption, setTypeOption] = useState("전체");
 
   const settings = {
     dots: true,
@@ -44,15 +45,17 @@ const HomePage = () => {
 
   const handlePopular = (e) => {
     const value = e.target.innerText;
-
     if (value === "인기순") {
-      const result = entireResult.sort((a, b) => b.likeCnt - a.likeCnt)
-      setSearchOption(result);
+      const result = searchResult.sort((a, b) => b.likeCnt - a.likeCnt);
+      // console.log(result);
+      setSearchResult(result);
       return;
     }
     
     if (value === "최신순") {
-      setSearchResult(entireResult)
+      const result = searchResult.sort((a, b) => b.projectId - a.projectId);
+      // console.log(result);
+      setSearchResult(result)
       return;
     }
   }
@@ -109,13 +112,15 @@ const HomePage = () => {
 
   const initialSearch = async () => {
     const response = await API.get('api/project')
+    // console.log(response);
+    typeFilter();
     setSearchResult(response.data.projectList)
     setEntireResult(response.data.projectList);
-    typeFilter();
   }
 
   const search = async(e) => {
     const value = e.target.value;
+    handleSearchBar(value);
     try {
       if (searchOption === "제목") {
         setTechSearchResult('');
@@ -160,6 +165,19 @@ const HomePage = () => {
       const result = entireResult.filter(search => search.category === "자율")
       setSearchResult(result);
     }
+
+    if (typeOption === "토이") {
+      const result = entireResult.filter(search => search.category === "토이")
+      setSearchResult(result);
+    }
+  }
+
+  const handleSearchBar = (e) => {
+    if (e.length === 0) {
+      setDrop(false);
+      return;
+    }
+    setDrop(true);
   }
 
   useEffect(() => {
@@ -169,6 +187,7 @@ const HomePage = () => {
 
   useEffect(() => {
     typeFilter();
+    console.log("?")
   }, [typeOption])
 
   return (
@@ -180,7 +199,20 @@ const HomePage = () => {
       </Slider>
 
       <div className="home-body">     
-        <Link to="/project/post" >
+        <Link 
+          to="/project/post" 
+          state={{ 
+            btitle: "",
+            bintro: "",
+            bvarious: "",
+            bphashbox: [],
+            bhashbox: [],
+            bbepo: "",
+            brepo: "",
+            bthumbnail: "",
+            breadmeCheck: "1",
+            bmarkdown: ""
+          }}>
           <button className="post-project-btn">
             지금 등록하기
           </button>
@@ -190,7 +222,7 @@ const HomePage = () => {
           <SelectTitleStack defaultValue="" onChange={handleSearchOption} option={searchOption} />
           <div style={{ width : "100%" }}>
             <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
-            { (dropResult.length || techSearchResult.length) ?
+            { drop ?
               <div className="home-search-main">
                 <div className="home-search-label">프로젝트</div>
                 <div className="home-search-title">
@@ -220,7 +252,8 @@ const HomePage = () => {
                 </div>
               </div>
               :
-              null
+              <>
+              </>
             }
           </div>
         </div>
@@ -235,8 +268,8 @@ const HomePage = () => {
         
         <div className="home-card-option">
           <div className="home-card-sort">
-            <div onClick={handlePopular}>최신순</div>
-            <div onClick={handlePopular}>인기순</div>
+            <div onClick={handlePopular} className="home-card-p">최신순</div>
+            <div onClick={handlePopular} className="home-card-p">인기순</div>
           </div>
           <SelectType defaultValue="" onChange={handleTypeOption} option={typeOption}  />
         </div>
