@@ -234,6 +234,7 @@ const DetailPage = () => {
     var changeComment = document.getElementById("commentText").value.replace(document.getElementById("commentText").value.slice(startWord+1,endWord), item + " ")
     document.getElementById("commentText").value = changeComment
     setIndiComment(changeComment)
+    setStartword(0)
     allCancel()
   }
 
@@ -244,17 +245,19 @@ const DetailPage = () => {
 
   const onChangeComment = (e) => {
     setIndiComment(e.target.value)
-    if (commentTrue === true) {
-
-      if (document.getElementById('commentText').selectionStart) {
-        setEndword(document.getElementById('commentText').selectionStart)
-        if (document.getElementById("commentText").value.slice(startWord+1,endWord)) {
-          searchWord(document.getElementById("commentText").value.slice(startWord+1,endWord))
+    if(document.getElementById("commentText").value[startWord]) {
+      if (commentTrue === true) {
+        if (document.getElementById('commentText').selectionStart) {
+          setEndword(document.getElementById('commentText').selectionStart)
+          if (document.getElementById("commentText").value.slice(startWord+1,endWord+1)) {
+            searchWord(document.getElementById("commentText").value.slice(startWord+1,endWord+1))
+          }
         }
-      }
      
+      }
+    }else{
+      setSearchData([])
     }
-    
     
   }
 
