@@ -69,8 +69,8 @@ const ChangeInfoPage = () => {
   return (
     <>
       <div className="change-info">
-        <div style={{marginBottom: "10vh"}}>
-          <label for="file-input">
+        <div style={{marginBottom: "10vh", marginTop: "2vh"}}>
+          <label for="file-input" style={{ display: "flex", justifyContent: "center"}}>
             <div className="profile-circle">
               { (image) ? 
                 <img className="profile-img" src={image} alt="profilePic" />
@@ -80,17 +80,22 @@ const ChangeInfoPage = () => {
             </div>
           </label>
           <input id="file-input" type="file" style={{display: "none"}} onChange={uploadImage} />
-          <h5 className="change-img-h5">프로필 사진을 변경하려면 사진을 클릭하세요.</h5>
+          <div style={{ textAlign: "center"}}>
+            <h5 className="change-img-h5">프로필 사진을 변경하려면 사진을 클릭하세요.</h5>
+          </div>
         </div>
 
-        <div className="change-input-box">
-          <p className="change-input-name">GITHUB</p>
-          <input className="change-input" name="github" onChange={e => handleOnChange(e)} value={github}/>
-        </div>
+        <div>
+          <div className="change-input-box">
+            <p className="change-input-name">GITHUB</p>
+            <input className="change-input-github" name="github" onChange={e => handleOnChange(e)} value={github}/>
+          </div>
 
-        <div className="change-input-box">
-          <p className="change-input-name">자기소개</p>
-          <input className="change-input" style={{height: "100px"}} name="greeting" onChange={e => handleOnChange(e)} value={greeting}/>
+          <div className="change-input-box">
+            <p className="change-input-name">자기소개</p>
+            <input className="change-input-greeting" style={{height: "100px"}} name="greeting" onChange={e => handleOnChange(e)} value={greeting}/>
+          </div>
+
         </div>
 
         <div className="change-btn">
