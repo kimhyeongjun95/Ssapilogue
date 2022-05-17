@@ -103,6 +103,11 @@ public class User implements UserDetails {
         this.refreshToken = token;
     };
 
+    // username 조회를 위한 편의 함수
+    public String getUsernameConv() {
+        return username;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
