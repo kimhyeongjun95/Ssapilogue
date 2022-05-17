@@ -319,7 +319,7 @@ const PostProjectPage = () => {
           :
           null
         }
-        <div style={{marginTop:0}} className="readme-div">
+        <div style={{marginTop:0}} className="pp-readme-div">
           <p style={{ fontFamily:"GmarketSansMedium", fontSize: "14px"}}>README</p>
           <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />
           <p className="radio-p">직접 입력하기</p> 
