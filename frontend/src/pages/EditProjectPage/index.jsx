@@ -305,9 +305,9 @@ const PostProjectPage = () => {
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
           <Link to={`/project/${id}`} style={{textDecoration: "none"}}>
-            <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
+            <button className="btn-white btn-large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </button>
           </Link>
-          <Button size="large" variant="contained" onClick={editProject}> 등록하기 </Button>
+          <button className="btn-blue btn-large" variant="contained" onClick={editProject}> 수정하기 </button>
         </div>
 
        

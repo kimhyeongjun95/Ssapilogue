@@ -43,7 +43,9 @@ const ProfilePage = () => {
               <img className="likes-heart" src={heart} alt="heart" />
               <p className="likes-count">{user.userLiked}개</p>
             </div>
-            <img className="profile-pic" src={user.image} alt="profilePic" />
+            <div className="profile-circle">
+              <img className="profile-pic" src ={user.image} alt="profilePic" />
+            </div>
           </div>
           <div className="introduce-div">
             <p className="profile-p">이름 : {user.nickname}</p>

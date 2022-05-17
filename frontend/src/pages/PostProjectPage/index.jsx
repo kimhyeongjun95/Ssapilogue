@@ -343,12 +343,6 @@ const PostProjectPage = () => {
         
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-          {/* <ThemeProvider theme={theme}>
-            <Link to="/" style={{ textDecoration: 'none' }}>
-              <Button color="primary" className="next-button" size="large" style={{marginRight:"3vw", fontFamily: 'GmarketSansMedium'}} variant="outlined"> 취소 </Button>
-            </Link>
-            <Button color="primary" className="next-button" onClick={toSurvey} size="large" style={{ fontFamily: 'GmarketSansMedium'}} variant="contained"> 다음단계 </Button>
-          </ThemeProvider> */}
           <Link to="/" style={{ textDecoration: 'none' }}>
             <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
           </Link>
