@@ -180,10 +180,10 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
-    @GetMapping("/profile/{username}")
+    @GetMapping("/profile")
     @ApiOperation(value = "다른 회원 조회", notes = "다른 회원을 조회한다.")
     public ResponseEntity<Map<String, Object>> findOtherProfile(
-            HttpServletRequest request, @PathVariable @ApiParam(value = "프로필 조회할 회원 유저네임", required = true) String username) {
+            HttpServletRequest request, @RequestParam @ApiParam(value = "프로필 조회할 회원 유저네임", required = true) String username) {
         Map<String, Object> result = new HashMap<>();
         HttpStatus httpStatus = null;
         FindUserResDto findUser = null;
