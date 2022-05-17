@@ -18,7 +18,7 @@ public class FindMemberResDto {
     private String nickname;
 
     public FindMemberResDto(User user) {
-        username = user.getUsername();
+        username = user.getUsernameConv();
         nickname = user.getNickname();
     }
 }
