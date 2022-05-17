@@ -246,9 +246,7 @@ const DetailPage = () => {
   const onChangeComment = (e) => {
     setIndiComment(e.target.value)
     if(document.getElementById("commentText").value[startWord]) {
-      console.log(document.getElementById("commentText").value[startWord])
       if (commentTrue === true) {
-
         if (document.getElementById('commentText').selectionStart) {
           setEndword(document.getElementById('commentText').selectionStart)
           if (document.getElementById("commentText").value.slice(startWord+1,endWord+1)) {
