@@ -2,10 +2,7 @@ package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
 import com.ssafy.ssapilogue.api.dto.request.DeleteSurveyReqDto;
-import com.ssafy.ssapilogue.api.dto.response.FindCommentResDto;
-import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
-import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
-import com.ssafy.ssapilogue.api.dto.response.FindProjectTitleResDto;
+import com.ssafy.ssapilogue.api.dto.response.*;
 import com.ssafy.ssapilogue.api.exception.CustomException;
 import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.core.domain.*;
