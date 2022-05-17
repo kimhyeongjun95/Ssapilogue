@@ -23,6 +23,8 @@ public interface UserService {
 
     FindUserResDto findUserProfile(String email);
 
+    FindUserResDto findOtherUserProfile(String userId);
+
     String updateImage(String email, MultipartFile multipartFile);
 
     String issueNewToken(String refreshToken) throws Exception;

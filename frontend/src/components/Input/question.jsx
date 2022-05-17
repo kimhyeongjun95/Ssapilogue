@@ -10,7 +10,7 @@ function questionType( { InputTitle,inputValue ,inputSetValue, pilsu,inputId, pl
       <div className="input-div">
         <p className="p-style"> {InputTitle} </p>
         <TextField
-          style={{width:"100%"}}
+          style={{width:"100%", fontFamily:"GmarketSansMedium"}}
           size = "small"
           value={inputValue}
           className={inputId}
@@ -27,7 +27,7 @@ function questionType( { InputTitle,inputValue ,inputSetValue, pilsu,inputId, pl
       <div className="input-div">
         <p className="p-style"> {InputTitle} </p>
         <TextField
-          style={{width:"100%"}}
+          style={{width:"100%", fontFamily:"GmarketSansMedium"}}
           size = "small"
           value={inputValue}
           className={inputId}

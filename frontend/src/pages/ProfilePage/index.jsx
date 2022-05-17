@@ -46,10 +46,10 @@ const ProfilePage = () => {
             <img className="profile-pic" src={user.image} alt="profilePic" />
           </div>
           <div className="introduce-div">
-            <p>이름 : {user.nickname}</p>
-            <p>이메일 : {user.email}</p>
-            <p>github : {user.github}</p>
-            <p>자기소개 : {user.greeting}</p>
+            <p className="profile-p">이름 : {user.nickname}</p>
+            <p className="profile-p">이메일 : {user.email}</p>
+            <p className="profile-p">github : {user.github}</p>
+            <p className="profile-p">자기소개 : {user.greeting}</p>
           </div>
         </div>
       </div>
@@ -75,7 +75,7 @@ const ProfilePage = () => {
           myproject.length > 0 && myproject.length === user["projects"].length ?
           
             null
-            : <button onClick={power}>더보기</button>
+            : <button className="more-button" onClick={power}>더보기</button>
         }
       </div>
 
@@ -101,7 +101,7 @@ const ProfilePage = () => {
           mybmProject && mybmProject.length === user["bookmarList"]?.length ?
           
             null
-            : <button onClick={bmpower}>더보기</button>
+            : <button className="more-button" onClick={bmpower}>더보기</button>
         }
       </div>
     </div>

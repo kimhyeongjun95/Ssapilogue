@@ -2,9 +2,10 @@
   margin-left: auto;
   margin-right: auto;
   width: 55vw;
-  height: 35vh;
+  height: 40vh;
   background-color: #BFE8FF;
   border-radius: 20px;
+  margin-top: 7%;
 }
 .introduce-div {
   margin-top: 5vh;
@@ -42,6 +43,7 @@
 }
 .my-post-h {
   text-align: center;
+  font-family: 'GmarketSansMedium';
 }
 .likes-heart {
   width: 45px;
@@ -54,4 +56,22 @@
 }
 .likes-count {
   display: inline-block;
+  font-family: 'GmarketSansMedium';
+}
+.profile-p {
+  font-family: 'GmarketSansMedium';
+}
+.more-button {
+  background-color: white;
+  color: black;
+  border: none;
+  font-family: 'GmarketSansMedium';
+  font-size: large;
+  float: right;
+  margin-right: 4%;
+  margin-bottom: 2%;
+}
+
+.more-button:hover {
+  cursor: pointer;
 }

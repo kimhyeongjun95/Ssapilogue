@@ -104,7 +104,7 @@ const ReportDetailPage = () => {
         <div className="comment-content" id={item.commentId} dangerouslySetInnerHTML={{__html: pingping}}>
           
         </div>
-        { (myEmail === item.eamil) ?
+        { (myEmail === item.email) ?
           <div>
             <p className="report-detail-red" onClick={() => deleteComment(item.bugCoId)}>삭제하기</p>
           </div>
@@ -121,10 +121,7 @@ const ReportDetailPage = () => {
     if (!commentTrue || indicomment.includes('@')) {
       if (event.key==='@') {
         setCommentTrue(true)
-
         setStartword(document.getElementById('commentText').selectionStart)
-        
-
       }
     }
   }
@@ -136,15 +133,22 @@ const ReportDetailPage = () => {
 
   const onChangeComment = (e) => {
     setIndiComment(e.target.value)
-    if (commentTrue === true) {
-      if (document.getElementById('commentText').selectionStart) {
-        setEndword(document.getElementById('commentText').selectionStart)
-        if (document.getElementById("commentText").value.slice(startWord+1,endWord)) {
-          searchWord(document.getElementById("commentText").value.slice(startWord+1,endWord))
+    if(document.getElementById("commentText").value[startWord]) {
+      if (commentTrue === true) {
+        if (document.getElementById('commentText').selectionStart) {
+          setEndword(document.getElementById('commentText').selectionStart)
+          if (document.getElementById("commentText").value.slice(startWord+1,endWord+1)) {
+            searchWord(document.getElementById("commentText").value.slice(startWord+1,endWord+1))
+          }
         }
+     
       }
+    }else{
+      setSearchData([])
     }
+    
   }
+  
   const searchMap = searchData.map((item) => {
     
     return <div className="search-indi-div">
@@ -155,6 +159,7 @@ const ReportDetailPage = () => {
     var changeComment = document.getElementById("commentText").value.replace(document.getElementById("commentText").value.slice(startWord+1,endWord), item + " ")
     document.getElementById("commentText").value = changeComment
     setIndiComment(changeComment)
+    setStartword(0)
     allCancel()
   }
 
@@ -179,11 +184,11 @@ const ReportDetailPage = () => {
         </div>
         <hr />
         <div className="report-hr-div">
-          <p> 작성일  {createAt}</p>
-        </div>
-        <div className="report-detail-writer-div">
-          <img src={(profilepic) ? profilepic : defaultpic} alt="writerProfilePic" />
-          <p>{writer}</p>
+          <div className="report-detail-writer-div">
+            <img src={(profilepic) ? profilepic : defaultpic} alt="writerProfilePic" />
+            <p>{writer}</p>
+          </div>
+          <p style={{ marginRight: '15px', marginTop: '10px'}}> 작성일  {createAt}</p>
         </div>
         <div className="report-detail-content-div" dangerouslySetInnerHTML={{
           __html: markdownIt().render(content),

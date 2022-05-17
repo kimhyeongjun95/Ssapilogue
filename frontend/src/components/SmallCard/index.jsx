@@ -9,7 +9,7 @@ import Default from '../../assets/SSAFY.png'
 
 const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStack, thumbnail, bookmark }) => {
   return (
-    <div className="card">
+    <div className="small-card">
       <div className="image-box">
         <img 
           className="card-bookmark"
@@ -26,11 +26,11 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
           <p className="card-title">{title}</p>
           <p className="card-content">{content}</p>
         </div>
-        <div className="card-stack">
+        <div className="small-card-stack">
           {techStack.map((stack, idx) => (
             <span className="card-stack-span" key={idx}>
               <Chip 
-                style={{ height : "24px", backgroundColor : "#3396F4", color:'white', fontFamily : 'GmarketSansMedium'}}
+                style={{ height : "24px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
                 label={stack} 
               />
             </span>
@@ -38,22 +38,22 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
         </div>
         <div className="card-bottom">
           <Chip
-            style={{ fontFamily : 'GmarketSansMedium' }}
+            style={{ fontWeight: 'bold', height: "20px",marginBottom : "40px"}}
             label={category}
             color="primary" 
             variant="outlined"
           />
-          <div className="card-bottom-right">
-            <div className="bottom-image-box">
-              <img className="bottom-image" src={Thumbsup} alt="thumsup" />
+          <div className="small-card-bottom-right">
+            <div className="small-bottom-image-box">
+              <img className="small-bottom-image" src={Thumbsup} alt="thumsup" />
               <span className="count-number">{likeCnt}</span>
             </div>
-            <div className="bottom-image-box">
-              <img className="bottom-view-image" src={View} alt="views" />
+            <div className="small-bottom-image-box">
+              <img className="small-bottom-view-image" src={View} alt="views" />
               <span className="count-number">{viewCnt}</span>
             </div>
-            <div className="bottom-image-box">
-              <img className="bottom-image" src={Comment} alt="comments" />
+            <div className="small-bottom-image-box">
+              <img className="small-bottom-image" src={Comment} alt="comments" />
               <span className="count-number">{commentCnt}</span>
             </div>
           </div>

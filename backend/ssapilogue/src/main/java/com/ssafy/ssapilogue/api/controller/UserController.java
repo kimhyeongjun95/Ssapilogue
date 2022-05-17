@@ -180,6 +180,28 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(result, httpStatus);
     }
 
+    @GetMapping("/profile")
+    @ApiOperation(value = "다른 회원 조회", notes = "다른 회원을 조회한다.")
+    public ResponseEntity<Map<String, Object>> findOtherProfile(
+            HttpServletRequest request, @RequestParam @ApiParam(value = "프로필 조회할 회원 유저네임", required = true) String username) {
+        Map<String, Object> result = new HashMap<>();
+        HttpStatus httpStatus = null;
+        FindUserResDto findUser = null;
+
+        String token = jwtTokenProvider.resolveToken(request);
+        if (token == null) throw new CustomException(ErrorCode.NO_TOKEN);
+
+        String userEmail = jwtTokenProvider.getUserEmail(token);
+        if (userEmail == null) throw new CustomException(ErrorCode.WRONG_TOKEN);
+
+        findUser = userService.findOtherUserProfile(username);
+        httpStatus = HttpStatus.OK;
+        result.put("status", "SUCCESS");
+        result.put("user", findUser);
+        return new ResponseEntity<Map<String, Object>>(result, httpStatus);
+    }
+
+
     @PostMapping("/image")
     @ApiOperation(value = "프로필 이미지 업로드", notes = "프로필 이미지를 업로드한다.")
     public ResponseEntity<Map<String, Object>> updateImage(

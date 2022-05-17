@@ -10,16 +10,17 @@ export default function BasicSelect({ option, onChange }) {
   return (
     <Box >
       <FormControl sx={{ minWidth: 120 }}>
-        <InputLabel id="demo-simple-select-label">옵션</InputLabel>
+        <InputLabel id="demo-simple-select-label" style={{ fontFamily:'GmarketSansMedium'}}>옵션</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={option}
           label="제목"
           onChange={onChange}
+          style={{ fontFamily:'GmarketSansMedium'}}
         >
-          <MenuItem value={"제목"}>제목</MenuItem>
-          <MenuItem value={"기술스택"}>기술스택</MenuItem>
+          <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"제목"}>제목</MenuItem>
+          <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"기술스택"}>기술스택</MenuItem>
         </Select>
       </FormControl>
     </Box>

@@ -1,6 +1,6 @@
-.card {
-  width: 350px;
-  height: 350px;
+.small-card {
+  width: 250px;
+  height: 250px;
   border: solid 1px gray;
   border-radius: 10px;
   box-shadow: 3px 5px 5px 1px gray;
@@ -40,7 +40,7 @@
   }
 
   .card-title {
-    font-family: 'GmarketSansBold';
+    font-weight: bold;
     font-size: 24px;
     height: 32px;
     overflow: hidden;
@@ -49,7 +49,6 @@
   }
 
   .card-content {
-    font-family: 'GmarketSansMedium';
     color: grey;
     font-size: 17px;
     height: 45px;
@@ -58,12 +57,15 @@
     // white-space: nowrap;
   }
 
-  .card-stack {
+  .small-card-stack {
     display: flex;
     flex-wrap: wrap;
-    margin: 0 0 5% 0;
+    margin: 0 0 10% 0;
     height: 64px;
-    overflow: hidden;
+    overflow: scroll;
+  }
+  .small-card-stack::-webkit-scrollbar {
+    display: none;
   }
 
   .card-stack-span {
@@ -93,33 +95,41 @@
     align-items: center;
   }
 
-  .card-bottom-right {
+  .small-card-bottom-right {
     display: flex;
-    width: 160px;
+    width: 120px;
+    margin-bottom: 40px;
+    margin-right: 20px;
+
   }
 
-  .bottom-image {
-    width: 28px;
-    height: 28px;
+  .small-bottom-image {
+    width: 21px;
+    height: 21px;
     object-fit: fill;
   }
 
-  .bottom-view-image {
-    width: 28px;
-    height: 28px;
+  .small-bottom-view-image {
+    width: 21px;
+    height: 21px;
     object-fit: fill;
   }
 
-  .bottom-image-box {
+  .small-bottom-image-box {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin: 5%;
   }
 
   .count-number {
-    margin-left: 15%;
-    margin-top: 10%;
-    font-family : 'GmarketSansMedium';
+    margin-left: 10%;
+  }
+  .small-chip {
+    font-weight: 'bold';
+    height: 20px;
+    margin-bottom : 40px;
   }
 }
+
