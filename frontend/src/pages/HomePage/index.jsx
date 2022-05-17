@@ -22,7 +22,7 @@ const HomePage = () => {
   const [drop, setDrop] = useState(false);
 
   const [searchOption, setSearchOption] = useState("제목");
-  const [typeOption, setTypeOption] = useState("");
+  const [typeOption, setTypeOption] = useState("전체");
 
   const settings = {
     dots: true,
@@ -45,15 +45,17 @@ const HomePage = () => {
 
   const handlePopular = (e) => {
     const value = e.target.innerText;
-
     if (value === "인기순") {
-      const result = entireResult.sort((a, b) => b.likeCnt - a.likeCnt)
-      setSearchOption(result);
+      const result = searchResult.sort((a, b) => b.likeCnt - a.likeCnt);
+      // console.log(result);
+      setSearchResult(result);
       return;
     }
     
     if (value === "최신순") {
-      setSearchResult(entireResult)
+      const result = searchResult.sort((a, b) => b.projectId - a.projectId);
+      // console.log(result);
+      setSearchResult(result)
       return;
     }
   }
@@ -110,9 +112,10 @@ const HomePage = () => {
 
   const initialSearch = async () => {
     const response = await API.get('api/project')
+    // console.log(response);
+    typeFilter();
     setSearchResult(response.data.projectList)
     setEntireResult(response.data.projectList);
-    typeFilter();
   }
 
   const search = async(e) => {
@@ -162,6 +165,11 @@ const HomePage = () => {
       const result = entireResult.filter(search => search.category === "자율")
       setSearchResult(result);
     }
+
+    if (typeOption === "토이") {
+      const result = entireResult.filter(search => search.category === "토이")
+      setSearchResult(result);
+    }
   }
 
   const handleSearchBar = (e) => {
@@ -179,6 +187,7 @@ const HomePage = () => {
 
   useEffect(() => {
     typeFilter();
+    console.log("?")
   }, [typeOption])
 
   return (
