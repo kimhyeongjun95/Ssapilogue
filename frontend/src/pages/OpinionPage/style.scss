@@ -22,3 +22,12 @@ $blue : #3396F4;
 .option-btn-on {
   color: $blue;
 }
+.back-project {
+  position: absolute;
+  margin-left: 10%;
+  width: 15vw;
+  margin-top: 4vh;
+}
+.back-project:hover {
+  cursor: pointer;
+}

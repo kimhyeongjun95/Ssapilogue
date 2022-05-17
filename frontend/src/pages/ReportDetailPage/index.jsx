@@ -104,7 +104,7 @@ const ReportDetailPage = () => {
         <div className="comment-content" id={item.commentId} dangerouslySetInnerHTML={{__html: pingping}}>
           
         </div>
-        { (myEmail === item.eamil) ?
+        { (myEmail === item.email) ?
           <div>
             <p className="report-detail-red" onClick={() => deleteComment(item.bugCoId)}>삭제하기</p>
           </div>
