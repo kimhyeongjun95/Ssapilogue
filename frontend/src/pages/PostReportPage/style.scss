@@ -1,3 +1,5 @@
+$sky-blue : #C3E2F9;
+
 .main-div {
   display:flex;
   flex-direction: column;
@@ -18,4 +20,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.report-highlight {
+  width: 440px;
+  height: 76px;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(to top, $sky-blue 45%, transparent 45%);
 }
