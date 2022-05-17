@@ -75,7 +75,7 @@ const ProfilePage = () => {
           myproject.length > 0 && myproject.length === user["projects"].length ?
           
             null
-            : <button onClick={power}>더보기</button>
+            : <button className="more-button" onClick={power}>더보기</button>
         }
       </div>
 
@@ -101,7 +101,7 @@ const ProfilePage = () => {
           mybmProject && mybmProject.length === user["bookmarList"]?.length ?
           
             null
-            : <button onClick={bmpower}>더보기</button>
+            : <button className="more-button" onClick={bmpower}>더보기</button>
         }
       </div>
     </div>
