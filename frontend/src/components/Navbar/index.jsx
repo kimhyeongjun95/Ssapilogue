@@ -27,7 +27,7 @@ const Navbar = () => {
   }
 
   const goProfile = () => {
-    navigate("/profile");
+    navigate("/profile", {state : { username : ""}});
     setDropDown(!dropDown);
   }
 
