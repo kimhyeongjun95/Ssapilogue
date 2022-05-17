@@ -44,7 +44,6 @@ const Navbar = () => {
     <nav>
       <Link className="home" to="/">
         <img src={Logo} alt="logo" className="logo" />
-        {/* <h1>SSapilogue</h1> */}
       </Link>
       
 
