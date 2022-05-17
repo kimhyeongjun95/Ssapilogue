@@ -189,8 +189,8 @@ const DetailPage = () => {
       });
       
   }
-  const goProfile = (userId) => {
-    navigate('/profile', {state : { userId : userId }})
+  const goProfile = (username) => {
+    navigate('/profile', {state : { username : username }})
   }
 
   const stackBox = stack.map((item) => {
@@ -200,7 +200,7 @@ const DetailPage = () => {
   })
 
   const memberBox = authormember.map((item) => {
-    return <Button variant="contained" onClick={() => goProfile(item.userId)} style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#00CAF4", color:'white', fontFamily: 'GmarketSansMedium'}}
+    return <Button variant="contained" onClick={() => goProfile(item.username)} style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#00CAF4", color:'white', fontFamily: 'GmarketSansMedium'}}
     >{item.nickname}
     </Button>
   })

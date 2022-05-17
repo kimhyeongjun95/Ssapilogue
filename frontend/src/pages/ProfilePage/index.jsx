@@ -1,37 +1,74 @@
 import React,{ useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "./style.scss"
 import API from "../../api/API";
 import store from "../../utils/store"
 import Card from "../../components/Card";
 import heart from "../../assets/heart.png"
+import Default from "../../assets/default.png"
+import cuteDog from "../../assets/cuteDog.png"
+
 
 
 const ProfilePage = () => {
+  const locations = useLocation().state;
 
   const [i,setI] = useState(2)
   const [bmi, setBmi] = useState(2)
   const [user, setUser] = useState('');
   const [myproject, setMyproject] = useState([])
   const [mybmProject, setMybmProject] = useState([])
+  const [myProMore, setMyProMore] = useState(false)
+  const [myBProMore, setMyBProMore] = useState(false)
 
   const power = () => {
     setMyproject(user["projects"].slice(0,3*i))
-    setI(i+1)
+    console.log(user["projects"].length)
+    if (user["projects"].length <= 3*i) {
+      setMyProMore(false)
+    }else{
+      setI(i+1)
+    }
   }
 
   const bmpower = () => {
     setMybmProject(user["bookmarkList"].slice(0,3*bmi))
-    setBmi(bmi+1)
+    console.log(user["bookmarkList"])
+    if (user["bookmarkList"].length <= 3*i) {
+      setMyBProMore(false)
+    }else{
+      setBmi(bmi+1)
+    }
   }
   
   useEffect(() => {
-    store.getToken()
-    API.get("api/user")
-      .then((response) => {
-        setUser(response.data.user);
-        setMyproject(response.data.user["projects"].slice(0,3))
-        setMybmProject(response.data.user["bookmarkList"].slice(0,3))
-      })
+    async function peekuser(username) {
+      const response = await API.get(`/api/user/profile?username=${username}`)
+      console.log(response)
+      setUser(response.data.user);
+      setMyproject(response.data.user["projects"].slice(0,3))
+      if (response.data.user["projects"].length > 3) {
+        setMyProMore(true)
+      }
+      
+      setMybmProject(response.data.user["bookmarkList"].slice(0,3))
+      if (response.data.user["bookmarkList"].length > 3) {
+        setMyBProMore(true)
+      }
+    }
+    const { username } = locations;
+    if (username) {
+      peekuser(username.split('@')[0])
+
+    }else{
+      store.getToken()
+      API.get("api/user")
+        .then((response) => {
+          setUser(response.data.user);
+          setMyproject(response.data.user["projects"].slice(0,3))
+          setMybmProject(response.data.user["bookmarkList"].slice(0,3))
+        })
+    }
   }, [])
 
   return (
@@ -43,7 +80,11 @@ const ProfilePage = () => {
               <img className="likes-heart" src={heart} alt="heart" />
               <p className="likes-count">{user.userLiked}개</p>
             </div>
-            <img className="profile-pic" src={user.image} alt="profilePic" />
+            { (user.image) ?
+              <img className="profile-pic" src={user.image} alt="profilePic" />
+              :
+              <img className="profile-pic" src={Default} alt="profilePic" />
+            }
           </div>
           <div className="introduce-div">
             <p className="profile-p">이름 : {user.nickname}</p>
@@ -54,7 +95,7 @@ const ProfilePage = () => {
         </div>
       </div>
       <div className="my-project-div">
-        <h2 className="my-post-h">내가 포스팅한 프로젝트</h2>
+        <h2 className="my-post-h">내가 참여한 프로젝트</h2>
         <div className="card-div">
           {myproject.map((item, idx) => (
             <div key={idx}>
@@ -71,11 +112,16 @@ const ProfilePage = () => {
             </div>
           ))}
         </div>
-        {
-          myproject.length > 0 && myproject.length === user["projects"].length ?
-          
+        { (myProMore) ?
+          <button onClick={power}>더보기</button>
+          :
+          (myproject.length === 0) ?
+            <div className="dog-div">
+              <img className="cute-dog" src={cuteDog} />
+              <p>😢 아직 북마크한 프로젝트가 없습니다.</p>
+            </div>
+            :
             null
-            : <button onClick={power}>더보기</button>
         }
       </div>
 
@@ -98,10 +144,18 @@ const ProfilePage = () => {
           ))}
         </div>
         {
-          mybmProject && mybmProject.length === user["bookmarList"]?.length ?
+          (myBProMore) ?
           
-            null
-            : <button onClick={bmpower}>더보기</button>
+            
+            <button onClick={bmpower}>더보기</button>
+            :
+            (mybmProject.length === 0) ?
+              <div className="dog-div">
+                <img className="cute-dog" src={cuteDog} />
+                <p>😢 아직 북마크한 프로젝트가 없습니다.</p>
+              </div>
+              :
+              null
         }
       </div>
     </div>

@@ -60,3 +60,18 @@
 .profile-p {
   font-family: 'GmarketSansMedium';
 }
+
+.cute-dog {
+  width: 20%;
+  height: 20%;
+}
+.dog-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  p {
+    font-size: 15px;
+    font-family: 'GmarketSansMedium';
+  }
+}
