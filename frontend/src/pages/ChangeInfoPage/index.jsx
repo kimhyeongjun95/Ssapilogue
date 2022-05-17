@@ -36,6 +36,7 @@ const ChangeInfoPage = () => {
     const formData = new FormData();
     formData.append('file', e.target.files[0]);
     const response = await API.post('/api/user/image', formData);
+    console.log(response)
     setImage(response.data.imageUrl);
   }
 
@@ -66,7 +67,11 @@ const ChangeInfoPage = () => {
         <div style={{marginBottom: "10vh"}}>
           <label for="file-input">
             <div className="profile-circle">
-              <img className="profile-img" src={profilePic} alt="profilePic" />
+              { (image) ? 
+                <img className="profile-img" src={image} alt="profilePic" />
+                :
+                <img className="profile-img" src={profilePic} alt="profilePic" />
+              }
             </div>
           </label>
           <input id="file-input" type="file" style={{display: "none"}} onChange={uploadImage} />

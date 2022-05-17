@@ -49,7 +49,7 @@ const PostReviewPage = () => {
     <>
       <div className="post-box">
 
-        <div style={{marginBottom: "3vh"}}>
+        <div className="title-highlight" style={{marginBottom: "7vh"}}>
           <h1>리뷰를 작성해 주세요!</h1>
         </div>
 

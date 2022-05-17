@@ -1,7 +1,7 @@
 import React, {useState, useRef} from 'react';
 import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
-import {InputLabel,MenuItem,FormControl, Button, Chip} from "@mui/material"
+import {InputLabel,MenuItem,FormControl, Chip} from "@mui/material"
 import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -270,8 +270,12 @@ const PostProjectPage = () => {
     <>
       <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
 
-        <h1 style={{width:"40%", textAlign:"center", fontFamily:"GmarketSansMedium"}}>프로젝트를 등록해주세요</h1>
+        <div className="title-highlight">
+          <h1>프로젝트를 등록해 주세요!</h1>
+        </div>
+
         <p style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh", fontFamily:"GmarketSansLight"}}> * 는 필수항목입니다.</p>
+        
         <Question InputTitle="* 프로젝트 이름" inputValue={title} inputSetValue={setTitle} pilsu="1" inputId="프로젝트이름"/>
         {chooseType()}
         <Question InputTitle="배포주소" inputValue={bepo} inputSetValue={setBepo} />
@@ -312,12 +316,14 @@ const PostProjectPage = () => {
         
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-          <ThemeProvider theme={theme}>
+          {/* <ThemeProvider theme={theme}>
             <Link to="/" style={{ textDecoration: 'none' }}>
               <Button color="primary" className="next-button" size="large" style={{marginRight:"3vw", fontFamily: 'GmarketSansMedium'}} variant="outlined"> 취소 </Button>
             </Link>
             <Button color="primary" className="next-button" onClick={toSurvey} size="large" style={{ fontFamily: 'GmarketSansMedium'}} variant="contained"> 다음단계 </Button>
-          </ThemeProvider>
+          </ThemeProvider> */}
+          <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
+          <button className="btn-blue btn-large" onClick={toSurvey}>다음 단계</button>
         </div>
 
        

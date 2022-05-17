@@ -53,7 +53,10 @@ const PostReviewPage = () => {
 
   return (
     <div className="main-div">
-      <h1>버그 리포트 등록 페이지!</h1>
+      <div className="report-highlight" style={{marginBottom: "5vh"}}>
+        <h1>버그 리포트를 작성해 주세요!</h1>
+      </div>
+
       {/* <form className="form-style" onSubmit={() => postReport()}> */}
       <Question InputTitle="제목" inputValue={val} inputSetValue={setVal} pilsu="1"/>
       <div className="editor-div">

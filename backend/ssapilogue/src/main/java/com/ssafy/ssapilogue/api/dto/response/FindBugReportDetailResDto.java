@@ -20,6 +20,9 @@ public class FindBugReportDetailResDto {
     @ApiModelProperty(value = "버그 리포트 작성자 닉네임", example = "동균")
     private String nickname;
 
+    @ApiModelProperty(value = "이메일", example = "test1234@naver.com")
+    private String email;
+
     @ApiModelProperty(value = "유저 사진 경로", example = "ftpServerUrl/pic.jpg")
     private String profileImage;
 
@@ -41,6 +44,7 @@ public class FindBugReportDetailResDto {
     public FindBugReportDetailResDto(BugReport bugReport, User user, String createAt, List<FindBugReportCommentResDto> comments) {
         bugId = bugReport.getId();
         nickname = user.getNickname();
+        email = bugReport.getUser().getEmail();
         profileImage = user.getImage();
         title = bugReport.getTitle();
         content = bugReport.getContent();

@@ -5,6 +5,7 @@ import View from "../../assets/view.svg"
 import Comment from "../../assets/comment.png"
 import BookMarked from '../../assets/BookMarked.png'
 import NotBookMarked from '../../assets/NotBookMarked.png'
+import Default from '../../assets/SSAFY.png'
 
 const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStack, thumbnail, bookmark }) => {
   return (
@@ -15,7 +16,10 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
           src={bookmark === true ? BookMarked : NotBookMarked}
           alt="bookmark"
         />
-        <img className="card-thumbnail" src={thumbnail} alt="thumbnail" />
+        { (thumbnail) ?
+          <img className="card-thumbnail" src={thumbnail} alt="thumbnail" />
+          : <img className="card-thumbnail" src={Default} alt="thumbnail" />
+        }     
       </div>
       <div className="text-box">
         <div className="card-title-content">

@@ -19,6 +19,7 @@ const HomePage = () => {
   const [entireResult, setEntireResult] = useState([]);
   const [dropResult, setDropResult] = useState('');
   const [techSearchResult, setTechSearchResult] = useState('');
+  const [drop, setDrop] = useState(false);
 
   const [searchOption, setSearchOption] = useState("제목");
   const [typeOption, setTypeOption] = useState("");
@@ -40,6 +41,21 @@ const HomePage = () => {
 
   const handleTypeOption = (e) => {
     setTypeOption(e.target.value);
+  }
+
+  const handlePopular = (e) => {
+    const value = e.target.innerText;
+
+    if (value === "인기순") {
+      const result = entireResult.sort((a, b) => b.likeCnt - a.likeCnt)
+      setSearchOption(result);
+      return;
+    }
+    
+    if (value === "최신순") {
+      setSearchResult(entireResult)
+      return;
+    }
   }
 
   const titleEnterSearch = async (e, value) => {
@@ -101,6 +117,7 @@ const HomePage = () => {
 
   const search = async(e) => {
     const value = e.target.value;
+    handleSearchBar(value);
     try {
       if (searchOption === "제목") {
         setTechSearchResult('');
@@ -145,8 +162,14 @@ const HomePage = () => {
       const result = entireResult.filter(search => search.category === "자율")
       setSearchResult(result);
     }
+  }
 
-
+  const handleSearchBar = (e) => {
+    if (e.length === 0) {
+      setDrop(false);
+      return;
+    }
+    setDrop(true);
   }
 
   useEffect(() => {
@@ -177,26 +200,39 @@ const HomePage = () => {
           <SelectTitleStack defaultValue="" onChange={handleSearchOption} option={searchOption} />
           <div style={{ width : "100%" }}>
             <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
-            <div className="home-search-main">
-              <div className="home-search-title">
-                {dropResult && dropResult.map((search, idx) => (
-                  <div style={{ marginBottom : "3px" }} key={idx}>
-                    {search.title}
-                  </div>
-                ))}
+            { drop ?
+              <div className="home-search-main">
+                <div className="home-search-label">프로젝트</div>
+                <div className="home-search-title">
+
+                  {dropResult && dropResult.map((search, idx) => (
+                    <div style={{ marginBottom : "5px", fontWeight : 'bold', color : '#484848' }} key={idx}>
+                      <Link to={`project/${search.projectId}`} className="card-link">
+                        {search.title}
+                      </Link>
+                    </div>
+                  ))}
+
+                </div>
+                <div className="home-search-label">스킬태그</div>
+                <div className="home-search-tech">
+
+                  {techSearchResult && techSearchResult.map((tech, idx) => (
+                    <span key={idx}>
+                      <Chip
+                        onClick={techStackClickSearch}
+                        style={{ height : "24px", margin : "5px 3px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+                        label={tech} 
+                      />
+                    </span>
+                  ))}
+
+                </div>
               </div>
-              <div className="home-search-tech">
-                {techSearchResult && techSearchResult.map((tech, idx) => (
-                  <span key={idx}>
-                    <Chip
-                      onClick={techStackClickSearch}
-                      style={{ height : "24px", marginRight : "5px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
-                      label={tech} 
-                    />
-                  </span>
-                ))}
-              </div>
-            </div> 
+              :
+              <>
+              </>
+            }
           </div>
         </div>
 
@@ -210,8 +246,8 @@ const HomePage = () => {
         
         <div className="home-card-option">
           <div className="home-card-sort">
-            <div className="home-card-p">최신순</div>
-            <div className="home-card-p">인기순</div>
+            <div onClick={handlePopular} className="home-card-p">최신순</div>
+            <div onClick={handlePopular} className="home-card-p">인기순</div>
           </div>
           <SelectType defaultValue="" onChange={handleTypeOption} option={typeOption}  />
         </div>
@@ -220,7 +256,7 @@ const HomePage = () => {
           <Grid container>
             {searchResult && searchResult.map((search, idx) => (
               <Grid item xl={4} md={6} sm={12} key={idx}>
-                <div className="home-card" key={idx}>
+                <div className="home-card" >
                   <Link to={`project/${search.projectId}`} className="card-link">
                     <Card
                       title={search.title} 

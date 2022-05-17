@@ -10,6 +10,7 @@ const Navbar = () => {
 
   const [authorized, setAuthorized] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+  const [userPic, setUserPic] = useState('')
   const navigate = useNavigate();
 
   const toggleHandler = () => {
@@ -36,6 +37,7 @@ const Navbar = () => {
 
   useEffect(() => {
     signInCheck();
+    setUserPic(window.localStorage.getItem('userPic'))
   }, [])
 
   return (
@@ -49,7 +51,11 @@ const Navbar = () => {
       <div className="navbar_dropdown">
         {authorized ?
           <div className="navbar-profile-image">
-            <img src={Default} alt="" onClick={toggleHandler} className="person-image" />
+            { (userPic) ?
+              <img src={userPic} alt="" onClick={toggleHandler} className="person-image" />
+              :
+              <img src={Default} alt="" onClick={toggleHandler} className="person-image" />
+            }
           </div>
           :
           <Link className="login" to="/signin">

@@ -1,5 +1,5 @@
 .logo {
-  width: 20%;
+  height: 27px;
 }
 
 .person-image {
@@ -8,6 +8,10 @@
   // box-shadow: 0 0 0 1px;
   // border: 0.1px solid;
   border-radius: 70%;
+}
+
+.person-image:hover {
+  cursor: pointer;
 }
 
 nav {
@@ -22,6 +26,7 @@ nav {
   padding-top: 5px;
   padding-bottom: 5px;
   background-color: white;
+  box-shadow: 0 2px 4px 0 hsl(0deg 0% 81% / 50%);
   
   .home {
     text-decoration: none;
@@ -42,6 +47,11 @@ nav {
     color: black;
     font-family: 'GmarketSansBold';
     font-size: 20px;
+  }
+
+  .login_text:hover {
+    cursor: pointer;
+    transform: scale(1.05);
   }
 
   .navbar-profile-image {

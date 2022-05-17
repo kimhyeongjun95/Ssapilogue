@@ -22,6 +22,11 @@
   border-radius: 5px;
 }
 
+.post-project-btn:hover {
+  cursor: pointer;
+  transform: scale(1.01);
+}
+
 .home-search {
   display: flex;
   margin-top: 20px;
@@ -39,24 +44,30 @@
   width: 97.5%;
   height: 46px;
   background-color: #fafafa;
-  border: 1px solid black;
+  border: 1px solid #ADADAD;
   border-radius: 5px;
   font-family:'GmarketSansMedium';
 }
 
 .home-search-main {
   margin-left: 10px;
-  width: calc(97.5% + 12px);
-  border: 1px solid black;
+  width: calc(97.5% + 14px);
+  border: 1px solid #ADADAD;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-search-label {
+  padding: 8px 2% 0;
+  color: #484848;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .home-search-title {
   max-height: 126px;
-  border-bottom: 1px solid black;
-  overflow: scroll;
-  overflow-x: hidden;
-  margin-bottom: 5px;
+  border-bottom: 1px solid #ADADAD;
   padding: 10px 2%;
 }
 
@@ -102,10 +113,6 @@
   flex-wrap: wrap;
 }
 
-.body {
-  -ms-overflow-style: none;
-}
-::-webkit-scrollbar { display: none; }
 .home-card {
   display: flex;
   justify-content: center;
@@ -118,4 +125,7 @@
 
 .home-card-p {
   font-family: 'GmarketSansLight';
+}
+.home-sun:hover {
+  cursor: pointer;
 }

@@ -15,6 +15,7 @@ export default function BasicSelect({ option, onChange }) {
           value={option}
           onChange={onChange}
           style={{ fontFamily:'GmarketSansMedium'}}
+          defaultValue="전체"
         >
           <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"전체"}>전체</MenuItem>
           <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"공통"}>공통</MenuItem>

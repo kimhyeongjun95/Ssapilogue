@@ -413,7 +413,7 @@ public class ProjectServiceImpl implements ProjectService {
     // 프로젝트 제목 자동완성
     @Override
     public List<FindProjectTitleResDto> searchProjectTitles(String keyword) {
-        List<Project> projects = projectRepository.findBySplitTitleContainingOrderByIdDesc(getSplitTitle(keyword));
+        List<Project> projects = projectRepository.findTop5BySplitTitleContainingOrderByIdDesc(getSplitTitle(keyword));
 
         return projects.stream().map(FindProjectTitleResDto::new).collect(Collectors.toList());
     }

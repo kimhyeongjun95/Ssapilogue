@@ -15,7 +15,6 @@ const PostSurvey = () => {
   const locations = useLocation().state;
   const navigate = useNavigate();
   const { title, intro, various, phashbox, hashbox, bepo, repo, thumbnail, readmeCheck, markdown } = locations;
-
   
   const addBasicForm = async () => {
     const response = await API.get(`/api/survey/default/${title}`)
@@ -65,9 +64,10 @@ const PostSurvey = () => {
 
     let ask = document.createElement("input");
     ask.value = list[idx].surveyOptions[count];
-    ask.placeholder = "객관식 답변";
+    ask.placeholder = "객관식 선택지";
     ask.name = "surveyOptions";
     ask.className = "objective-answer";
+    ask.required = true;
     ask.addEventListener("input", (e) => {
       choiceHandleInput(e, idx, count);
     })
@@ -137,9 +137,11 @@ const PostSurvey = () => {
   }
 
   return (
-    <div className="post-box">
-
-      <h1 style={{ fontFamily: 'GmarketSansMedium'}}>설문조사를 등록해 주세요!</h1>
+    <div className="post-box">      
+      <div className="title-highlight" style={{marginBottom: "5vh",  fontFamily: 'GmarketSansMedium'}}>
+        <h1>설문조사를 등록해 주세요!</h1>
+      </div>
+      
       <div className="default-survey">
         <button className="btn-blue" onClick={addBasicForm}>기본 폼 가져오기</button>
       </div>
@@ -153,6 +155,7 @@ const PostSurvey = () => {
             placeholder="질문 제목을 입력해주세요." 
             onChange={e => handleInput(e, idx)}
             style={{ fontFamily: 'GmarketSansMedium' }}
+            required
           />
           <img className="survey-trash" src={trash} onClick={() => deleteSurvey(idx)} alt="trash" />
 
@@ -170,22 +173,24 @@ const PostSurvey = () => {
                     <>
                       <input
                         className="objective-answer"
-                        placeholder="객관식 답변" 
+                        placeholder="객관식 선택지" 
                         name="surveyOptions"
                         value={answer}
                         onChange={e => choiceHandleInput(e, idx, optIdx)}
                         style={{ fontFamily: 'GmarketSansMedium'}}
+                        required
                       />
                     </>
                   ))}
                   {input.default !== true && (
                     <input
                       className="objective-answer"
-                      placeholder="객관식 답변" 
+                      placeholder="객관식 선택지" 
                       name="surveyOptions"
                       value={input.surveyOptions[0]}
                       onChange={e => choiceHandleInput(e, idx, 0)}
                       style={{ fontFamily: 'GmarketSansMedium'}}
+                      required
                     />
                   )}
                 </li>
@@ -203,7 +208,7 @@ const PostSurvey = () => {
       </div>
 
       <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-        <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
+        <button className="btn-white btn-large" style={{marginRight: "3vw"}}>이전 단계</button>
         <button className="btn-blue btn-large" onClick={submit}>등록</button>
       </div>
 
