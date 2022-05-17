@@ -43,7 +43,9 @@ const ProfilePage = () => {
               <img className="likes-heart" src={heart} alt="heart" />
               <p className="likes-count">{user.userLiked}개</p>
             </div>
-            <img className="profile-pic" src={user.image} alt="profilePic" />
+            <div className="profile-circle">
+              <img className="profile-pic" src ={user.image} alt="profilePic" />
+            </div>
           </div>
           <div className="introduce-div">
             <p className="profile-p">이름 : {user.nickname}</p>
@@ -75,7 +77,7 @@ const ProfilePage = () => {
           myproject.length > 0 && myproject.length === user["projects"].length ?
           
             null
-            : <button onClick={power}>더보기</button>
+            : <button className="more-button" onClick={power}>더보기</button>
         }
       </div>
 
@@ -101,7 +103,7 @@ const ProfilePage = () => {
           mybmProject && mybmProject.length === user["bookmarList"]?.length ?
           
             null
-            : <button onClick={bmpower}>더보기</button>
+            : <button className="more-button" onClick={bmpower}>더보기</button>
         }
       </div>
     </div>

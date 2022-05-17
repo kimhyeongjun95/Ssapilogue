@@ -40,11 +40,15 @@
 
 .radio-p {
   font-family: 'GmarketSansMedium';
+  font-size: 14px;
   display: inline;
   margin-left: 5px;
   margin-right: 5px;
 }
 
+.input::placeholder {
+  font-family: 'GmarketSansMedium'
+}
 .pp-main-div {
   display: flex;
   flex-direction: column;
