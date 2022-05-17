@@ -183,7 +183,7 @@ const PostProjectPage = () => {
     });
     
     return <div style={{width: "40%"}}>
-      <p style={{marginBottom : 0, fontFamily:"GmarketSansMedium"}}> {InputTitle} </p>
+      <p className="pp-searchmap-p"> {InputTitle} </p>
       
       <TextField
         type="text"
@@ -203,7 +203,7 @@ const PostProjectPage = () => {
         :
         null
       }
-      <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap", fontFamily: "GmarketSansMedium"}}>
+      <div ClassName="pp-searchmap-hash-div">
         {alHash(inputBox,inputSetbox)}
       </div>
     </div>
@@ -294,13 +294,13 @@ const PostProjectPage = () => {
 
   return (
     <>
-      <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
+      <div className="pp-main-div">
 
         <div className="title-highlight">
           <h1>프로젝트를 등록해 주세요!</h1>
         </div>
 
-        <p style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh", fontFamily:"GmarketSansLight"}}> * 는 필수항목입니다.</p>
+        <p className="pp-required-p"> * 는 필수항목입니다.</p>
         
         <Question InputTitle="* 프로젝트 이름" inputValue={title} inputSetValue={setTitle} pilsu="1" inputId="프로젝트이름"/>
         {chooseType()}
@@ -313,8 +313,8 @@ const PostProjectPage = () => {
         <Question InputTitle="* 소개" inputValue={intro} inputSetValue={setIntro} pilsu="1" inputId="프로젝트 소개" placeholder="메인 페이지에 보여줄 한 줄 소개를 작성해주세요."/>
         <button style={uploadButton} onClick={onCickImageUpload}>썸네일 업로드</button>
         { (thumbnail) ?
-          <div style={{marginTop:"2vh"}}>
-            <img src={thumbnailUrl} style={{height:"20vh",width:"35vh"}} alt="thumbnail" />
+          <div className="pp-thumbnail-div">
+            <img src={thumbnailUrl} className="pp-thumbnail-image" alt="thumbnail" />
           </div>
           :
           null
@@ -327,7 +327,7 @@ const PostProjectPage = () => {
           <p className="radio-p">github에서 가져오기</p>
         </div>
         { (readmeCheck === "1") ?
-          <div style={{marginTop:"2%",width:"40%"}}>
+          <div className="pp-readme-check-div">
             <Editor
               initialEditType="markdown"
               height="40vh"
@@ -342,7 +342,7 @@ const PostProjectPage = () => {
         }
         
 
-        <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
+        <div className="pp-next-button-div">
           {/* <ThemeProvider theme={theme}>
             <Link to="/" style={{ textDecoration: 'none' }}>
               <Button color="primary" className="next-button" size="large" style={{marginRight:"3vw", fontFamily: 'GmarketSansMedium'}} variant="outlined"> 취소 </Button>
