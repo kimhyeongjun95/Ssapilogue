@@ -9,14 +9,19 @@ import bookmarkPic from "../../assets/bookmark.svg"
 import likePic from "../../assets/thumb.svg"
 import alLikePic from "../../assets/thumbColor.svg"
 import alBookmark from "../../assets/bookmarkColor.svg"
+import deafultProfilePic from  "../../assets/default.png"
 import gitRepo from "../../assets/git.png"
 import google from "../../assets/Google.png"
 import report from "../../assets/report.png"
-import {Button} from "@mui/material"
 import API from "../../api/API";
 import store from "../../utils/store";
 import markdownIt from "markdown-it";
 import swal from 'sweetalert';
+import Card from "../../components/SmallCard"
+
+//mui  디자인 라이브러리
+import Grid from '@mui/material/Grid';
+import {Button} from "@mui/material"
 //pdf
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
@@ -45,6 +50,7 @@ const DetailPage = () => {
   const [intro, setIntro] = useState('');
   const [isliked, setIsliked] = useState(false);
   const [isbookmarked, setIsbookmarked] = useState(false);
+  const [otherProject, setOtherProejct] = useState([]);
 
   // 댓글기능
   const [indicomment, setIndiComment] = useState('')
@@ -58,12 +64,7 @@ const DetailPage = () => {
   useEffect(() => {
     let myEmail = ''
     let ptEmail = ''
-    // async function callmebaby() {
-    //   let token  = store.getToken()
-    //   const res = await API.get('/api/user', {header: token })
-    //   myEmail = res.data.user.email
-    //   console.log(res)
-    // }
+
     async function projectCall() {
       
       const response = await API.get('/api/user', { header: token })
@@ -85,42 +86,18 @@ const DetailPage = () => {
       setThumbnail(res.data.project.thumbnail)
       setIsliked(res.data.project.isLiked)
       setIsbookmarked(res.data.project.isBookmarked)
+      setOtherProejct(res.data.project.anotherProjects)
       console.log(res)
       ptEmail = res.data.project.email
       if (myEmail === ptEmail) {
         setIsWriter(true)
       }
     }
-    // callmebaby()
     projectCall()
-    // console.log(ptEmail)
-    // console.log(myEmail)
-    // if (ptEmail === myEmail) {
-    //   setIsWriter(true)
-    // }
+
   },[kai,id])
   
-  // let category = '자율'
-  // let title = '라이키와 함께 자전거 여행을 떠나보세요!  나의 라이딩 메이트, RIKEY'
-  // let stack = ['react-native','react','spring','엔진엑스','Unity','Unity']
-  // let member = ['최강현','정동균','김형준','하현서','김은서']
-  // let commentCnt = 3
-  // let comment =[
-  //   {
-  //     "commentId" : 1,
-  //     "content" : "ㅋㅋ 현서님 프로젝트 너무재밌어요 아픙로도 같이해요",
-  //     "nickname" : "최강현",
-  //     "profileImage" : detailImage,
-  //     "createdAt" : "2022-04-25"
-  //   },
-  //   {
-  //     "commentId" : 2,
-  //     "content" : "강현님 웃기고있네요 ㅋㅋ",
-  //     "nickname" : "하현서",
-  //     "profileImage" : detailImage,
-  //     "createdAt" : "2022-04-26"
-  //   }
-  // ]
+
   const writeComment = async() => {
     try {
       await API.post(`/api/project-comment/${id}`,{
@@ -145,7 +122,6 @@ const DetailPage = () => {
 
 
   const commentBox = comment.map((item) => {
-    console.log(item)
     const regex = /@.*[원|장]/
 
     let pingping = item.content
@@ -161,7 +137,11 @@ const DetailPage = () => {
 
     return <div className="box-div">
       <div>
-        <img className="comment-image" src={detailImage} alt="profile" />
+        { (item.profileImage) ?
+          <img className="comment-image" src={item.profileImage} alt="profile" />
+          :
+          <img className="comment-image" src={deafultProfilePic} alt="profile" />
+        }
       </div>
       <div className="comment-content-box">
         <div className="comment-nickname-box">
@@ -465,7 +445,29 @@ const DetailPage = () => {
               __html: markdownIt().render(readme),
             }}
             ></div>
-
+            <div className="recommend-project">
+              <Grid container>
+                {otherProject && otherProject.map((search, idx) => (
+                  <Grid container item xl={4} md={6} sm={12} key={idx}>
+                    <div className="home-card" >
+                      <Link to={`/project/${search.projectId}`} className="card-link">
+                        <Card
+                          title={search.title} 
+                          content={search.introduce}
+                          category={search.category}
+                          likeCnt={search.likeCnt}
+                          viewCnt={search.hits}
+                          commentCnt={search.commentCnt}
+                          techStack={search.techStack}
+                          thumbnail={search.thumbnail}
+                          bookmark={search.isBookmarked}
+                        />  
+                      </Link>
+                    </div>
+                  </Grid>
+                ))}
+              </Grid>
+            </div>
             <div className="comment-div">
               
               {/* {indicomment.slice(startWord+1)} */}
@@ -484,8 +486,8 @@ const DetailPage = () => {
                 <button className="comment-submit" type="submit" onClick={writeComment}>댓글 작성</button>
               </div>
             </div>
-
             {commentBox}
+            
           </div>
           <div className="project-remote-controll">
             <div className="remote-div">
