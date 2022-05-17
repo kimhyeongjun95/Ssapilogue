@@ -26,7 +26,7 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
           {techStack.map((stack, idx) => (
             <span className="card-stack-span" key={idx}>
               <Chip 
-                style={{ height : "24px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+                style={{ height : "24px", backgroundColor : "#3396F4", color:'white', fontFamily : 'GmarketSansMedium'}}
                 label={stack} 
               />
             </span>
@@ -34,7 +34,7 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
         </div>
         <div className="card-bottom">
           <Chip
-            style={{ fontWeight: 'bold' }}
+            style={{ fontFamily : 'GmarketSansMedium' }}
             label={category}
             color="primary" 
             variant="outlined"

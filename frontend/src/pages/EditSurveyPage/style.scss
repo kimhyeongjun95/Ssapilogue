@@ -60,6 +60,7 @@ hr {
 .trash {
   height: 22px;
   margin-left: 5%;
+  display: inline;
 }
 
 .survey-box {
@@ -72,12 +73,13 @@ hr {
 }
 
 .title-box {
-  width: 85%;
+  width: 98%;
   padding: 5px;
   background-color: $gray;
   border: 0px;
   border-radius: 5px;
   color: #484848;
+  
 }
 
 .answer-box {
@@ -85,7 +87,7 @@ hr {
 }
 
 .objective-answer {
-  width: 85%;
+  width: 98%;
   color: #484848;
   border-top: 0;
   border-left: 0;

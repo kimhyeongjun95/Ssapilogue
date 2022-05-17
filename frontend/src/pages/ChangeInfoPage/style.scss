@@ -30,6 +30,11 @@ $red : #EA978C;
   border-radius: 5px;
   background-color: $red;
   color: white;
+  font-family: 'GmarketSansLight';
+}
+
+.btn-blue {
+  font-family: 'GmarketSansLight';
 }
 
 .change-btn {
@@ -47,8 +52,14 @@ $red : #EA978C;
 
 .change-input-name {
   margin-right: 40px;
+  font-family: 'GmarketSansMedium';
+  font-size: 15px;
 }
 
 .change-input {
   width: 320px;
+}
+
+.change-img-h5 {
+  font-family: 'GmarketSansLight';
 }

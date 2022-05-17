@@ -6,6 +6,8 @@ import {Button} from "@mui/material"
 import "./style.scss"
 import store from "../../utils/store";
 import { useNavigate, useParams } from "react-router-dom";
+import { createTheme } from '@mui/material/styles'
+import { ThemeProvider } from '@emotion/react';
 
 
 const PostReviewPage = () => {
@@ -40,6 +42,15 @@ const PostReviewPage = () => {
     }
 
   }
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#3396F4',
+      }
+    }
+  })
+
   return (
     <div className="main-div">
       <h1>버그 리포트 등록 페이지!</h1>
@@ -52,7 +63,9 @@ const PostReviewPage = () => {
           ref={editorRef}
         />
       </div>
-      <Button type="submit" style={{marginTop:"10%"}} onClick={postReport} variant="contained">등록</Button>
+      <ThemeProvider theme={theme}>
+        <Button color="primary" type="submit" style={{marginTop:"10%", fontFamily: 'GmarketSansLight'}} onClick={postReport} variant="contained">등록</Button>
+      </ThemeProvider>
         
       {/* </form> */}
         

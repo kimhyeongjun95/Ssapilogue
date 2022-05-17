@@ -210,8 +210,8 @@ const HomePage = () => {
         
         <div className="home-card-option">
           <div className="home-card-sort">
-            <div>최신순</div>
-            <div>인기순</div>
+            <div className="home-card-p">최신순</div>
+            <div className="home-card-p">인기순</div>
           </div>
           <SelectType defaultValue="" onChange={handleTypeOption} option={typeOption}  />
         </div>

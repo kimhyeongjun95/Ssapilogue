@@ -50,7 +50,7 @@ const PostReviewPage = () => {
       <div className="post-box">
 
         <div style={{marginBottom: "3vh"}}>
-          <h2>리뷰를 작성해 주세요!</h2>
+          <h1>리뷰를 작성해 주세요!</h1>
         </div>
 
         {reviews.map((review, idx) => (
@@ -65,6 +65,7 @@ const PostReviewPage = () => {
                   name="answer" 
                   value={review.answer} 
                   onChange={e => handleInput(e, idx)} 
+                  style={{fontFamily:'GmarketSansMedium'}}
                 />
               </>
               :

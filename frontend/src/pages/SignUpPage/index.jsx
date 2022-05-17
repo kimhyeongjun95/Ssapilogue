@@ -45,8 +45,7 @@ const SignUpPage = () => {
 
   return (
     <div className="box">
-      <h2>반가워요!</h2>
-
+      <h2 className="greeting">반가워요!</h2>
       <p className="subject">소개말</p>
       <input className="input" name="greetings" onChange={handleOnChange} value={greetings}/>
       <p className="subject">Github</p>
