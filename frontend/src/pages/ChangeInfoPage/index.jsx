@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../../api/API";
 import store from "../../utils/store";
-import profilePic from "../../assets/profileDefault.jpg"
+import DefaultImage from "../../assets/default.png"
 import "./style.scss"
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +19,7 @@ const ChangeInfoPage = () => {
   const getInfo = async () => {
     store.getToken();
     const response = await API.get("/api/user")
+    setImage(response.data.user.image)
     setInputs(response.data.user);
     setEmail(response.data.user.nickName);
   }
@@ -36,18 +37,22 @@ const ChangeInfoPage = () => {
     const formData = new FormData();
     formData.append('file', e.target.files[0]);
     const response = await API.post('/api/user/image', formData);
-    console.log(response)
     setImage(response.data.imageUrl);
   }
 
   const changeInfo = async() => {
-    await API.put("/api/user", {
-      email: email,
-      github: github,
-      greeting: greeting,
-      image: image,
-    })
-    navigate('/profile')
+    try {
+      await API.put("/api/user", {
+        email: email,
+        github: github,
+        greeting: greeting,
+        image: image,
+      })
+      store.setImage(image);
+      window.location.replace("/profile")
+    } catch (e) {
+      throw e;
+    }
   }
   
   const withDraw = () => {
@@ -70,7 +75,7 @@ const ChangeInfoPage = () => {
               { (image) ? 
                 <img className="profile-img" src={image} alt="profilePic" />
                 :
-                <img className="profile-img" src={profilePic} alt="profilePic" />
+                <img className="profile-img" src={DefaultImage} alt="profilePic" />
               }
             </div>
           </label>

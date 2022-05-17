@@ -43,11 +43,8 @@ const SignInPage = () => {
       if (direct === "SUCCESS") {
         const token = res.data.token;
         store.setToken(token);
-        async function userpic() {
-          const res = await API.get('/api/user', { header: store.getToken()})
-          window.localStorage.setItem('userPic',res.data.user.image)
-        }
-        userpic()
+        const response = await API.get('/api/user')
+        store.setImage(response.data.user.image)
         window.location.replace("/")
         return;
       }
