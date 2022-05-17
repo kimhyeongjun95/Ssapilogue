@@ -47,17 +47,18 @@ const HomePage = () => {
     const value = e.target.innerText;
     if (value === "인기순") {
       const result = searchResult.sort((a, b) => b.likeCnt - a.likeCnt);
-      // console.log(result);
       setSearchResult(result);
+      setSearchResult([...searchResult])
       return;
     }
     
     if (value === "최신순") {
       const result = searchResult.sort((a, b) => b.projectId - a.projectId);
-      // console.log(result);
       setSearchResult(result)
+      setSearchResult([...searchResult])
       return;
     }
+
   }
 
   const titleEnterSearch = async (e, value) => {
@@ -71,6 +72,7 @@ const HomePage = () => {
 
   const titleAutoSearch = async (value) => {
     const response = await API.get(`/api/project/search/title?keyword=${value}`);
+    console.log(response);
     setDropResult(response.data.searchList);
     setEntireResult(response.data.searchList);
     typeFilter();
@@ -85,6 +87,7 @@ const HomePage = () => {
 
   const techStackAutoSearch = async (value) => {
     const response = await API.get(`/api/tech-stack/search/specific?keyword=${value}`);
+    console.log(response);
     setTechSearchResult(response.data.searchList);
     setEntireResult(response.data.searchList);
     typeFilter();
@@ -170,6 +173,13 @@ const HomePage = () => {
       const result = entireResult.filter(search => search.category === "토이")
       setSearchResult(result);
     }
+
+    if (typeOption === "관통") {
+      const result = entireResult.filter(search => search.category === "관통")
+      setSearchResult(result);
+    }
+
+
   }
 
   const handleSearchBar = (e) => {
@@ -185,10 +195,9 @@ const HomePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    typeFilter();
-    console.log("?")
-  }, [typeOption])
+  // useEffect(() => {
+  //   typeFilter();
+  // }, [typeOption])
 
   return (
     <>
