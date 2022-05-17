@@ -126,6 +126,16 @@
 .home-card-p {
   font-family: 'GmarketSansLight';
 }
+.home-card-p:hover {
+  cursor: pointer;
+}
 .home-sun:hover {
+  cursor: pointer;
+}
+.project-search-result:hover {
+  cursor: pointer;
+  background-color: #ADADAD;
+}
+.chip-hover {
   cursor: pointer;
 }

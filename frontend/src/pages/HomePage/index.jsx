@@ -230,14 +230,14 @@ const HomePage = () => {
         <div className="home-search">
           <SelectTitleStack defaultValue="" onChange={handleSearchOption} option={searchOption} />
           <div style={{ width : "100%" }}>
-            <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
+            <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)}></input>
             { drop ?
               <div className="home-search-main">
                 <div className="home-search-label">프로젝트</div>
                 <div className="home-search-title">
 
                   {dropResult && dropResult.map((search, idx) => (
-                    <div style={{ marginBottom : "5px", fontWeight : 'bold', color : '#484848' }} key={idx}>
+                    <div className="project-search-result" style={{ marginBottom : "5px", fontWeight : 'bold', color : '#484848' }} key={idx}>
                       <Link to={`project/${search.projectId}`} className="card-link">
                         {search.title}
                       </Link>
@@ -253,6 +253,7 @@ const HomePage = () => {
                       <Chip
                         onClick={techStackClickSearch}
                         style={{ height : "24px", margin : "5px 3px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+                        className="chip-hover"
                         label={tech} 
                       />
                     </span>

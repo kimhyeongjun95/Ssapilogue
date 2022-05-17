@@ -113,7 +113,7 @@ const ProfilePage = () => {
           ))}
         </div>
         { (myProMore) ?
-          <button onClick={power}>더보기</button>
+          <button className="more-button" onClick={power}>더보기</button>
           :
           (myproject.length === 0) ?
             <div className="dog-div">
@@ -147,7 +147,7 @@ const ProfilePage = () => {
           (myBProMore) ?
           
             
-            <button onClick={bmpower}>더보기</button>
+            <button className="more-button" onClick={bmpower}>더보기</button>
             :
             (mybmProject.length === 0) ?
               <div className="dog-div">

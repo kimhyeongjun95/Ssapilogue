@@ -146,7 +146,7 @@ const ReviewPage = () => {
                     <h4 className="review_title">TOTAL: {review.totalCount}명</h4>
                   </div>
                   <div className="review_chart_box">
-                    <BarChart style={{ fontFamily: 'GmarketSansMedium'}}width={750} height={250} data={review.objectiveReviews} >
+                    <BarChart style={{ fontFamily: 'GmarketSansMedium'}} width={750} height={250} data={review.objectiveReviews} >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="optionContent" />
                       <YAxis />
