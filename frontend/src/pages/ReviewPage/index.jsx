@@ -86,7 +86,7 @@ const ReviewPage = () => {
       });
 
       doc.addImage(imgData, 'PNG', 0,0 , imgWidth, imgHeight);
-      doc.save('sample_A4.pdf');
+      doc.save('review.pdf');
       console.log('Reached here?');
     });
   } 

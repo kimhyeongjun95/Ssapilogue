@@ -26,7 +26,6 @@ import {Button} from "@mui/material"
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
-
 const DetailPage = () => {
   const id = useParams().projectId;
   let navigate = useNavigate();
@@ -88,6 +87,7 @@ const DetailPage = () => {
       setIsbookmarked(res.data.project.isBookmarked)
       setOtherProejct(res.data.project.anotherProjects)
       console.log(res)
+ 
       ptEmail = res.data.project.email
       if (myEmail === ptEmail) {
         setIsWriter(true)
@@ -189,7 +189,9 @@ const DetailPage = () => {
       });
       
   }
-
+  const goProfile = (userId) => {
+    navigate('/profile', {state : { userId : userId }})
+  }
 
   const stackBox = stack.map((item) => {
     return <Button variant="contained" style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#3396F4", color:'white', fontFamily: 'GmarketSansMedium'}}
@@ -197,8 +199,13 @@ const DetailPage = () => {
     >{item}</Button>
   })
 
-  const memberBox = member.map((item) => {
-    return <Button variant="contained" style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#00CAF4", color:'white', fontFamily: 'GmarketSansMedium'}}
+  const memberBox = authormember.map((item) => {
+    return <Button variant="contained" onClick={() => goProfile(item.userId)} style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#00CAF4", color:'white', fontFamily: 'GmarketSansMedium'}}
+    >{item.nickname}
+    </Button>
+  })
+  const unknownmemberBox = member.map((item) => {
+    return <Button disabled variant="contained" style={{paddingBottom:"2px",margin:"1px 5px 1px 0", height: "32px", backgroundColor : "grey", color:'white', fontFamily: 'GmarketSansMedium'}}
     >{item}
     </Button>
   })
@@ -405,7 +412,7 @@ const DetailPage = () => {
             <div className="member-div">
               <span className="stack">
                 <img className="icon" src={projectPeoplePic} alt="projectPeoplePic" />
-                {memberBox}
+                {memberBox}{unknownmemberBox}
               </span>
             </div>
 
@@ -444,7 +451,7 @@ const DetailPage = () => {
             <div>
               <button onClick={printDocument}>Print</button>
             </div>
-            <div id="readme" className="readme-div"dangerouslySetInnerHTML={{
+            <div id="readme" className="readme-div" dangerouslySetInnerHTML={{
               __html: markdownIt().render(readme),
             }}
             ></div>
