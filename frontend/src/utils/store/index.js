@@ -16,6 +16,7 @@ const store = {
 	  API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 	  localStorage.setItem("jwt", `Bearer ${token}`);
   },
+
   getToken() {
     const token = localStorage.getItem("jwt");
     if (token) {
@@ -25,6 +26,10 @@ const store = {
     delete API.defaults.headers.common['Authorization']
     return false;
   },
+
+  setImage(url) {
+    localStorage.setItem("userPic", url);  
+  }
 }
 
 export default store;
