@@ -58,7 +58,7 @@ public class FindUserResDto {
                 }
             }
         }
-        projects = userProjects.stream().map(FindMyProjectResDto::new).collect(Collectors.toList());
-        bookmarkList = user.getBookmarkList().stream().map(bookmark -> new FindMyProjectResDto(bookmark.getProject())).collect(Collectors.toList());
+        projects = userProjects.stream().map(FindProjectResDto::new).collect(Collectors.toList());
+        bookmarkList = user.getBookmarkList().stream().map(bookmark -> new FindProjectResDto(bookmark.getProject())).collect(Collectors.toList());
     }
 }
