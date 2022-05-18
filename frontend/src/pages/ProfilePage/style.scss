@@ -109,6 +109,6 @@
 
 .goto-pj:hover{
   cursor: pointer;
-  transform: scale(1.1);
-  transition: transform 0.2s;
+  transform: translateY(-20px);
+  transition: transform 0.5s;
 }
