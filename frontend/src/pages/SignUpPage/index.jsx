@@ -48,7 +48,7 @@ const SignUpPage = () => {
       <h2 className="greeting">반가워요!</h2>
       <p className="subject">소개말</p>
       <input className="input" name="greetings" onChange={handleOnChange} value={greetings}/>
-      <p className="subject">Github</p>
+      <p className="subject">Git</p>
       <input className="input" name="github" onChange={handleOnChange} value={github}/>
       <button className="button" onClick={signUp}>회원가입</button>
       
