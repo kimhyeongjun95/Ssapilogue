@@ -1,26 +1,16 @@
 import React,{ useState, useEffect } from "react";
-<<<<<<< HEAD
-import { Link } from 'react-router-dom'
-=======
-import { useLocation } from "react-router-dom";
->>>>>>> c639d962ab5b56912bb481eb2dab8fa9a8455a50
+import { Link, useLocation, useNavigate} from 'react-router-dom'
 import "./style.scss"
 import API from "../../api/API";
 import store from "../../utils/store"
 import Card from "../../components/Card";
 import heart from "../../assets/heart.png"
-<<<<<<< HEAD
 import defaultProfile from '../../assets/default.png'
-=======
-import Default from "../../assets/default.png"
 import cuteDog from "../../assets/cuteDog.png"
-
->>>>>>> c639d962ab5b56912bb481eb2dab8fa9a8455a50
-
 
 const ProfilePage = () => {
   const locations = useLocation().state;
-
+  const navigate = useNavigate();
   const [i,setI] = useState(2)
   const [bmi, setBmi] = useState(2)
   const [user, setUser] = useState('');
@@ -31,7 +21,7 @@ const ProfilePage = () => {
 
   const power = () => {
     setMyproject(user["projects"].slice(0,3*i))
-    console.log(user["projects"].length)
+    console.log(user["projects"])
     if (user["projects"].length <= 3*i) {
       setMyProMore(false)
     }else{
@@ -79,6 +69,10 @@ const ProfilePage = () => {
     }
   }, [])
 
+  const gotoProject = (item) => {
+    navigate(`/project/${item.projectId}`)
+  }
+
   return (
     <div>
       <div className="profile-div">
@@ -88,7 +82,11 @@ const ProfilePage = () => {
               <img className="likes-heart" src={heart} alt="heart" />
               <p className="likes-count">{user.userLiked}개</p>
             </div>
-            <img className="profile-pic" src={user.image ? user.image : defaultProfile} alt="profilePic" />
+            { (user.image) ?
+              <img className="user-profile-pic" src={user.image} alt="profilePic" />
+              :
+              <img className="profile-pic" src={defaultProfile} alt="profilePic" />
+            }
           </div>
           <div className="introduce-div">
             <p className="profile-p">이름 : {user.nickname}</p>
@@ -102,19 +100,17 @@ const ProfilePage = () => {
         <h2 className="my-post-h">내가 참여한 프로젝트</h2>
         <div className="card-div">
           {myproject.map((item, idx) => (
-            <div key={idx}>
-              <Link to={`/project/${item.projectId}`}>
-                <Card
-                  title={item.title}
-                  content={item.content}
-                  category={item.category}
-                  likeCnt={item.likeCnt}
-                  viewCnt={item.viewCnt}
-                  commentCnt={item.commentCnt}
-                  techStack={item.techStack}
-                  thumbnail={item.thumbnail}
-                />
-              </Link>
+            <div className="goto-pj" onClick={() => gotoProject(item)} key={idx}>
+              <Card
+                title={item.title}
+                content={item.content}
+                category={item.category}
+                likeCnt={item.likeCnt}
+                viewCnt={item.viewCnt}
+                commentCnt={item.commentCnt}
+                techStack={item.techStack}
+                thumbnail={item.thumbnail}
+              />
             </div>
           ))}
         </div>
@@ -123,7 +119,7 @@ const ProfilePage = () => {
           :
           (myproject.length === 0) ?
             <div className="dog-div">
-              <img className="cute-dog" src={cuteDog} />
+              <img className="cute-dog" src={cuteDog} alt="cutoDong"/>
               <p>😢 아직 북마크한 프로젝트가 없습니다.</p>
             </div>
             :
@@ -135,19 +131,17 @@ const ProfilePage = () => {
         <h2 className= "my-post-h">내가 북마크한 프로젝트</h2>
         <div className="card-div">
           {mybmProject.map((item, idx) => (
-            <div key={idx}>
-              <Link to={`/project/${item.projectId}`}>
-                <Card
-                  title={item.title}
-                  content={item.content}
-                  category={item.category}
-                  likeCnt={item.likeCnt}
-                  viewCnt={item.viewCnt}
-                  commentCnt={item.commentCnt}
-                  techStack={item.techStack}
-                  thumbnail={item.thumbnail}
-                />
-              </Link>
+            <div className="goto-pj" onClick={() => gotoProject(item)} key={idx}>
+              <Card
+                title={item.title}
+                content={item.content}
+                category={item.category}
+                likeCnt={item.likeCnt}
+                viewCnt={item.viewCnt}
+                commentCnt={item.commentCnt}
+                techStack={item.techStack}
+                thumbnail={item.thumbnail}
+              />
             </div>
           ))}
         </div>

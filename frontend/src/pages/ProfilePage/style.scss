@@ -107,3 +107,9 @@
   cursor: pointer;
   color: #3396F4;
 }
+
+.goto-pj:hover{
+  cursor: pointer;
+  transform: translateY(-20px);
+  transition: transform 0.5s;
+}
