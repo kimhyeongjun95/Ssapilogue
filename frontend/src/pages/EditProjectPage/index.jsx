@@ -1,7 +1,7 @@
 import React, {useState, useRef} from 'react';
 import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
-import {InputLabel,MenuItem,FormControl, Button, Chip} from "@mui/material"
+import {MenuItem,FormControl, Chip} from "@mui/material"
 import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -9,14 +9,12 @@ import { Editor } from '@toast-ui/react-editor';
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import swal from 'sweetalert';
 import "./style.scss"
-import { createTheme } from '@mui/material/styles'
-import { ThemeProvider } from '@emotion/react';
 
 const PostProjectPage = () => {
   const id = useParams().projectId;
   const navigate = useNavigate()
   const { editTitle, editCategory, editStack, editMember, editRepo, 
-    editBepo, editReadme, editAuthormember, editIntro, editThumbnail } = useLocation().state
+    editBepo, editReadme, editIntro, editThumbnail } = useLocation().state
   // 상태관리
   const [title, setTitle] = useState(editTitle)
   const [bepo, setBepo] = useState(editBepo) 
@@ -37,7 +35,6 @@ const PostProjectPage = () => {
   // 프로젝트 맴버 //
   const [phashbox, setpHashbox] = useState(editMember)
   const [phashtag, setpHashtag] = useState('')
-
   // 라벨링
   const plusHashtag = (e) => {
     if (e.key === "Enter") {
@@ -144,12 +141,17 @@ const PostProjectPage = () => {
     
     const onClickSearch = (item) => {
       setSD([])
-      inputSetValue(item)
+      if (inputBox.includes(item)) {
+        swal("잘못된 입력","이미 등록하셨어요!", "error")
+      }else{
+        inputSetbox([...inputBox, item])
+      }
+      inputSetValue('')
     }
 
     const searchMap = sD.map((item) => {
     
-      return <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap", fontFamily: "GmarketSansMedium"}}>
+      return <div className="pp-search-indi-div">
         <p className="search-p" onClick={() => onClickSearch(item)}>{item}</p>
       </div>
     });
@@ -159,13 +161,6 @@ const PostProjectPage = () => {
     
     return <div style={{width: "40%"}}>
       <p style={{marginBottom : 0, fontFamily:"GmarketSansMedium"}}> {InputTitle} </p>
-      { (sD.length) ?
-        <div className="pp-search-indi-all-div">
-          {searchMap}
-        </div>
-        :
-        null
-      }
       
       <TextField
         type="text"
@@ -178,6 +173,13 @@ const PostProjectPage = () => {
         onKeyPress={hamsu}
         placeholder={Plcaehorder}
       />
+      { (sD.length) ?
+        <div className="pp-search-indi-all-div">
+          {searchMap}
+        </div>
+        :
+        null
+      }
       <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap", fontFamily: "GmarketSansMedium"}}>
         {alHash(inputBox,inputSetbox)}  
       </div>
@@ -249,15 +251,6 @@ const PostProjectPage = () => {
       navigate(`/project/${id}`)
     }
   }
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#3396F4',
-      }
-    }
-  })
-
 
   return (
     <>
