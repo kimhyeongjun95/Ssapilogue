@@ -107,6 +107,7 @@ const ProfilePage = () => {
                 commentCnt={item.commentCnt}
                 techStack={item.techStack}
                 thumbnail={item.thumbnail}
+                bookmark={item.isBookmarked}
               />
             </div>
           ))}
@@ -138,6 +139,7 @@ const ProfilePage = () => {
                 commentCnt={item.commentCnt}
                 techStack={item.techStack}
                 thumbnail={item.thumbnail}
+                bookmark={item.isBookmarked}
               />
             </div>
           ))}
