@@ -121,7 +121,7 @@ const ProfilePage = () => {
           :
           (myproject.length === 0) ?
             <div className="dog-div">
-              <img className="cute-dog" src={cuteDog} />
+              <img className="cute-dog" src={cuteDog} alt="cutoDong"/>
               <p>😢 아직 북마크한 프로젝트가 없습니다.</p>
             </div>
             :

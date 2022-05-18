@@ -3,6 +3,7 @@ package com.ssafy.ssapilogue.api.service;
 import com.ssafy.ssapilogue.api.dto.request.CreateSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.request.DeleteSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindDefaultSurveyResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindEditVerSurveyResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyOptionResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.api.exception.CustomException;
@@ -143,5 +144,24 @@ public class SurveyServiceImpl implements SurveyService {
         defaultSurvey.add(new FindDefaultSurveyResDto(projectTitle, "에 대해 자유롭게 의견을 남겨주세요!", "주관식", null));
 
         return defaultSurvey;
+    }
+
+    @Override
+    public List<FindEditVerSurveyResDto> findEditSurveys(Long projectId) {
+        List<FindEditVerSurveyResDto> surveyList = new ArrayList<>();
+
+        List<Survey> surveys = surveyRepository.findAllByProjectId(projectId);
+        for (Survey survey : surveys) {
+            List<String> surveyOptionList = new ArrayList<>();
+
+            List<SurveyOption> surveyOptions = surveyOptionRepository.findAllBySurveyId(survey.getId());
+            for (SurveyOption surveyOption : surveyOptions) {
+                surveyOptionList.add(surveyOption.getContent());
+            }
+
+            surveyList.add(new FindEditVerSurveyResDto(survey, surveyOptionList, ""));
+        }
+
+        return surveyList;
     }
 }
