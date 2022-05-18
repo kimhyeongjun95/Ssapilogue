@@ -46,6 +46,8 @@ public class FindMyProjectResDto {
     @ApiModelProperty(value = "댓글 수", example = "20")
     private int commentCnt;
 
+    @ApiModelProperty(value = "북마크 여부", example = "True")
+    private boolean isBookmarked;
 
     public FindMyProjectResDto(Project project) {
         projectId = project.getId();
@@ -59,5 +61,14 @@ public class FindMyProjectResDto {
         hits = project.getHits();
         likeCnt = project.getLikedList().size();
         commentCnt = project.getProjectComments().size();
+        isBookmarked = false;
+    }
+
+    public boolean getIsBookmarked() {
+        return isBookmarked;
+    }
+
+    public void setIsBookmarked(boolean isBookmarked) {
+        this.isBookmarked = isBookmarked;
     }
 }
