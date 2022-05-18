@@ -1,22 +1,12 @@
 import React,{ useState, useEffect } from "react";
-<<<<<<< HEAD
-import { Link } from 'react-router-dom'
-=======
-import { useLocation } from "react-router-dom";
->>>>>>> c639d962ab5b56912bb481eb2dab8fa9a8455a50
+import { Link, useLocation } from 'react-router-dom'
 import "./style.scss"
 import API from "../../api/API";
 import store from "../../utils/store"
 import Card from "../../components/Card";
 import heart from "../../assets/heart.png"
-<<<<<<< HEAD
 import defaultProfile from '../../assets/default.png'
-=======
-import Default from "../../assets/default.png"
 import cuteDog from "../../assets/cuteDog.png"
-
->>>>>>> c639d962ab5b56912bb481eb2dab8fa9a8455a50
-
 
 const ProfilePage = () => {
   const locations = useLocation().state;
