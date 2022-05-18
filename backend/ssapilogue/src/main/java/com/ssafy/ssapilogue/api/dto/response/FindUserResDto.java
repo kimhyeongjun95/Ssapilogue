@@ -43,7 +43,7 @@ public class FindUserResDto {
 
     public FindUserResDto(User user) {
         email = user.getEmail();
-        username = user.getUserName();
+        username = user.getUsernameConv();
         nickname = user.getNickname();
         github = user.getGithub();
         greeting = user.getGreeting();
