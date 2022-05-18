@@ -46,12 +46,11 @@ const Navbar = () => {
       <Link className="home" to="/">
         <img src={Logo} alt="logo" className="logo" />
       </Link>
-      
 
       <div className="navbar_dropdown">
         {authorized ?
           <div className="navbar-profile-image">
-            { (userPic) ?
+            { userPic === 'None' ?
               <img src={userPic} alt="userPic" onClick={toggleHandler} className="person-image" />
               :
               <img src={Default} alt="defaultPic" onClick={toggleHandler} className="person-image" />
@@ -65,7 +64,6 @@ const Navbar = () => {
 
         {dropDown ? 
           <div className="navbar_dropdown_content">
-
             <div className="navbar_dropdown_content_element">
               <div className="navbar_myprofile">
                 <button className="navbar_dropdown_button" onClick={goProfile}>프로필</button>

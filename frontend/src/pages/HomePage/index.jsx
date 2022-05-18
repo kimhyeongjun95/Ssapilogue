@@ -196,9 +196,9 @@ const HomePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // useEffect(() => {
-  //   typeFilter();
-  // }, [typeOption])
+  useEffect(() => {
+    typeFilter();
+  }, [typeOption])
 
   return (
     <>

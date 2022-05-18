@@ -18,6 +18,7 @@ import store from "../../utils/store";
 import markdownIt from "markdown-it";
 import swal from 'sweetalert';
 import Card from "../../components/SmallCard"
+import save from '../../assets/save.png';
 
 //mui  디자인 라이브러리
 import Grid from '@mui/material/Grid';
@@ -475,9 +476,11 @@ const DetailPage = () => {
                 <span>리뷰·버그 리포트</span>
                 {/* </Link> */}
               </span>
-            </div>
-            <div>
-              <button onClick={printDocument}>Print</button>
+              <span className="which-one" onClick={printDocument} >
+                <img className="icon" src={save} alt="save" />
+                <span>README 내보내기</span>
+                {/* </Link> */}
+              </span>
             </div>
             <div id="readme" className="readme-div" dangerouslySetInnerHTML={{
               __html: markdownIt().render(readme),

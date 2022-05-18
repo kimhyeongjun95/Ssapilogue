@@ -20,7 +20,7 @@
   width: 100%;
   overflow: scroll;
   overflow-x: hidden;
-  // font-family: 'GmarketSansLight';
+  font-family: 'GmarketSansLight';
 }
 
 .pp-search-indi-div:hover {
@@ -32,6 +32,9 @@
   width: 40%;
   height: 100%;
   margin-top: 0;
+  img {
+    max-width: 100%;
+  }
 }
 
 .select-placeholder {
@@ -46,7 +49,7 @@
   margin-right: 5px;
 }
 
-.input::placeholder {
+.inputId::placeholder {
   font-family: 'GmarketSansMedium'
 }
 .pp-main-div {
@@ -79,10 +82,11 @@
 }
 .pp-searchmap-p {
   margin-bottom: 0;
-  font-family:"GmarketSansLight";
+  font-family:"GmarketSansMedium";
 }
 .pp-searchmap-div {
   width: 40%;
+  font-family:"GmarketSansMedium";
 }
 .pp-searchmap-hash-div {
   width: 100%;
@@ -90,7 +94,7 @@
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  font-family:"GmarketSansLight";
+  font-family:"GmarketSansMedium";
 }
 .pp-thumbnail-div {
   margin-top: 2vh;
