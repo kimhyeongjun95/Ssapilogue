@@ -33,7 +33,7 @@ const ReportPage = () => {
     }
     bugrecall()
     return
-  },[id])
+  },[id,token])
 
   const inputClick = (item) => {
     async function isSolve() {
@@ -117,7 +117,7 @@ const ReportPage = () => {
           <p className="menu-title3">날짜</p>
           <p>제보자</p>
         </div>
-        <div>
+        <div className="report-box-bugbox">
           {bugBox}
         </div>
       </div>
