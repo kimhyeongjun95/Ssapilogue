@@ -15,13 +15,14 @@ export default function BasicSelect({ option, onChange }) {
           value={option}
           onChange={onChange}
           style={{ fontFamily:'GmarketSansMedium'}}
-          defaultValue="전체"
-        >
+          defaultValue={"전체"}
+        > 
           <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"전체"}>전체</MenuItem>
           <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"공통"}>공통</MenuItem>
           <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"특화"}>특화</MenuItem>
           <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"자율"}>자율</MenuItem>
           <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"토이"}>토이</MenuItem>
+          <MenuItem style={{ fontFamily:'GmarketSansMedium'}} value={"관통"}>관통</MenuItem>
         </Select>
       </FormControl>
     </Box>

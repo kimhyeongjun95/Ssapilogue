@@ -238,7 +238,7 @@ const PostProjectPage = () => {
         category: various,
         deployAddress : bepo,
         gitAddress : repo,
-        intro : intro,
+        introduce : intro,
         member : phashbox,
         readme : markdown,
         readmeCheck : readmeCheck,
@@ -263,7 +263,10 @@ const PostProjectPage = () => {
     <>
       <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
 
-        <h2 style={{width:"40%", textAlign:"center"}}>프로젝트를 등록해주세요</h2>
+        <div className="title-highlight">
+          <h1>프로젝트를 등록해 주세요!</h1>
+        </div>
+        
         <p style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh"}}> * 는 필수항목입니다.</p>
         <Question InputTitle="* 프로젝트 이름" inputValue={title} inputSetValue={setTitle} pilsu="1" inputId="프로젝트이름"/>
         {chooseType()}
@@ -282,7 +285,7 @@ const PostProjectPage = () => {
           :
           null
         }
-        <div style={{marginTop:0}} className="readme-div">
+        <div style={{marginTop:0}} className="pp-readme-div">
           <p style={{ fontFamily:"GmarketSansMedium"}}>README</p>
           <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />
           <p className="radio-p">직접 입력하기</p> 
@@ -305,9 +308,9 @@ const PostProjectPage = () => {
 
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
           <Link to={`/project/${id}`} style={{textDecoration: "none"}}>
-            <Button size="large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </Button>
+            <button className="btn-white btn-large" style={{marginRight:"3vw"}} variant="outlined"> 취소 </button>
           </Link>
-          <Button size="large" variant="contained" onClick={editProject}> 등록하기 </Button>
+          <button className="btn-blue btn-large" variant="contained" onClick={editProject}> 수정하기 </button>
         </div>
 
        

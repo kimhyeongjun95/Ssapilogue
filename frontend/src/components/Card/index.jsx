@@ -6,8 +6,11 @@ import Comment from "../../assets/comment.png"
 import BookMarked from '../../assets/BookMarked.png'
 import NotBookMarked from '../../assets/NotBookMarked.png'
 import Default from '../../assets/SSAFY.png'
+import API from "../../api/API"
+import store from '../../utils/store'
 
-const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStack, thumbnail, bookmark }) => {
+const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStack, thumbnail, bookmark, projectId }) => {
+
   return (
     <div className="card">
       <div className="image-box">
@@ -27,7 +30,7 @@ const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStac
           <p className="card-content">{content}</p>
         </div>
         <div className="card-stack">
-          {techStack.map((stack, idx) => (
+          {techStack && techStack.map((stack, idx) => (
             <span className="card-stack-span" key={idx}>
               <Chip 
                 style={{ height : "24px", backgroundColor : "#3396F4", color:'white', fontFamily : 'GmarketSansMedium'}}

@@ -35,10 +35,9 @@ const Routes = () => {
 
       <Route path="/project/:projectId/opinions" element={<OpinionPage />} >
         <Route path="review" element={<ReviewPage />} />
-        <Route path="review/post" element={<PostReviewPage />} />
-
         <Route path="report" element={<ReportPage />} />
       </Route>
+      <Route path="/project/:projectId/opinions/review/post" element={<PostReviewPage />} />
       <Route path="/project/:projectId/opinions/report/post" element={<PostReportPage />} />
       <Route path="/project/:projectId/opinions/report/:reportId" element={<ReportDetailPage />} />
       <Route path="/project/:projectId/opinions/report/:reportId/edit" element={<EditReportPage />} />

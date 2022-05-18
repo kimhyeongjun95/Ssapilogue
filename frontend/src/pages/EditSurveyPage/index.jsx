@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import API from "../../api/API";
 import store from "../../utils/store";
 import './style.scss';
@@ -136,6 +136,7 @@ const EditSurvey = () => {
       refiningData();
       if (!checkRequired()) {
         swal("빈칸을 모두 채워주세요!", "빈칸을 모두 채우고 다시 한번 확인해주세요.","error")
+        return;
       }
       store.getToken();
       await API.post(`/api/survey/${id}`, {
@@ -160,12 +161,11 @@ const EditSurvey = () => {
 
   return (
 
-    <div className="survey">
+    <div className="post-box">
 
-      <h2>설문조사를 등록해 주세요!</h2>
-      {/* <div className="default-survey">
-        <button className="btn-blue" onClick={addBasicForm}>기본 폼 가져오기</button>
-      </div> */}
+      <div className="title-highlight" style={{marginBottom: "5vh",  fontFamily: 'GmarketSansMedium'}}>
+        <h1>설문조사를 등록해 주세요!</h1>
+      </div>
 
       {inputs.map((input, idx) => (
         <div className="survey-box" key={idx}>

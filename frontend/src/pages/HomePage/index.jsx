@@ -47,17 +47,18 @@ const HomePage = () => {
     const value = e.target.innerText;
     if (value === "인기순") {
       const result = searchResult.sort((a, b) => b.likeCnt - a.likeCnt);
-      // console.log(result);
       setSearchResult(result);
+      setSearchResult([...searchResult])
       return;
     }
     
     if (value === "최신순") {
       const result = searchResult.sort((a, b) => b.projectId - a.projectId);
-      // console.log(result);
       setSearchResult(result)
+      setSearchResult([...searchResult])
       return;
     }
+
   }
 
   const titleEnterSearch = async (e, value) => {
@@ -72,21 +73,21 @@ const HomePage = () => {
   const titleAutoSearch = async (value) => {
     const response = await API.get(`/api/project/search/title?keyword=${value}`);
     setDropResult(response.data.searchList);
-    setEntireResult(response.data.searchList);
+    // setEntireResult(response.data.searchList);
     typeFilter();
   }
 
   const techProjectAutoSearch = async (value) => {
     const response = await API.get(`/api/tech-stack/search/title?keyword=${value}`);
     setDropResult(response.data.searchList);
-    setEntireResult(response.data.searchList);
+    // setEntireResult(response.data.searchList);
     typeFilter();
   }
 
   const techStackAutoSearch = async (value) => {
     const response = await API.get(`/api/tech-stack/search/specific?keyword=${value}`);
     setTechSearchResult(response.data.searchList);
-    setEntireResult(response.data.searchList);
+    // setEntireResult(response.data.searchList);
     typeFilter();
   }
 
@@ -96,7 +97,7 @@ const HomePage = () => {
     setDropResult('');
     setTechSearchResult('');
     e.target.value = "";
-    setEntireResult(response.data.projectList);
+    // setEntireResult(response.data.projectList);
     typeFilter();
   }
 
@@ -111,11 +112,14 @@ const HomePage = () => {
   }
 
   const initialSearch = async () => {
-    const response = await API.get('api/project')
-    // console.log(response);
-    typeFilter();
-    setSearchResult(response.data.projectList)
-    setEntireResult(response.data.projectList);
+    try {
+      const response = await API.get('api/project')
+      typeFilter();
+      setSearchResult(response.data.projectList)
+      setEntireResult(response.data.projectList);
+    } catch(e) {
+      throw e;
+    }
   }
 
   const search = async(e) => {
@@ -170,6 +174,13 @@ const HomePage = () => {
       const result = entireResult.filter(search => search.category === "토이")
       setSearchResult(result);
     }
+
+    if (typeOption === "관통") {
+      const result = entireResult.filter(search => search.category === "관통")
+      setSearchResult(result);
+    }
+
+
   }
 
   const handleSearchBar = (e) => {
@@ -185,10 +196,9 @@ const HomePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    typeFilter();
-    console.log("?")
-  }, [typeOption])
+  // useEffect(() => {
+  //   typeFilter();
+  // }, [typeOption])
 
   return (
     <>
@@ -221,14 +231,14 @@ const HomePage = () => {
         <div className="home-search">
           <SelectTitleStack defaultValue="" onChange={handleSearchOption} option={searchOption} />
           <div style={{ width : "100%" }}>
-            <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)} />
+            <input className="home-search-input" placeholder="🔍 검색" type="text" onChange={e => search(e)} onKeyPress={(e) => search(e)}></input>
             { drop ?
               <div className="home-search-main">
                 <div className="home-search-label">프로젝트</div>
                 <div className="home-search-title">
 
                   {dropResult && dropResult.map((search, idx) => (
-                    <div style={{ marginBottom : "5px", fontWeight : 'bold', color : '#484848' }} key={idx}>
+                    <div className="project-search-result" style={{ marginBottom : "5px", fontWeight : 'bold', color : '#484848' }} key={idx}>
                       <Link to={`project/${search.projectId}`} className="card-link">
                         {search.title}
                       </Link>
@@ -244,6 +254,7 @@ const HomePage = () => {
                       <Chip
                         onClick={techStackClickSearch}
                         style={{ height : "24px", margin : "5px 3px", backgroundColor : "#3396F4", color:'white', fontWeight:'bold'}}
+                        className="chip-hover"
                         label={tech} 
                       />
                     </span>
@@ -290,6 +301,7 @@ const HomePage = () => {
                       techStack={search.techStack}
                       thumbnail={search.thumbnail}
                       bookmark={search.isBookmarked}
+                      projectId={search.projectId}
                     />  
                   </Link>
                 </div>

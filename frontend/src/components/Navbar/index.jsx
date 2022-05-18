@@ -22,11 +22,12 @@ const Navbar = () => {
   }
 
   const signOut = () => {
+    store.setImage("");
     store.setToken("logout");
   }
 
   const goProfile = () => {
-    navigate("/profile");
+    navigate("/profile", {state : { username : ""}});
     setDropDown(!dropDown);
   }
 
@@ -37,7 +38,7 @@ const Navbar = () => {
 
   useEffect(() => {
     signInCheck();
-    setUserPic(window.localStorage.getItem('userPic'))
+    setUserPic(store.getImage('userPic'))
   }, [])
 
   return (
@@ -51,9 +52,9 @@ const Navbar = () => {
         {authorized ?
           <div className="navbar-profile-image">
             { (userPic) ?
-              <img src={userPic} alt="" onClick={toggleHandler} className="person-image" />
+              <img src={userPic} alt="userPic" onClick={toggleHandler} className="person-image" />
               :
-              <img src={Default} alt="" onClick={toggleHandler} className="person-image" />
+              <img src={Default} alt="defaultPic" onClick={toggleHandler} className="person-image" />
             }
           </div>
           :
@@ -72,7 +73,7 @@ const Navbar = () => {
             </div>
 
             <div className="navbar_dropdown_content_element">
-              <div className="navbar_myprofile">
+              <div className="navbar-change-info">
                 <button className="navbar_dropdown_button" onClick={goChangeInfo}>정보수정</button>
               </div>
             </div>
