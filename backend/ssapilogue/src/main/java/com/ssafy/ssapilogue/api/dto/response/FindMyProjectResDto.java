@@ -46,6 +46,7 @@ public class FindMyProjectResDto {
     @ApiModelProperty(value = "댓글 수", example = "20")
     private int commentCnt;
 
+
     public FindMyProjectResDto(Project project) {
         projectId = project.getId();
         title = project.getTitle();
