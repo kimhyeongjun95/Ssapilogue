@@ -1,7 +1,7 @@
-import React, {useState, useRef,useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
-import {InputLabel,MenuItem,FormControl, Chip} from "@mui/material"
+import {MenuItem,FormControl, Chip} from "@mui/material"
 import Select from "@mui/material/Select";
 import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -9,31 +9,11 @@ import { Editor } from '@toast-ui/react-editor';
 import { Link, useNavigate, useLocation} from 'react-router-dom';
 import swal from 'sweetalert';
 import "./style.scss"
-import { createTheme } from '@mui/material/styles'
 
 const PostProjectPage = () => {
   const locations = useLocation().state;
-  // useEffect(() => {
-  //   console.log(fromi)
-  // },[])
   const { btitle, bintro, bvarious, bphashbox, bhashbox, bbepo, brepo, bthumbnail, breadmeCheck, bmarkdown } = locations
   
-  // useEffect(() => {
-  //   if(locations) {
-  //     console.log(locations.length)
-  //     const { btitle, bintro, bvarious, bphashbox, bhashbox, bbepo, brepo, bthumbnail, breadmeCheck, bmarkdown } = locations
-  //     // setTitle(btitle)
-  //     // setBepo(bbepo)
-  //     // setRepo(brepo)
-  //     // setIntro(bintro)
-  //     // setVarious(bvarious)
-  //     // setHashbox(bhashbox)
-  //     // setpHashbox(bphashbox)
-  //     // setThumnail(bthumbnail)
-  //     // setReadmeCheck(breadmeCheck)
-  //     // setMarkdown(bmarkdown)
-  //   }
-  // },[])
 
   const navigate = useNavigate()
   // 상태관리
@@ -171,8 +151,11 @@ const PostProjectPage = () => {
     
     const onClickSearch = (item) => {
       setSD([])
-      inputSetValue(item)
-      inputSetbox([...inputBox, item])
+      if (inputBox.includes(item)) {
+        swal("잘못된 입력","이미 등록하셨어요!", "error")
+      }else{
+        inputSetbox([...inputBox, item])
+      }
       inputSetValue('')
     }
 
@@ -283,16 +266,6 @@ const PostProjectPage = () => {
     
    
   }
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#3396F4',
-      }
-    }
-  })
-
-
 
   return (
     <>

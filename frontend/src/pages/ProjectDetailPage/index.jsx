@@ -87,7 +87,6 @@ const DetailPage = () => {
       setIsliked(res.data.project.isLiked)
       setIsbookmarked(res.data.project.isBookmarked)
       setOtherProejct(res.data.project.anotherProjects)
-      console.log(res)
  
       ptEmail = res.data.project.email
       if (myEmail === ptEmail) {
@@ -96,7 +95,7 @@ const DetailPage = () => {
     }
     projectCall()
 
-  },[kai,id])
+  },[kai,id,token])
   
 
   const writeComment = async() => {
@@ -355,7 +354,9 @@ const DetailPage = () => {
         case "review":
           navigate(`/project/${id}/opinions/review`)
           break;
-     
+        
+        default:
+          break;
         }
       });
   }
@@ -373,27 +374,33 @@ const DetailPage = () => {
       },
     })
       .then((value) => {
-        switch (value) {
+        switch (value) {  
           
         case "project":
+          let membercard = [...member]
+          authormember.map((item) => {
+            return membercard.push(item.nickname)       
+          })
           navigate(`/project/${id}/edit`,{state : {
             editTitle : title,
             editCategory: category,
             editStack: stack,
-            editMember: member,
+            editMember: membercard,
             editRepo : repo,
             editBepo : bepo,
             editReadme : readme,
-            edittAuthormember : authormember,
             editIntro : intro,
             editThumbnail : thumbnail
           }})
+          
           break;
      
         case "survey":
           navigate(`/project/${id}/survey/edit`)
           break;
-     
+        
+        default:
+          break;
         }
       });
   }

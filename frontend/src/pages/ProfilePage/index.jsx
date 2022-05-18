@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from "react";
-import { Link, useLocation, useNavigate} from 'react-router-dom'
+import { useLocation, useNavigate} from 'react-router-dom'
 import "./style.scss"
 import API from "../../api/API";
 import store from "../../utils/store"
@@ -10,6 +10,7 @@ import cuteDog from "../../assets/cuteDog.png"
 
 const ProfilePage = () => {
   const locations = useLocation().state;
+  const { username } = locations;
   const navigate = useNavigate();
   const [i,setI] = useState(2)
   const [bmi, setBmi] = useState(2)
@@ -21,7 +22,6 @@ const ProfilePage = () => {
 
   const power = () => {
     setMyproject(user["projects"].slice(0,3*i))
-    console.log(user["projects"])
     if (user["projects"].length <= 3*i) {
       setMyProMore(false)
     }else{
@@ -31,7 +31,6 @@ const ProfilePage = () => {
 
   const bmpower = () => {
     setMybmProject(user["bookmarkList"].slice(0,3*bmi))
-    console.log(user["bookmarkList"])
     if (user["bookmarkList"].length <= 3*i) {
       setMyBProMore(false)
     }else{
@@ -42,7 +41,6 @@ const ProfilePage = () => {
   useEffect(() => {
     async function peekuser(username) {
       const response = await API.get(`/api/user/profile?username=${username}`)
-      console.log(response)
       setUser(response.data.user);
       setMyproject(response.data.user["projects"].slice(0,3))
       if (response.data.user["projects"].length > 3) {
@@ -54,7 +52,6 @@ const ProfilePage = () => {
         setMyBProMore(true)
       }
     }
-    const { username } = locations;
     if (username) {
       peekuser(username.split('@')[0])
 
@@ -67,7 +64,7 @@ const ProfilePage = () => {
           setMybmProject(response.data.user["bookmarkList"].slice(0,3))
         })
     }
-  }, [])
+  }, [username])
 
   const gotoProject = (item) => {
     navigate(`/project/${item.projectId}`)
@@ -153,7 +150,7 @@ const ProfilePage = () => {
             :
             (mybmProject.length === 0) ?
               <div className="dog-div">
-                <img className="cute-dog" src={cuteDog} />
+                <img className="cute-dog" src={cuteDog} alt="cuteDog" />
                 <p>😢 아직 북마크한 프로젝트가 없습니다.</p>
               </div>
               :
