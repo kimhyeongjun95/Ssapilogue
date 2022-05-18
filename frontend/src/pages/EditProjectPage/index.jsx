@@ -177,6 +177,7 @@ const PostProjectPage = () => {
         onChange={handleChange}
         onKeyPress={hamsu}
         placeholder={Plcaehorder}
+        inputProps={{ style: {fontFamily: 'GmarketSansMedium'}}}
       />
       <div style={{width:"100%" ,display:"flex",flexDirection:"row", alignItems :"center",flexWrap: "wrap", fontFamily: "GmarketSansMedium"}}>
         {alHash(inputBox,inputSetbox)}  
@@ -264,10 +265,10 @@ const PostProjectPage = () => {
       <div style={{display:"flex",flexDirection:"column", justifyContent : "center", alignItems :"center"}}>
 
         <div className="title-highlight">
-          <h1>프로젝트를 등록해 주세요!</h1>
+          <h1>프로젝트를 수정해 주세요!</h1>
         </div>
         
-        <p style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh"}}> * 는 필수항목입니다.</p>
+        <p style={{width:"40%", color: "#909090", fontSize: 12,marginBottom:"5vh", fontFamily: "GmarketSansLight"}}> * 는 필수항목입니다.</p>
         <Question InputTitle="* 프로젝트 이름" inputValue={title} inputSetValue={setTitle} pilsu="1" inputId="프로젝트이름"/>
         {chooseType()}
         <Question InputTitle="배포주소" inputValue={bepo} inputSetValue={setBepo} />

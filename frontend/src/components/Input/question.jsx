@@ -19,6 +19,7 @@ function questionType( { InputTitle,inputValue ,inputSetValue, pilsu,inputId, pl
           id="outlined-basic"
           variant="outlined"
           placeholder={placeholder}
+          inputProps={{ style: {fontFamily: 'GmarketSansMedium'}}}
         />
       </div>
     </div>
@@ -34,6 +35,7 @@ function questionType( { InputTitle,inputValue ,inputSetValue, pilsu,inputId, pl
           onChange={handleChange}
           id="outlined-basic"
           variant="outlined"
+          inputProps={{ style: {fontFamily: 'GmarketSansMedium'}}}
         />
       </div>
     </div>
