@@ -38,9 +38,9 @@ const Navbar = () => {
 
   useEffect(() => {
     signInCheck();
-    setUserPic(store.getImage('userPic'))
-    setUserPic({ ...userPic })
-  }, [])
+    const value = store.getImage('userPic')
+    setUserPic(value)
+  }, [userPic])
 
   return (
     <nav>
@@ -51,10 +51,14 @@ const Navbar = () => {
       <div className="navbar_dropdown">
         {authorized ?
           <div className="navbar-profile-image">
-            { userPic === 'None' ?
-              <img src={userPic} alt="userPic" onClick={toggleHandler} className="person-image" />
+            { (userPic === "None")  ?
+              <>
+                <img src={Default} alt="defaultPic" onClick={toggleHandler} className="person-image" />
+              </>
               :
-              <img src={Default} alt="defaultPic" onClick={toggleHandler} className="person-image" />
+              <>
+                <img src={userPic} alt="userPic" onClick={toggleHandler} className="person-image" />
+              </>
             }
           </div>
           :
