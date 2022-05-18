@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.ElementCollection;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Data
@@ -63,4 +64,5 @@ public class FindProjectResDto {
         likeCnt = project.getLikedList().size();
         commentCnt = project.getProjectComments().size();
     }
+
 }

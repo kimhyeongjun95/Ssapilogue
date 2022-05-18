@@ -61,10 +61,10 @@ public class FindUserResDto {
         projects = userProjects.stream().map(FindMyProjectResDto::new).collect(Collectors.toList());
         bookmarkList = user.getBookmarkList().stream().map(bookmark -> new FindMyProjectResDto(bookmark.getProject())).collect(Collectors.toList());
 
-//        for (int j =0; j < projects.size(); j++) {
-//            if (bookmarkList.contains(projects.get(j))) {
-//                projects.get(j).
-//            }
-//        }
+        for (int j =0; j < projects.size(); j++) {
+            if (bookmarkList.contains(projects.get(j))) {
+                projects.get(j).setIsBookmarked(true);
+            }
+        }
     }
 }
