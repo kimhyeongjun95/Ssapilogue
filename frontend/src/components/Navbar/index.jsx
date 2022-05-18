@@ -46,7 +46,6 @@ const Navbar = () => {
       <Link className="home" to="/">
         <img src={Logo} alt="logo" className="logo" />
       </Link>
-      
 
       <div className="navbar_dropdown">
         {authorized ?
