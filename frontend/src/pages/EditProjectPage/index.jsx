@@ -203,6 +203,7 @@ const PostProjectPage = () => {
         <MenuItem disalbed value="">
           <em style={{ fontFamily : "GmarketSansLight", fontStyle: "normal"}}>선택해주세요.</em>
         </MenuItem>
+        <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"관통"}>관통</MenuItem>
         <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"공통"}>공통</MenuItem>
         <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"특화"}>특화</MenuItem>
         <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"자율"}>자율</MenuItem>
