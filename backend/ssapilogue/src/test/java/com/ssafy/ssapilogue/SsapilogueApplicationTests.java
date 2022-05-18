@@ -1,14 +1,14 @@
 package com.ssafy.ssapilogue;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
+import com.ulisesbocchio.jasyptspringboot.configuration.EnableEncryptablePropertiesConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 @SpringBootTest
+@Import(EnableEncryptablePropertiesConfiguration.class)
 class SsapilogueApplicationTests {
-
-	static {
-		System.setProperty("jasypt.encryptor.password", "ssapilogue104EShjDKkhHS");
-	}
 
 	@Test
 	void contextLoads() {
