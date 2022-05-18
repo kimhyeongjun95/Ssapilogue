@@ -118,6 +118,7 @@
   justify-content: center;
 }
 
+
 .card-link {
   text-decoration: none;
   color: black;
@@ -126,6 +127,7 @@
 .home-card-p {
   font-family: 'GmarketSansLight';
 }
+
 .home-card-p:hover {
   cursor: pointer;
 }
@@ -138,4 +140,9 @@
 }
 .chip-hover {
   cursor: pointer;
+}
+.card-link:hover {
+  cursor: pointer;
+  transform: translateY(-20px);
+  transition: transform 0.5s;
 }

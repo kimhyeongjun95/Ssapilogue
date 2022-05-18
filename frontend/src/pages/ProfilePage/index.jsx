@@ -85,7 +85,7 @@ const ProfilePage = () => {
             { (user.image) ?
               <img className="user-profile-pic" src={user.image} alt="profilePic" />
               :
-              <img className="profile-pic" src={Default} alt="profilePic" />
+              <img className="profile-pic" src={defaultProfile} alt="profilePic" />
             }
           </div>
           <div className="introduce-div">
