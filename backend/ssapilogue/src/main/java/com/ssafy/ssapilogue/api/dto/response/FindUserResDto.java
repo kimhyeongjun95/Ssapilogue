@@ -17,6 +17,9 @@ public class FindUserResDto {
     @ApiModelProperty(value = "이메일", example = "test1234@naver.com")
     private String email;
 
+    @ApiModelProperty(value = "유저네임", example = "test1234")
+    private String username;
+
     @ApiModelProperty(value = "닉네임", example = "김싸피[광주_1반_C104]팀원")
     private String nickname;
 
@@ -40,6 +43,7 @@ public class FindUserResDto {
 
     public FindUserResDto(User user) {
         email = user.getEmail();
+        username = user.getUsernameConv();
         nickname = user.getNickname();
         github = user.getGithub();
         greeting = user.getGreeting();
