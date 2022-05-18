@@ -139,6 +139,7 @@ const PostProjectPage = () => {
 
     color: "white",
     cursor: "pointer",
+    fontFamily: "GmarketSansMedium"
   }
  
   //
@@ -195,6 +196,7 @@ const PostProjectPage = () => {
         onChange={handleChange}
         onKeyPress={hamsu}
         placeholder={Plcaehorder}
+        inputProps={{ style: {fontFamily: 'GmarketSansMedium'}}}
       />
       { (sD.length) ?
         <div className="pp-search-indi-all-div">
