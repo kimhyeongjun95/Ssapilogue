@@ -1,13 +1,21 @@
 import React,{ useState, useEffect } from "react";
+<<<<<<< HEAD
+import { Link } from 'react-router-dom'
+=======
 import { useLocation } from "react-router-dom";
+>>>>>>> c639d962ab5b56912bb481eb2dab8fa9a8455a50
 import "./style.scss"
 import API from "../../api/API";
 import store from "../../utils/store"
 import Card from "../../components/Card";
 import heart from "../../assets/heart.png"
+<<<<<<< HEAD
+import defaultProfile from '../../assets/default.png'
+=======
 import Default from "../../assets/default.png"
 import cuteDog from "../../assets/cuteDog.png"
 
+>>>>>>> c639d962ab5b56912bb481eb2dab8fa9a8455a50
 
 
 const ProfilePage = () => {
@@ -80,11 +88,7 @@ const ProfilePage = () => {
               <img className="likes-heart" src={heart} alt="heart" />
               <p className="likes-count">{user.userLiked}개</p>
             </div>
-            { (user.image) ?
-              <img className="user-profile-pic" src={user.image} alt="profilePic" />
-              :
-              <img className="profile-pic" src={Default} alt="profilePic" />
-            }
+            <img className="profile-pic" src={user.image ? user.image : defaultProfile} alt="profilePic" />
           </div>
           <div className="introduce-div">
             <p className="profile-p">이름 : {user.nickname}</p>
@@ -99,16 +103,18 @@ const ProfilePage = () => {
         <div className="card-div">
           {myproject.map((item, idx) => (
             <div key={idx}>
-              <Card
-                title={item.title}
-                content={item.content}
-                category={item.category}
-                likeCnt={item.likeCnt}
-                viewCnt={item.viewCnt}
-                commentCnt={item.commentCnt}
-                techStack={item.techStack}
-                thumbnail={item.thumbnail}
-              />
+              <Link to={`/project/${item.projectId}`}>
+                <Card
+                  title={item.title}
+                  content={item.content}
+                  category={item.category}
+                  likeCnt={item.likeCnt}
+                  viewCnt={item.viewCnt}
+                  commentCnt={item.commentCnt}
+                  techStack={item.techStack}
+                  thumbnail={item.thumbnail}
+                />
+              </Link>
             </div>
           ))}
         </div>
@@ -130,16 +136,18 @@ const ProfilePage = () => {
         <div className="card-div">
           {mybmProject.map((item, idx) => (
             <div key={idx}>
-              <Card
-                title={item.title}
-                content={item.content}
-                category={item.category}
-                likeCnt={item.likeCnt}
-                viewCnt={item.viewCnt}
-                commentCnt={item.commentCnt}
-                techStack={item.techStack}
-                thumbnail={item.thumbnail}
-              />
+              <Link to={`/project/${item.projectId}`}>
+                <Card
+                  title={item.title}
+                  content={item.content}
+                  category={item.category}
+                  likeCnt={item.likeCnt}
+                  viewCnt={item.viewCnt}
+                  commentCnt={item.commentCnt}
+                  techStack={item.techStack}
+                  thumbnail={item.thumbnail}
+                />
+              </Link>
             </div>
           ))}
         </div>

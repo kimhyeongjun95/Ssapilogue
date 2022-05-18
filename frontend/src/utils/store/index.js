@@ -32,8 +32,11 @@ const store = {
       localStorage.setItem("userPic", null);
     }
     localStorage.setItem("userPic", url);  
-  }
+  },
 
+  getImage() {
+    return localStorage.getItem("userPic");
+  }
 
 }
 
