@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Question from "../../components/Input/question"
 import TextField from "@mui/material/TextField";
 import {MenuItem,FormControl, Chip} from "@mui/material"
@@ -11,10 +11,14 @@ import swal from 'sweetalert';
 import "./style.scss"
 
 const PostProjectPage = () => {
+  useEffect(() => {
+    console.log(document.getElementsByClassName('pp-main-div')[0].querySelector('div'))
+    document.getElementsByClassName('pp-main-div')[0].querySelector('div').focus()
+  },[])
+
   const locations = useLocation().state;
   const { btitle, bintro, bvarious, bphashbox, bhashbox, bbepo, brepo, bthumbnail, breadmeCheck, bmarkdown } = locations
   
-
   const navigate = useNavigate()
   // 상태관리
   const [title, setTitle] = useState(btitle)
@@ -29,14 +33,16 @@ const PostProjectPage = () => {
   const [searchData, setSearchData] = useState([]);
   const [msearchData, setmSearchData] = useState([]);
   const editorRef = React.createRef();
+  const titleRef = React.createRef();
   
-
   // 기술스택 //
   const [hashbox, setHashbox] = useState(bhashbox)
   const [hashtag, setHashtag] = useState('')
   // 프로젝트 맴버 //
   const [phashbox, setpHashbox] = useState(bphashbox)
   const [phashtag, setpHashtag] = useState('')
+
+
 
   // 라벨링
   const plusHashtag = (e) => {
@@ -188,7 +194,7 @@ const PostProjectPage = () => {
         :
         null
       }
-      <div ClassName="pp-searchmap-hash-div">
+      <div className="pp-searchmap-hash-div">
         {alHash(inputBox,inputSetbox)}
       </div>
     </div>
