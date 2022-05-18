@@ -6,8 +6,6 @@ import Comment from "../../assets/comment.png"
 import BookMarked from '../../assets/BookMarked.png'
 import NotBookMarked from '../../assets/NotBookMarked.png'
 import Default from '../../assets/SSAFY.png'
-import API from "../../api/API"
-import store from '../../utils/store'
 
 const Card = ({ title, content, category, likeCnt, viewCnt, commentCnt, techStack, thumbnail, bookmark, projectId }) => {
 
