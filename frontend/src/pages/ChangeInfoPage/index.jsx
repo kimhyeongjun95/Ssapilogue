@@ -51,8 +51,7 @@ const ChangeInfoPage = () => {
         image: image,
       })
       store.setImage(image);
-      navigate("/profile", { state : { username}});
-      // window.location.replace("/profile")
+      window.location.replace("/")
     } catch (e) {
       throw e;
     }
@@ -96,7 +95,7 @@ const ChangeInfoPage = () => {
 
         <div>
           <div className="change-input-box">
-            <p className="change-input-name">GITHUB</p>
+            <p className="change-input-name">Git</p>
             <input className="change-input-github" name="github" onChange={e => handleOnChange(e)} value={github}/>
           </div>
 

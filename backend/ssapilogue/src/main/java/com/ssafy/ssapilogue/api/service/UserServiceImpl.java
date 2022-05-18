@@ -113,7 +113,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public FindUserResDto findOtherUserProfile(String username) {
         User findUser = userRepository.findByUsername(username);
-        System.out.println(findUser.getEmail());
         if (findUser == null) throw new CustomException(ErrorCode.NO_USER);
         return new FindUserResDto(findUser);
     }
