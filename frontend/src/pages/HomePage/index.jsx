@@ -179,8 +179,6 @@ const HomePage = () => {
       const result = entireResult.filter(search => search.category === "관통")
       setSearchResult(result);
     }
-
-
   }
 
   const handleSearchBar = (e) => {
@@ -279,8 +277,8 @@ const HomePage = () => {
         
         <div className="home-card-option">
           <div className="home-card-sort">
-            <div onClick={handlePopular} className="home-card-p">최신순</div>
-            <div onClick={handlePopular} className="home-card-p">인기순</div>
+            <div onClick={handlePopular} value="latest" className="home-card-p">최신순</div>
+            <div onClick={handlePopular} value="mostPopular" className="home-card-p">인기순</div>
           </div>
           <SelectType defaultValue="" onChange={handleTypeOption} option={typeOption}  />
         </div>
