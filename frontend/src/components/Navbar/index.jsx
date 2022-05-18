@@ -27,7 +27,7 @@ const Navbar = () => {
   }
 
   const goProfile = () => {
-    navigate("/profile");
+    navigate("/profile", {state : { username : ""}});
     setDropDown(!dropDown);
   }
 
@@ -38,7 +38,7 @@ const Navbar = () => {
 
   useEffect(() => {
     signInCheck();
-    setUserPic(store.setImage('userPic'))
+    setUserPic(store.getImage('userPic'))
   }, [])
 
   return (
@@ -73,7 +73,7 @@ const Navbar = () => {
             </div>
 
             <div className="navbar_dropdown_content_element">
-              <div className="navbar_myprofile">
+              <div className="navbar-change-info">
                 <button className="navbar_dropdown_button" onClick={goChangeInfo}>정보수정</button>
               </div>
             </div>

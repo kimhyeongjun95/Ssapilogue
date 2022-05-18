@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import API from "../../api/API";
 import store from "../../utils/store";
 import './style.scss';
@@ -7,6 +7,7 @@ import './style.scss';
 const PostReviewPage = () => {
   const id = useParams().projectId;
   const [reviews, setReviews] = useState([]);
+  const navigate = useNavigate();
 
   const handleInput = (e, idx) => {
     const { name, value } = e.target;
@@ -30,12 +31,16 @@ const PostReviewPage = () => {
       throw e;
     }
   }
+  
+  const goBackBtn = () => {
+
+  }
 
   const submit = async () => {
     try {
       store.getToken()
-      const response = await API.post(`/api/review`, {reviews:reviews})
-      console.log(response);
+      await API.post(`/api/review`, {reviews:reviews})
+      navigate(`/project/${id}/opinions`)
     } catch (e) {
       throw e;
     }
@@ -88,7 +93,7 @@ const PostReviewPage = () => {
           </div>
         ))}
         <div style={{display:"flex",flexDirection:"row", marginTop:"5vh",marginBottom:"5vh"}}>
-          <button className="btn-white btn-large" style={{marginRight: "3vw"}}>취소</button>
+          <button className="btn-white btn-large" onClick={goBackBtn} style={{marginRight: "3vw"}}>취소</button>
           <button className="btn-blue btn-large" onClick={submit}>등록</button>
         </div>
       </div>
