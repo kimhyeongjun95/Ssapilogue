@@ -39,6 +39,7 @@ const Navbar = () => {
   useEffect(() => {
     signInCheck();
     setUserPic(store.getImage('userPic'))
+    setUserPic({ ...userPic })
   }, [])
 
   return (
