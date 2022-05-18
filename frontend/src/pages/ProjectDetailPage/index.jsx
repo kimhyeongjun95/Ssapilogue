@@ -480,7 +480,7 @@ const DetailPage = () => {
               <Grid container>
                 {otherProject && otherProject.map((search, idx) => (
                   <Grid container item xl={4} md={6} sm={12} key={idx}>
-                    <div className="home-card" >
+                    <div className="pd-home-card" >
                       <Link to={`/project/${search.projectId}`} className="card-link">
                         <Card
                           title={search.title} 

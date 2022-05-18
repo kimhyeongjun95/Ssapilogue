@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./style.scss"
 import API from "../../api/API";
 import store from "../../utils/store"
@@ -12,7 +12,7 @@ import cuteDog from "../../assets/cuteDog.png"
 
 const ProfilePage = () => {
   const locations = useLocation().state;
-
+  const navigate = useNavigate();
   const [i,setI] = useState(2)
   const [bmi, setBmi] = useState(2)
   const [user, setUser] = useState('');
@@ -23,7 +23,7 @@ const ProfilePage = () => {
 
   const power = () => {
     setMyproject(user["projects"].slice(0,3*i))
-    console.log(user["projects"].length)
+    console.log(user["projects"])
     if (user["projects"].length <= 3*i) {
       setMyProMore(false)
     }else{
@@ -71,6 +71,10 @@ const ProfilePage = () => {
     }
   }, [])
 
+  const gotoProject = (item) => {
+    navigate(`/project/${item.projectId}`)
+  }
+
   return (
     <div>
       <div className="profile-div">
@@ -98,7 +102,7 @@ const ProfilePage = () => {
         <h2 className="my-post-h">내가 참여한 프로젝트</h2>
         <div className="card-div">
           {myproject.map((item, idx) => (
-            <div key={idx}>
+            <div className="goto-pj" onClick={() => gotoProject(item)} key={idx}>
               <Card
                 title={item.title}
                 content={item.content}
@@ -129,7 +133,7 @@ const ProfilePage = () => {
         <h2 className= "my-post-h">내가 북마크한 프로젝트</h2>
         <div className="card-div">
           {mybmProject.map((item, idx) => (
-            <div key={idx}>
+            <div className="goto-pj" onClick={() => gotoProject(item)} key={idx}>
               <Card
                 title={item.title}
                 content={item.content}
