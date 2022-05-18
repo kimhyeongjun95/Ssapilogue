@@ -59,6 +59,7 @@ const ProfilePage = () => {
       store.getToken()
       API.get("api/user")
         .then((response) => {
+          console.log(response)
           setUser(response.data.user);
           setMyproject(response.data.user["projects"].slice(0,3))
           setMybmProject(response.data.user["bookmarkList"].slice(0,3))
@@ -94,13 +95,13 @@ const ProfilePage = () => {
         </div>
       </div>
       <div className="my-project-div">
-        <h2 className="my-post-h">내가 참여한 프로젝트</h2>
+        <h2 className="my-post-h">참여한 프로젝트</h2>
         <div className="card-div">
           {myproject.map((item, idx) => (
             <div className="goto-pj" onClick={() => gotoProject(item)} key={idx}>
               <Card
                 title={item.title}
-                content={item.content}
+                content={item.introduce}
                 category={item.category}
                 likeCnt={item.likeCnt}
                 viewCnt={item.viewCnt}
@@ -126,13 +127,13 @@ const ProfilePage = () => {
       </div>
 
       <div className="my-project-div">
-        <h2 className= "my-post-h">내가 북마크한 프로젝트</h2>
+        <h2 className= "my-post-h">북마크한 프로젝트</h2>
         <div className="card-div">
           {mybmProject.map((item, idx) => (
             <div className="goto-pj" onClick={() => gotoProject(item)} key={idx}>
               <Card
                 title={item.title}
-                content={item.content}
+                content={item.introduce}
                 category={item.category}
                 likeCnt={item.likeCnt}
                 viewCnt={item.viewCnt}
