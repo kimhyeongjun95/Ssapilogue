@@ -285,7 +285,7 @@ const PostProjectPage = () => {
           <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />
           <p className="radio-p">직접 입력하기</p> 
           <input type="radio" checked={readmeCheck === "0"} name="theme" value={"0"} onChange={mkChange}/>
-          <p className="radio-p">github에서 가져오기</p>
+          <p className="radio-p">git에서 가져오기</p>
         </div>
         { (readmeCheck === "1") ?
           <div style={{marginTop:"2%",width:"40%"}}>
