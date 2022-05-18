@@ -89,7 +89,7 @@ const ProfilePage = () => {
           <div className="introduce-div">
             <p className="profile-p">이름 : {user.nickname}</p>
             <p className="profile-p">이메일 : {user.email}</p>
-            <p className="profile-p">Git : {user.github}</p>
+            <p className="profile-p">git : {user.github}</p>
             <p className="profile-p">자기소개 : {user.greeting}</p>
           </div>
         </div>

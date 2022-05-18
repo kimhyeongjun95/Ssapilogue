@@ -203,6 +203,7 @@ const PostProjectPage = () => {
         <MenuItem disalbed value="">
           <em style={{ fontFamily : "GmarketSansLight", fontStyle: "normal"}}>선택해주세요.</em>
         </MenuItem>
+        <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"관통"}>관통</MenuItem>
         <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"공통"}>공통</MenuItem>
         <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"특화"}>특화</MenuItem>
         <MenuItem style={{ fontFamily : "GmarketSansLight"}} value={"자율"}>자율</MenuItem>
@@ -284,7 +285,7 @@ const PostProjectPage = () => {
           <input type="radio" checked={readmeCheck === "1"} name="theme" value={"1"} onChange={mkChange} />
           <p className="radio-p">직접 입력하기</p> 
           <input type="radio" checked={readmeCheck === "0"} name="theme" value={"0"} onChange={mkChange}/>
-          <p className="radio-p">github에서 가져오기</p>
+          <p className="radio-p">git에서 가져오기</p>
         </div>
         { (readmeCheck === "1") ?
           <div style={{marginTop:"2%",width:"40%"}}>
