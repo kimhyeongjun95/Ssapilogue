@@ -30,6 +30,7 @@ const store = {
   setImage(url) {
     if (url === "") {
       localStorage.setItem("userPic", 'None');
+      return;
     }
     localStorage.setItem("userPic", url);  
   },
