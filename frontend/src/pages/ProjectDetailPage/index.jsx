@@ -59,7 +59,9 @@ const DetailPage = () => {
   const [searchData, setSearchData] = useState([]);
   const [isWriter, setIsWriter] = useState(false);
 
-
+  useEffect(() => {
+    window.scrollTo(0,0);
+  },[])
   useEffect(() => {
     if (!token) {
       swal("권한 없음", "로그인을 마친 회원만 이용 가능합니다.","info")
@@ -67,7 +69,6 @@ const DetailPage = () => {
     }
     let myEmail = ''
     let ptEmail = ''
-    window.scrollTo(0,0);
     async function projectCall() {
       
       const response = await API.get('/api/user', { header: token })
