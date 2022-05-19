@@ -127,7 +127,11 @@
 .home-card-p {
   font-family: 'GmarketSansLight';
 }
-
+.home-card-selected {
+  color: #3396F4;
+  font-weight: bold;
+  border-bottom: 0.8px solid;
+}
 .home-card-p:hover {
   cursor: pointer;
 }
