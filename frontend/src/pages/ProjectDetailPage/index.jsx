@@ -31,7 +31,6 @@ const DetailPage = () => {
   const id = useParams().projectId;
   let navigate = useNavigate();
   const token  = store.getToken()
-  
   // 사용자 관리
   const [myEmail, setMyEmail] = useState('');
   // 변수관리 hook
@@ -64,7 +63,7 @@ const DetailPage = () => {
   useEffect(() => {
     let myEmail = ''
     let ptEmail = ''
-
+    window.scrollTo(0,0);
     async function projectCall() {
       
       const response = await API.get('/api/user', { header: token })
@@ -482,6 +481,7 @@ const DetailPage = () => {
                 {/* </Link> */}
               </span>
             </div>
+            <hr style={{width: "100%" , border: "0.5px solid #ADADAD"}}/>
             <div id="readme" className="readme-div" dangerouslySetInnerHTML={{
               __html: markdownIt().render(readme),
             }}
