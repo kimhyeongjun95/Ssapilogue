@@ -64,7 +64,28 @@
   width: 100%;
 }
 
+.stack {
+  width: 50%;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  flex-grow: 4;
+}
+
+.member {
+  width: 100%;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+}
+
+.stack-left {
+  display: flex;
+  width: 50%;
+}
+
 .member-div {
+  display: flex;
   margin-top: 10px;
 }
 
@@ -146,13 +167,6 @@
   font-family: 'GmarketSansLight';
 }
 
-.stack{
-  width: 100%;
-  flex-wrap: wrap;
-  display: flex;
-  align-items: center;
-}
-
 .option-div {
   display: flex;
   flex-direction:  row;
@@ -200,6 +214,13 @@
   color: #484848;
 }
 .icon {
+  vertical-align:top;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  margin-top: 0px;
+}
+.pp-icon {
   vertical-align:top;
   width: 30px;
   height: 30px;

@@ -423,10 +423,12 @@ const DetailPage = () => {
             <h2>{title}</h2>
           </div>
           <div className="stack-div">
-            <span className="stack">
-              <img className="icon" src={constructionPic} alt="conpic" />
-              {stackBox}
-            </span>
+            <div className="stack-left">
+              <img className="pp-icon" src={constructionPic} alt="conpic" />
+              <span className="stack">
+                {stackBox}
+              </span>
+            </div>
             { (isWriter) ?
               <span className="option-div">
                 <div className="option-category-readme" onClick={receiveReadme}>README 갱신</div>
@@ -441,8 +443,8 @@ const DetailPage = () => {
           </div>
 
           <div className="member-div">
-            <span className="stack">
-              <img className="icon" src={projectPeoplePic} alt="projectPeoplePic" />
+            <img className="pp-icon" src={projectPeoplePic} alt="projectPeoplePic" />
+            <span className="member">
               {memberBox}{unknownmemberBox}
             </span>
           </div>
