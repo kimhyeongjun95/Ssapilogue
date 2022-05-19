@@ -80,11 +80,13 @@ const ProfilePage = () => {
               <img className="likes-heart" src={heart} alt="heart" />
               <p className="likes-count">{user.userLiked}개</p>
             </div>
-            { (user.image) ?
-              <img className="user-profile-pic" src={user.image} alt="profilePic" />
-              :
-              <img className="profile-pic" src={defaultProfile} alt="profilePic" />
-            }
+            <div className="profile-image-div">
+              { (user.image) ?
+                <img className="user-profile-pic" src={user.image} alt="profilePic" />
+                :
+                <img className="profile-pic" src={defaultProfile} alt="profilePic" />
+              }
+            </div>
           </div>
           <div className="introduce-div">
             <p className="profile-p">이름 : {user.nickname}</p>
