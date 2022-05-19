@@ -7,15 +7,11 @@ import API from '../../api/API';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import { Link, useNavigate, useLocation} from 'react-router-dom';
+import store from "../../utils/store";
 import swal from 'sweetalert';
 import "./style.scss"
 
 const PostProjectPage = () => {
-  useEffect(() => {
-    console.log(document.getElementsByClassName('pp-main-div')[0].querySelector('div'))
-    document.getElementsByClassName('pp-main-div')[0].querySelector('div').focus()
-  },[])
-
   const locations = useLocation().state;
   const { btitle, bintro, bvarious, bphashbox, bhashbox, bbepo, brepo, bthumbnail, breadmeCheck, bmarkdown } = locations
   
@@ -43,6 +39,15 @@ const PostProjectPage = () => {
   const [phashtag, setpHashtag] = useState('')
 
 
+  useEffect(() => {
+    const token = store.getToken()
+    if (!token) {
+      swal("권한 없음", "로그인을 마친 회원만 이용 가능합니다.","info")
+      navigate('/')
+    }
+    console.log(document.getElementsByClassName('pp-main-div')[0].querySelector('div'))
+    document.getElementsByClassName('pp-main-div')[0].querySelector('div').focus()
+  },[])
 
   // 라벨링
   const plusHashtag = (e) => {
