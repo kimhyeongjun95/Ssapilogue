@@ -181,9 +181,20 @@ Exec command :
 
 ## 3. DB 덤프 파일
 
-
+ [Dump20220519.sql](Dump20220519.sql) 
 
 
 
 ## 4. 시연 시나리오
 
+![시나리오1](README.assets/시나리오1.png)
+
+![시나리오2](README.assets/시나리오2.png)
+
+![시나리오3](README.assets/시나리오3.png)
+
+![시나리오4](README.assets/시나리오4.png)
+
+![시나리오5](README.assets/시나리오5.png)
+
+![시나리오6](README.assets/시나리오6.png)
