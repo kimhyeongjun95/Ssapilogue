@@ -101,12 +101,13 @@ const ProfilePage = () => {
         <div className="card-div">
           {myproject.map((item, idx) => (
             <div className="goto-pj" onClick={() => gotoProject(item)} key={idx}>
+              {console.log(item)}
               <Card
                 title={item.title}
                 content={item.introduce}
                 category={item.category}
                 likeCnt={item.likeCnt}
-                viewCnt={item.viewCnt}
+                viewCnt={item.hits}
                 commentCnt={item.commentCnt}
                 techStack={item.techStack}
                 thumbnail={item.thumbnail}
@@ -138,7 +139,7 @@ const ProfilePage = () => {
                 content={item.introduce}
                 category={item.category}
                 likeCnt={item.likeCnt}
-                viewCnt={item.viewCnt}
+                viewCnt={item.hits}
                 commentCnt={item.commentCnt}
                 techStack={item.techStack}
                 thumbnail={item.thumbnail}
