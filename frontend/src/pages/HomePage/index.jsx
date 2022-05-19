@@ -23,6 +23,7 @@ const HomePage = () => {
 
   const [searchOption, setSearchOption] = useState("제목");
   const [typeOption, setTypeOption] = useState("전체");
+  const [sortOption, setSortOption] = useState('최신순');
 
   const settings = {
     dots: true,
@@ -45,8 +46,10 @@ const HomePage = () => {
 
   const handlePopular = (e) => {
     const value = e.target.innerText;
+    console.log(sortOption);
     if (value === "인기순") {
       const result = searchResult.sort((a, b) => b.likeCnt - a.likeCnt);
+      setSortOption(value);
       setSearchResult(result);
       setSearchResult([...searchResult])
       return;
@@ -54,6 +57,7 @@ const HomePage = () => {
     
     if (value === "최신순") {
       const result = searchResult.sort((a, b) => b.projectId - a.projectId);
+      setSortOption(value);
       setSearchResult(result)
       setSearchResult([...searchResult])
       return;
@@ -73,21 +77,18 @@ const HomePage = () => {
   const titleAutoSearch = async (value) => {
     const response = await API.get(`/api/project/search/title?keyword=${value}`);
     setDropResult(response.data.searchList);
-    // setEntireResult(response.data.searchList);
     typeFilter();
   }
 
   const techProjectAutoSearch = async (value) => {
     const response = await API.get(`/api/tech-stack/search/title?keyword=${value}`);
     setDropResult(response.data.searchList);
-    // setEntireResult(response.data.searchList);
     typeFilter();
   }
 
   const techStackAutoSearch = async (value) => {
     const response = await API.get(`/api/tech-stack/search/specific?keyword=${value}`);
     setTechSearchResult(response.data.searchList);
-    // setEntireResult(response.data.searchList);
     typeFilter();
   }
 
@@ -97,7 +98,6 @@ const HomePage = () => {
     setDropResult('');
     setTechSearchResult('');
     e.target.value = "";
-    // setEntireResult(response.data.projectList);
     typeFilter();
   }
 
@@ -196,6 +196,7 @@ const HomePage = () => {
 
   useEffect(() => {
     typeFilter();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typeOption])
 
   return (
@@ -277,8 +278,8 @@ const HomePage = () => {
         
         <div className="home-card-option">
           <div className="home-card-sort">
-            <div onClick={handlePopular} value="latest" className="home-card-p">최신순</div>
-            <div onClick={handlePopular} value="mostPopular" className="home-card-p">인기순</div>
+            <div className={`home-card-p ${sortOption === "최신순" ? "home-card-selected" : ""}`} onClick={handlePopular}>최신순</div>
+            <div className={`home-card-p ${sortOption === "인기순" ? "home-card-selected" : ""}`} onClick={handlePopular}>인기순</div>
           </div>
           <SelectType defaultValue="" onChange={handleTypeOption} option={typeOption}  />
         </div>
