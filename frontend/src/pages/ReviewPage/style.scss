@@ -3,4 +3,119 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: 'GmarketSansMedium';
+}
+
+.review_box {
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  width: 80%;
+}
+
+.review_menu {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid lightgray;
+}
+
+.review_contents {
+  display: flex;
+  flex-direction: row;
+}
+
+.review_title_count {
+  display: flex;
+  justify-content: space-between;
+  background-color: #C3E2F9;
+  padding-left: 20px;
+  padding-right: 20px; 
+  height: 50px;
+}
+
+.review_content_title {
+  width: 60%;
+  text-align: center;
+  font-family: 'GmarketSansMedium';
+}
+
+.review_date_title {
+  width: 20%;
+  text-align: center;
+  font-family: 'GmarketSansMedium';
+}
+
+.review_writer_title {
+  width: 20%;
+  padding-right: 5%;
+  text-align: center;
+  font-family: 'GmarketSansMedium';
+}
+
+.review_date {
+  width: 20%;
+  text-align: center;
+  font-family: 'GmarketSansLight';
+}
+
+.review_writer {
+  width: 20%;
+  padding-right: 5%;
+  text-align: center;
+  font-family: 'GmarketSansLight';
+}
+
+.review_content {
+  width: 60%;
+  padding-left: 5%;
+  font-family: 'GmarketSansLight';
+}
+
+.review_title_box {
+  padding: 0px;
+  font-family: 'GmarketSansMedium';
+}
+
+.review_title_count_options {
+  display: flex;
+  justify-content: space-between;
+  background-color: #C3E2F9;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 50px;
+  margin-bottom: 40px;
+  font-family: 'GmarketSansMedium';
+}
+
+.review_title {
+  position: relative;
+  top: -5px;
+  font-family: 'GmarketSansLight';
+}
+
+.review_chart_box {
+  display: flex;
+  justify-content: center;
+}
+
+.power {
+  width: 50%;
+}
+
+.review-btn-box {
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 3vh;
+}
+
+.review-btn {
+  width: 30px;
+  cursor: pointer;
+}
+
+.review-btn-save {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }

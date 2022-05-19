@@ -1,0 +1,133 @@
+$blue : #3396F4;
+$gray : #E8E7E7;
+$sky-blue : #C3E2F9;
+
+.post-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+hr {
+  margin-block-start: 1.5em;
+  margin-block-end: 1.5em;
+  width: 80%;
+}
+
+.btn-blue {
+  cursor: pointer;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border: 1px solid $blue;
+  border-radius: 5px;
+  background-color: $blue;
+  color: white;
+}
+
+.btn-white {
+  cursor: pointer;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border: 1px solid $blue;
+  border-radius: 5px;
+  background-color: white;
+  color: $blue;
+  font-family: 'GmarketSansLight'
+}
+
+.btn-large {
+  cursor: pointer;
+  padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border: 1px solid $blue;
+  border-radius: 5px;
+  width: 100px;
+  padding: 10px;
+}
+
+.plus {
+  height: 23px;
+  margin-bottom: 1%;
+  cursor: pointer;
+}
+
+.delete {
+  height: 10px;
+  margin-left: 5%;
+  cursor: pointer;
+}
+
+.trash {
+  height: 22px;
+  display: inline;
+  margin-left: 3%;
+  cursor: pointer;
+}
+
+.survey-box {
+  width: 30%;
+  margin-bottom: 4vh;
+  padding: 15px;
+  padding-right: 0px;
+  border: 1px solid #C4C4C4;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px $gray;
+}
+
+.title-box {
+  width: 85%;
+  margin-bottom: 20px;
+  padding: 5px;
+  background-color: $gray;
+  border: 0px;
+  border-radius: 5px;
+  color: #484848;
+  font-family: 'GmarketSansMedium';
+}
+
+.answer-box {
+  list-style: none;
+}
+
+.objective-answer {
+  width: 85%;
+  color: #484848;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid;
+  outline: none;
+  margin-bottom: 1.5vh;
+}
+
+.survey-type {
+  margin-bottom: 4%;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px $gray;
+}
+
+.default-survey {
+  width: 30%;
+  margin-bottom: 5vh;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.title-highlight {
+  width: 420px;
+  height: 76px;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(to top, $sky-blue 45%, transparent 45%);
+  font-family: 'GmarketSansMedium'
+}
+
+.option-plus {
+  height: 18px;
+  margin-left: 4.3%;
+  cursor: pointer;
+}

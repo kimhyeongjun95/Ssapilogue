@@ -7,11 +7,10 @@ import "./style.scss"
 const SignUpPage = () => {
   
   const [inputs, setInputs] = useState({
-    nickName: '',
     greetings: '',
     github: '',
   });
-  const { nickName, greetings, github } = inputs;
+  const { greetings, github } = inputs;
   const locations = useLocation().state;
   const { email, pw, userId } = locations;
 
@@ -28,7 +27,6 @@ const SignUpPage = () => {
       email: email,
       password: pw,
       userId: userId,
-      nickName: nickName,
       github: github,
       greeting: greetings,
     })
@@ -47,14 +45,10 @@ const SignUpPage = () => {
 
   return (
     <div className="box">
-      <h2>반가워요!</h2>
-      <p className="p">*는 필수항목입니다.</p>
-
-      <p className="subject">닉네임</p>
-      <input className="input" name="nickName" onChange={handleOnChange} value={nickName}/>
+      <h2 className="greeting">반가워요!</h2>
       <p className="subject">소개말</p>
       <input className="input" name="greetings" onChange={handleOnChange} value={greetings}/>
-      <p className="subject">Github</p>
+      <p className="subject">Git</p>
       <input className="input" name="github" onChange={handleOnChange} value={github}/>
       <button className="button" onClick={signUp}>회원가입</button>
       

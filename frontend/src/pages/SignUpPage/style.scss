@@ -5,28 +5,29 @@
   border: 1px solid #D0D4D8;
   width: 350px;
   height: 400px;
-  // padding: 50px;
   margin: 0 auto;
 }
 .input {
   width: 200px;
-  border-color: #3396F4;
+  height: 20px;
   border-radius: 5px;
+  border-color: #3396F4;
 }
 .button {
   width: 210px;
+  height: 30px;
   padding: 5px;
   margin-top: 30px;
   background-color: #3396F4;
   border-style: none;
   border-radius: 5px;
   color: white;
+  font-family: 'GmarketSansMedium'
 }
-.p {
-  color: #CCCCCC;
-  font-size: small;
-  margin-top: -10px;
-  }
 .subject {
   margin-right: 155px;
+  font-family: 'GmarketSansMedium'
+}
+.greeting {
+  font-family: 'GmarketSansMedium'
 }

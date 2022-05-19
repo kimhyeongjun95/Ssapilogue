@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../../api/API";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   BarChart,
   CartesianGrid,
@@ -13,6 +13,10 @@ import { Box, Tabs, Tab, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import "./style.scss"
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import save from '../../assets/save.png';
+import post from '../../assets/Edit-alt.png';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -25,7 +29,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box>
           <Typography component={"span"} >{children}</Typography>
         </Box>
       )}
@@ -52,7 +56,6 @@ const ReviewPage = () => {
 
   const getReview = async (id) => {
     const response = await API.get(`/api/review/${id}`);
-    console.log(response);
     setReviews(response.data.reviewList)
   }
 
@@ -66,30 +69,71 @@ const ReviewPage = () => {
     setValue(newValue);
   };
 
+  const printDocument = () => {
+    html2canvas(document.getElementById("printReview"), {
+      width: window.width,
+      height: 877,
+    }).then(function(canvas) {
+      console.log(document.getElementById("printReview"))
+      var imgData = canvas.toDataURL('image/png');
+      var imgWidth = 210;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+
+      var doc = new jsPDF({
+        'orientation': 'p',
+        'unit': 'mm',
+        'format': 'a4'
+      });
+
+      doc.addImage(imgData, 'PNG', 0,0 , imgWidth, imgHeight);
+      doc.save('review.pdf');
+      console.log('Reached here?');
+    });
+  } 
+
   return (
     <div className="review-detail">
-      <h1>리뷰 페이지!</h1>
-
-      <Box sx={{ width: '80%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+      <div className="review-btn-box">
+        <img className="review-btn-save" style={{marginRight: "1vw"}} src={save} alt="save" onClick={printDocument} />
+        <Link to={`/project/${id}/opinions/review/post`}>
+          <img className="review-btn" src={post} alt="post" />
+        </Link>
+      </div>
+      {/* <Box sx={{ width: '80%' }}> */}
+      <Box className="review_box">
+        <Box>
+          <Tabs 
+            TabIndicatorProps={{ style: { backgroundColor: "#C3E2F9", fontFamily: "GmarketSansMedium" } }} 
+            value={value} 
+            onChange={handleChange} 
+            indicatorColor="secondary"
+            aria-label="basic tabs example"
+            style={{fontFamily: "GmarketSansMedium"}}
+          >
             {reviews.map((review, idx) => (
-              <Tab key={idx} label={idx+1} {...a11yProps(idx+1)} />
+              <Tab style={{fontFamily: "GmarketSansMedium"}} key={idx} label={idx+1} {...a11yProps(idx+1)} />
             ))}
           </Tabs>
         </Box>
         {reviews.map((review, idx) => (
-          <div key={idx}>
+          <div id="printReview" className="review_title_box" key={idx}>
             <TabPanel value={value} index={idx}>
               {review.surveyType === "주관식" ?
                 <>
-                  <h1>{review.surveyTitle}</h1>
-                  <h1>{review.totalCount}</h1>
+                  <div className="review_title_count">
+                    <h4 className="review_title">{review.surveyTitle}</h4>
+                    <h4 className="review_title">TOTAL: {review.totalCount}명</h4>
+                  </div>
+                  <div className="review_menu">
+                    <p className="review_content_title">내용</p>
+                    <p className="review_date_title">날짜</p>
+                    <p className="review_writer_title">작성자</p>
+                  </div>
                   {review.subjectiveReviews.map((res, idx) => (
-                    <div key={idx}>
-                      {res.content}
-                      {res.nickname}
-                      {moment(res.createAt).format('YYYY년 MM월 DD일')}
+                    <div className="review_contents" key={idx}>
+                      <p className="review_content">{res.content}</p>
+                      <p className="review_date">{moment(res.createAt).format('YYYY년 MM월 DD일')}</p>
+                      <p className="review_writer">{res.nickname}</p>
                     </div>
                   ))}
                 </>
@@ -97,15 +141,19 @@ const ReviewPage = () => {
                 :
 
                 <>
-                  <h1>{review.surveyTitle}</h1>
-                  <h1>{review.totalCount}</h1>
-                  <BarChart width={730} height={250} data={review.objectiveReviews} >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="optionContent" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#3949AB" />
-                  </BarChart>
+                  <div className="review_title_count_options">
+                    <h4 className="review_title">{review.surveyTitle}</h4>
+                    <h4 className="review_title">TOTAL: {review.totalCount}명</h4>
+                  </div>
+                  <div className="review_chart_box">
+                    <BarChart style={{ fontFamily: 'GmarketSansMedium'}} width={750} height={250} data={review.objectiveReviews} >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="optionContent" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="count" fill="#3949AB" />
+                    </BarChart>
+                  </div>
                 </>
               }
             </TabPanel>

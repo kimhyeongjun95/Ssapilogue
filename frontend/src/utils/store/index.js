@@ -16,14 +16,29 @@ const store = {
 	  API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 	  localStorage.setItem("jwt", `Bearer ${token}`);
   },
+
   getToken() {
     const token = localStorage.getItem("jwt");
-	  API.defaults.headers.common['Authorization'] = `${token}`;
     if (token) {
+      API.defaults.headers.common['Authorization'] = `${token}`;
       return true;
     }
+    delete API.defaults.headers.common['Authorization']
     return false;
   },
+
+  setImage(url) {
+    if (url === "") {
+      localStorage.setItem("userPic", 'None');
+      return;
+    }
+    localStorage.setItem("userPic", url);  
+  },
+
+  getImage() {
+    return localStorage.getItem("userPic");
+  }
+
 }
 
 export default store;

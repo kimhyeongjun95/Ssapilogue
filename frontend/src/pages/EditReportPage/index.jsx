@@ -5,6 +5,7 @@ import { Editor } from '@toast-ui/react-editor';
 import {Button} from "@mui/material"
 import "./style.scss"
 import { useNavigate, useParams,useLocation } from "react-router-dom";
+import swal from 'sweetalert';
 
 const EditReportPage = () => {
   const projectid = useParams().projectId; 
@@ -12,41 +13,34 @@ const EditReportPage = () => {
   let navigate = useNavigate();
   const locations = useLocation().state;
   const { content,title } = locations;
-  
   const editorRef = React.createRef();
   const [val, setVal] = useState(title)
   const [markdown, setMarkdown] = useState(content)
 
-
-
-  
-
   const onChangeIntroFunction = () => {
     const marktext = editorRef.current.getInstance().getMarkdown()
-    console.log(marktext);
     setMarkdown(marktext)
   };
 
   const editReport = async() => {
     if (!val) {
-      return alert('제목을 입력해주세요')
+      return swal("미입력", "제목을 입력해주세요.", "error")
     }else{
       if (!markdown) {
-        return alert('마크다운을 입력해주세요!!')
+        return swal("미입력", "마크다운을 입력해주세요.", "error")
       }
     }
     try{
-      const editReport = await API.put(`/api/bug/${reportId}`, {
+      const editReport = await API.put(`/api/bug/${reportId}`, { // eslint-disable-line no-unused-vars
         title: val,
         content : markdown
       })
-      console.log(editReport)
       navigate(`/project/${projectid}/opinions/report/${reportId}`)
     } catch (e) {
       throw e;
     }
-
   }
+
   return (
     <div className="main-div">
       <h1>버그 리포트 등록 페이지!</h1>

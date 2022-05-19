@@ -5,6 +5,7 @@ $blue : #3396F4;
   border-color: transparent;
   background-color: transparent;
   font-size: 2em;
+  font-family: 'GmarketSansMedium';
 }
 
 .opinion-center {
@@ -20,4 +21,14 @@ $blue : #3396F4;
 
 .option-btn-on {
   color: $blue;
+}
+.back-project {
+  position: absolute;
+  margin-left: 10%;
+  width: 15vw;
+  margin-top: 4vh;
+  font-family: 'GmarketSansMedium';
+}
+.back-project:hover {
+  cursor: pointer;
 }

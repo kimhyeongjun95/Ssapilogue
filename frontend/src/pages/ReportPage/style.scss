@@ -16,6 +16,7 @@
   margin-left: auto;
   margin-right: auto;
   border-radius: 15px;
+  font-family: 'GmarketSansMedium';
 }
 .choose-div {
   display: flex;
@@ -29,8 +30,27 @@
   margin-right: auto;
   width:80%;
   height:60vh;
+  min-height: 360px;
   border: 1px solid black;
   border-radius: 10px;
+
+}
+.report-box-bugbox {
+  height: 52vh;
+  min-height:295px;
+  overflow: auto;
+}
+.report-box-bugbox::-webkit-scrollbar {
+  width: 10px;
+}
+.report-box-bugbox::-webkit-scrollbar-thumb {
+  background-color: #C3E2F9;
+  border-radius: 10px;
+}
+.report-box-bugbox::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
 }
 .solve-h2 {
   color: #3396F4;
@@ -41,11 +61,12 @@
   height: 2vh;
 }
 .write-pic {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
 }
 .wirte-pic-div {
-  margin-left: 90%;
+  margin-left: 88%;
+  margin-bottom: 0.5%;
 }
 
 .black-item-div {
@@ -68,21 +89,27 @@
   background-color: #C3E2F9;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
+  font-family: 'GmarketSansMedium';
 }
 .menu-solved {
   width: 10%;
   display: flex;
   align-items: center;
   margin-left: 2%;
+
 }
 .menu-title {
   width: 50%;
-  font-size: 15px;
+  font-family: 'GmarketSansLight';
 }
 .menu-title2 {
   width: 50%;
-  font-size: 15px;
 }
+.menu-title3 {
+  width: 20%;
+  font-family: 'GmarketSansMedium';
+}
+
 .menu-title:hover {
   color: #8fa4fa;
   font-weight: bold;
@@ -92,11 +119,11 @@
 }
 .menu-date {
   width: 20%;
-  font-size: 14px;
+  font-family: 'GmarketSansLight';
 }
 .menu-writer {
   width: 20%;
-  font-size: 14px;
+  font-family: 'GmarketSansLight';
 }
 input[type=checkbox] {
   transform: scale(1.3);

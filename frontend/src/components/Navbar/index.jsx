@@ -4,11 +4,13 @@ import store from "../../utils/store"
 import { useNavigate } from "react-router-dom"
 import './style.scss'
 import Default from '../../assets/default.png'
+import Logo from "../../assets/logo.png"
 
 const Navbar = () => {
 
   const [authorized, setAuthorized] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+  const [userPic, setUserPic] = useState('')
   const navigate = useNavigate();
 
   const toggleHandler = () => {
@@ -20,11 +22,12 @@ const Navbar = () => {
   }
 
   const signOut = () => {
+    store.setImage("");
     store.setToken("logout");
   }
 
   const goProfile = () => {
-    navigate("/profile");
+    navigate("/profile", {state : { username : ""}});
     setDropDown(!dropDown);
   }
 
@@ -35,44 +38,52 @@ const Navbar = () => {
 
   useEffect(() => {
     signInCheck();
-  }, [])
+    const value = store.getImage('userPic')
+    setUserPic(value)
+  }, [userPic])
 
   return (
     <nav>
       <Link className="home" to="/">
-        <h1>SSapilogue</h1>
+        <img src={Logo} alt="logo" className="logo" />
       </Link>
-      
 
       <div className="navbar_dropdown">
         {authorized ?
           <div className="navbar-profile-image">
-            <img src={Default} alt="" onClick={toggleHandler} />
+            { (userPic === "None")  ?
+              <>
+                <img src={Default} alt="defaultPic" onClick={toggleHandler} className="person-image" />
+              </>
+              :
+              <>
+                <img src={userPic} alt="userPic" onClick={toggleHandler} className="person-image" />
+              </>
+            }
           </div>
           :
           <Link className="login" to="/signin">
-            <p className="p">로그인</p>
+            <p className="login_text">로그인</p>
           </Link>
         }
 
         {dropDown ? 
           <div className="navbar_dropdown_content">
-
             <div className="navbar_dropdown_content_element">
               <div className="navbar_myprofile">
-                <button onClick={goProfile}>프로필</button>
+                <button className="navbar_dropdown_button" onClick={goProfile}>프로필</button>
               </div>
             </div>
 
             <div className="navbar_dropdown_content_element">
-              <div className="navbar_myprofile">
-                <button onClick={goChangeInfo}>정보수정</button>
+              <div className="navbar-change-info">
+                <button className="navbar_dropdown_button" onClick={goChangeInfo}>정보수정</button>
               </div>
             </div>
 
             <div className="navbar_dropdown_content_element">
               <div className="navbar_logout">
-                <button onClick={signOut}>로그아웃</button>
+                <button className="navbar_dropdown_button" onClick={signOut}>로그아웃</button>
               </div>   
             </div>
             

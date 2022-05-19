@@ -1,7 +1,9 @@
 package com.ssafy.ssapilogue.api.controller;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateSurveysReqDto;
+import com.ssafy.ssapilogue.api.dto.request.DeleteSurveyReqDto;
 import com.ssafy.ssapilogue.api.dto.response.FindDefaultSurveyResDto;
+import com.ssafy.ssapilogue.api.dto.response.FindEditVerSurveyResDto;
 import com.ssafy.ssapilogue.api.dto.response.FindSurveyResDto;
 import com.ssafy.ssapilogue.api.service.SurveyService;
 import io.swagger.annotations.Api;
@@ -51,13 +53,13 @@ public class SurveyController {
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{surveyId}")
+    @DeleteMapping
     @ApiOperation(value = "설문조사 문항 삭제", notes = "설문조사 문항을 삭제한다.")
     public ResponseEntity<Map<String, Object>> deleteSurvey(
-            @PathVariable @ApiParam(value = "설문조사 id", required = true, example = "626751b5e139e25c17d1ec8a") String surveyId) {
+            @RequestBody @ApiParam(value = "설문조사 id 리스트", required = true) DeleteSurveyReqDto deleteSurveyReqDto) {
         Map<String, Object> result = new HashMap<>();
 
-        surveyService.deleteSurvey(surveyId);
+        surveyService.deleteSurvey(deleteSurveyReqDto);
         result.put("status", "SUCCESS");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
@@ -71,6 +73,19 @@ public class SurveyController {
 
         List<FindDefaultSurveyResDto> defaultSurvey = surveyService.defaultSurvey(projectTitle);
         result.put("defaultSurvey", defaultSurvey);
+        result.put("status", "SUCCESS");
+
+        return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/edit/{projectId}")
+    @ApiOperation(value = "설문조사 수정용 설문조사 문항 전체 조회", notes = "설문조사 문항을 전체 조회한다.")
+    public ResponseEntity<Map<String, Object>> findSEditurveys(
+            @PathVariable @ApiParam(value = "프로젝트 id", required = true, example = "1") Long projectId) {
+        Map<String, Object> result = new HashMap<>();
+
+        List<FindEditVerSurveyResDto> surveyList = surveyService.findEditSurveys(projectId);
+        result.put("surveyList", surveyList);
         result.put("status", "SUCCESS");
 
         return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);

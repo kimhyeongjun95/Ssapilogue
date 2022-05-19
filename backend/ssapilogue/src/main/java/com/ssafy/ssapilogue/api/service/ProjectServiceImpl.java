@@ -1,10 +1,8 @@
 package com.ssafy.ssapilogue.api.service;
 
 import com.ssafy.ssapilogue.api.dto.request.CreateProjectReqDto;
-import com.ssafy.ssapilogue.api.dto.response.FindCommentResDto;
-import com.ssafy.ssapilogue.api.dto.response.FindProjectDetailResDto;
-import com.ssafy.ssapilogue.api.dto.response.FindProjectResDto;
-import com.ssafy.ssapilogue.api.dto.response.FindProjectTitleResDto;
+import com.ssafy.ssapilogue.api.dto.request.DeleteSurveyReqDto;
+import com.ssafy.ssapilogue.api.dto.response.*;
 import com.ssafy.ssapilogue.api.exception.CustomException;
 import com.ssafy.ssapilogue.api.exception.ErrorCode;
 import com.ssafy.ssapilogue.core.domain.*;
@@ -314,9 +312,11 @@ public class ProjectServiceImpl implements ProjectService {
 
             // 설문조사 삭제
             List<Survey> surveys = surveyRepository.findAllByProjectId(project.getId());
+            List<String> surveyIds = new ArrayList<>();
             for (Survey survey : surveys) {
-                surveyService.deleteSurvey(survey.getId());
+                surveyIds.add(survey.getId());
             }
+            surveyService.deleteSurvey(new DeleteSurveyReqDto(surveyIds));
 
             projectRepository.deleteById(projectId);
         }
@@ -410,7 +410,7 @@ public class ProjectServiceImpl implements ProjectService {
     // 프로젝트 제목 자동완성
     @Override
     public List<FindProjectTitleResDto> searchProjectTitles(String keyword) {
-        List<Project> projects = projectRepository.findBySplitTitleContainingOrderByIdDesc(getSplitTitle(keyword));
+        List<Project> projects = projectRepository.findTop5BySplitTitleContainingOrderByIdDesc(getSplitTitle(keyword));
 
         return projects.stream().map(FindProjectTitleResDto::new).collect(Collectors.toList());
     }

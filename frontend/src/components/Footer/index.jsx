@@ -5,16 +5,18 @@ const Footer = () => {
 
   return (
     <><hr className="hr"></hr><footer>
-      <div className="title">
-        <h6>SSapilogue</h6>
-      </div>
       <div className="content">
-        <h6>@ 2022 ProPolice. from SSAFY</h6>
-        <h6>Created By 김은서, 김형준, 정동균, 최강현, 하현서</h6>
+        <h5 className="footer-content-1">@ 2022 ProPolice. from</h5> 
+        <h5 className="footer-content-2"> SSAFY</h5>
+        <h5 className="footer-content-3">Created By 김은서, 김형준, 정동균, 최강현, 하현서</h5>
       </div>
       <div className="image">
-        <img className="notion" src={notion} alt="notion" />
-        <img className="notion" src={git} alt="git" />
+        <a href="https://satisfying-starfish-993.notion.site/dd785428616e47d69512de7cf90003c4">
+          <img className="icon" src={notion} alt="notion" />
+        </a>
+        <a href="https://lab.ssafy.com/s06-final/S06P31C104">
+          <img className="icon" src={git} alt="git" />
+        </a>
       </div>
     </footer></>
   )

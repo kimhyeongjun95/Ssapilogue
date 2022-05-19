@@ -111,6 +111,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public FindUserResDto findOtherUserProfile(String username) {
+        User findUser = userRepository.findByUsername(username);
+        if (findUser == null) throw new CustomException(ErrorCode.NO_USER);
+        return new FindUserResDto(findUser);
+    }
+
+    @Override
     public String updateImage(String email, MultipartFile multipartFile) {
         User user = userRepository.findByEmail(email);
         if (user == null) throw new CustomException(ErrorCode.NO_USER);

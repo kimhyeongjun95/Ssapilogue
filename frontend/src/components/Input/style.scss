@@ -1,9 +1,20 @@
 .main-div {
   width: 100%;
+  font-family: 'GmarketSansMedium';
 }
 .input-div {
   width: 40%;
+  font-family: 'GmarketSansMedium';
 }
 .p-style {
   margin-bottom: 1%;
+  font-family: 'GmarketSansMedium';
+}
+
+.question-style {
+  width: 99%;
+  height: 3.5vh;
+  min-height: 31.5px;
+  border : 1px solid #ADADAD;
+  border-radius: 5px;
 }

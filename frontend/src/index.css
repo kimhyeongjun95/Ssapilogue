@@ -5,9 +5,25 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-y: scroll;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@font-face {
+  font-family: 'GmarketSansBold';
+  src: url('./fonts/GmarketSansBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'GmarketSansLight';
+  src: url('./fonts/GmarketSansLight.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'GmarketSansMedium';
+  src: url('./fonts/GmarketSansMedium.woff') format('woff');
 }

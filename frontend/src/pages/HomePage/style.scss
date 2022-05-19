@@ -1,1 +1,148 @@
-// 
+.slide-image {
+  min-width: 500px;
+}
+
+.home-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  min-width: 500px;
+}
+
+.post-project-btn {
+  height: 36px;
+  min-width: 200px;
+  width: 20vw;
+  background-color: #3396F4;
+  color: white;
+  font-family: 'GmarketSansMedium';
+  font-size: 18px;
+  border: 0px;
+  border-radius: 5px;
+}
+
+.post-project-btn:hover {
+  cursor: pointer;
+  transform: scale(1.01);
+}
+
+.home-search {
+  display: flex;
+  margin-top: 20px;
+  width: 80%;
+  font-family: 'GmarketSansLight';
+}
+
+.MuiOutlinedInput-root {
+  height: 50px;
+}
+
+.home-search-input {
+  margin-left: 10px;
+  padding-left: 12px;
+  width: 97.5%;
+  height: 46px;
+  background-color: #fafafa;
+  border: 1px solid #ADADAD;
+  border-radius: 5px;
+  font-family:'GmarketSansMedium';
+}
+
+.home-search-main {
+  margin-left: 10px;
+  width: calc(97.5% + 14px);
+  border: 1px solid #ADADAD;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-search-label {
+  padding: 8px 2% 0;
+  color: #484848;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.home-search-title {
+  max-height: 126px;
+  border-bottom: 1px solid #ADADAD;
+  padding: 10px 2%;
+}
+
+.home-search-tech {
+  padding: 1% 2%;
+}
+
+.home-body-title {
+  font-size: 36px;
+  margin-top: 30px;
+  font-family: 'GmarketSansBold';
+}
+
+.home-body-content {
+  font-size: 16px;
+  color: #484848;
+  margin-top: 20px;
+  font-family: 'GmarketSansMedium';
+}
+
+.home-card-option {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.home-card-sort {
+  width: 120px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 50px;
+  font-weight: bold;
+  font-family: 'GmarketSansLight';
+}
+
+.cards-grid {
+  width: 80%;
+  max-width: 1500px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.home-card {
+  display: flex;
+  justify-content: center;
+}
+
+
+.card-link {
+  text-decoration: none;
+  color: black;
+}
+
+.home-card-p {
+  font-family: 'GmarketSansLight';
+}
+
+.home-card-p:hover {
+  cursor: pointer;
+}
+.home-sun:hover {
+  cursor: pointer;
+}
+.project-search-result:hover {
+  cursor: pointer;
+  background-color: #ADADAD;
+}
+.chip-hover {
+  cursor: pointer;
+}
+.card-link:hover {
+  cursor: pointer;
+  transform: translateY(-10px);
+  transition: transform 0.5s;
+}

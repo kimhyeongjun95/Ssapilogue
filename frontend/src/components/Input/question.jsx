@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import "./style.scss"
 
-function questionType( { InputTitle,inputValue ,inputSetValue, pilsu }){
+function questionType( { InputTitle,inputValue ,inputSetValue, pilsu,inputId, placeholder }){
   const handleChange = (event) => {
     inputSetValue(event.target.value);
   };
@@ -10,13 +10,16 @@ function questionType( { InputTitle,inputValue ,inputSetValue, pilsu }){
       <div className="input-div">
         <p className="p-style"> {InputTitle} </p>
         <TextField
-          style={{width:"100%"}}
+          style={{width:"100%", fontFamily:"GmarketSansMedium"}}
           size = "small"
           value={inputValue}
+          className={inputId}
           onChange={handleChange}
           required
           id="outlined-basic"
           variant="outlined"
+          placeholder={placeholder}
+          inputProps={{ style: {fontFamily: 'GmarketSansMedium'}}}
         />
       </div>
     </div>
@@ -25,12 +28,14 @@ function questionType( { InputTitle,inputValue ,inputSetValue, pilsu }){
       <div className="input-div">
         <p className="p-style"> {InputTitle} </p>
         <TextField
-          style={{width:"100%"}}
+          style={{width:"100%", fontFamily:"GmarketSansMedium"}}
           size = "small"
           value={inputValue}
+          className={inputId}
           onChange={handleChange}
           id="outlined-basic"
           variant="outlined"
+          inputProps={{ style: {fontFamily: 'GmarketSansMedium'}}}
         />
       </div>
     </div>

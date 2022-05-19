@@ -31,8 +31,8 @@ public class FindProjectDetailResDto {
     @ApiModelProperty(value = "기술 스택", example = "['ReactNative', 'Spring']")
     private List<String> techStack;
 
-    @ApiModelProperty(value = "멤버 닉네임", example = "['동균', '현서']")
-    private List<String> member;
+    @ApiModelProperty(value = "멤버 닉네임")
+    private List<FindMemberResDto> member;
 
     @ApiModelProperty(value = "멤버 닉네임", example = "['형준', '은서']")
     private List<String> anonymousMember;
@@ -79,7 +79,7 @@ public class FindProjectDetailResDto {
                 .stream().map(TechStack::getName).collect(Collectors.toList());
         member = project.getProjectMembers()
                 .stream().map(ProjectMember::getUser).collect(Collectors.toList())
-                .stream().map(User::getNickname).collect(Collectors.toList());
+                .stream().map(FindMemberResDto::new).collect(Collectors.toList());
         anonymousMember = project.getAnonymousMembers()
                 .stream().map(AnonymousMember::getNickname).collect(Collectors.toList());
         category = project.getCategory();
