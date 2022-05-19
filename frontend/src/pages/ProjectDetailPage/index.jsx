@@ -61,6 +61,10 @@ const DetailPage = () => {
 
 
   useEffect(() => {
+    if (!token) {
+      swal("권한 없음", "로그인을 마친 회원만 이용 가능합니다.","info")
+      navigate('/')
+    }
     let myEmail = ''
     let ptEmail = ''
     window.scrollTo(0,0);
@@ -406,145 +410,136 @@ const DetailPage = () => {
   
   return (
     <>
-      { (token) ? 
-        <div className="project-div">
-          { (thumbnail) ?
-            <img className="thumbImage" src={thumbnail} alt="detailImage" />
-            :
-            <img className="detailImage" src={detailImage} alt="detailImage" />
-          }
+      <div className="project-div">
+        { (thumbnail) ?
+          <img className="thumbImage" src={thumbnail} alt="detailImage" />
+          :
+          <img className="detailImage" src={detailImage} alt="detailImage" />
+        }
 
-          <div className="project-body-div">
-            <div className="title-div">
-              <div className="project-part">{category}</div>
-              <h2>{title}</h2>
-            </div>
-            <div className="stack-div">
-              <span className="stack">
-                <img className="icon" src={constructionPic} alt="conpic" />
-                {stackBox}
+        <div className="project-body-div">
+          <div className="title-div">
+            <div className="project-part">{category}</div>
+            <h2>{title}</h2>
+          </div>
+          <div className="stack-div">
+            <span className="stack">
+              <img className="icon" src={constructionPic} alt="conpic" />
+              {stackBox}
+            </span>
+            { (isWriter) ?
+              <span className="option-div">
+                <div className="option-category-readme" onClick={receiveReadme}>README 갱신</div>
+                <div className="option-category">
+                  <span onClick={whichEdit}> 수정 </span>
+                </div>
+                <div onClick={deleteProject} className="option-category-red">삭제</div>
               </span>
-              { (isWriter) ?
-                <span className="option-div">
-                  <div className="option-category-readme" onClick={receiveReadme}>README 갱신</div>
-                  <div className="option-category">
-                    <span onClick={whichEdit}> 수정 </span>
-                  </div>
-                  <div onClick={deleteProject} className="option-category-red">삭제</div>
-                </span>
-                :
-                null
-              }
-            </div>
+              :
+              null
+            }
+          </div>
 
-            <div className="member-div">
-              <span className="stack">
-                <img className="icon" src={projectPeoplePic} alt="projectPeoplePic" />
-                {memberBox}{unknownmemberBox}
+          <div className="member-div">
+            <span className="stack">
+              <img className="icon" src={projectPeoplePic} alt="projectPeoplePic" />
+              {memberBox}{unknownmemberBox}
+            </span>
+          </div>
+
+          <div className="git-div">
+            <a href={repo} rel="noreferrer" target='_blank' className="link-a">
+              <img className="icon" src={gitRepo} alt="gitRepo" />
+              <span>
+                Git Repo
               </span>
-            </div>
-
-            <div className="git-div">
-              <a href={repo} rel="noreferrer" target='_blank' className="link-a">
-                <img className="icon" src={gitRepo} alt="gitRepo" />
+            </a>
+            { (bepo) ?
+              <a href={bepo} rel="noreferrer" target='_blank' className="link-a">
+                <img className="icon" src={google} alt="google" />
                 <span>
-                  Git Repo
+                  Demo Site
                 </span>
               </a>
-              { (bepo) ?
-                <a href={bepo} rel="noreferrer" target='_blank' className="link-a">
-                  <img className="icon" src={google} alt="google" />
-                  <span>
-                    Demo Site
-                  </span>
-                </a>
-                : 
-                <span onClick={noneBepo} rel="noreferrer" target='_blank' className="link-a">
-                  <img className="icon" src={google} alt="google" />
-                  <span>
-                    Demo Site
-                  </span>
+              : 
+              <span onClick={noneBepo} rel="noreferrer" target='_blank' className="link-a">
+                <img className="icon" src={google} alt="google" />
+                <span>
+                  Demo Site
                 </span>
-              }
-              {/* <Link 
-                to={`/project/${id}/opinions/review`}
-                className="link-a"
-              > */}
-              <span className="which-one" onClick={whichOne} >
-                <img className="icon" src={report} alt="report" />
-                <span>리뷰·버그 리포트</span>
-                {/* </Link> */}
               </span>
-              <span className="which-one" onClick={printDocument} >
-                <img className="icon" src={save} alt="save" />
-                <span>README 내보내기</span>
-                {/* </Link> */}
-              </span>
-            </div>
-            <hr style={{width: "100%" , border: "0.5px solid #ADADAD"}}/>
-            <div id="readme" className="readme-div" dangerouslySetInnerHTML={{
-              __html: markdownIt().render(readme),
-            }}
-            ></div>
-            <div className="recommend-project">
-              <Grid container>
-                {otherProject && otherProject.map((search, idx) => (
-                  <Grid container item xl={4} md={6} sm={12} key={idx}>
-                    <div className="pd-home-card" >
-                      <Link to={`/project/${search.projectId}`} className="card-link">
-                        <Card
-                          title={search.title} 
-                          content={search.introduce}
-                          category={search.category}
-                          likeCnt={search.likeCnt}
-                          viewCnt={search.hits}
-                          commentCnt={search.commentCnt}
-                          techStack={search.techStack}
-                          thumbnail={search.thumbnail}
-                          bookmark={search.isBookmarked}
-                        />  
-                      </Link>
-                    </div>
-                  </Grid>
-                ))}
-              </Grid>
-            </div>
-            <div className="comment-div">
+            }
+            {/* <Link 
+              to={`/project/${id}/opinions/review`}
+              className="link-a"
+            > */}
+            <span className="which-one" onClick={whichOne} >
+              <img className="icon" src={report} alt="report" />
+              <span>리뷰·버그 리포트</span>
+              {/* </Link> */}
+            </span>
+            <span className="which-one" onClick={printDocument} >
+              <img className="icon" src={save} alt="save" />
+              <span>README 내보내기</span>
+              {/* </Link> */}
+            </span>
+          </div>
+          <hr style={{width: "100%" , border: "0.5px solid #ADADAD"}}/>
+          <div id="readme" className="readme-div" dangerouslySetInnerHTML={{
+            __html: markdownIt().render(readme),
+          }}
+          ></div>
+          <div className="recommend-project">
+            <Grid container>
+              {otherProject && otherProject.map((search, idx) => (
+                <Grid container item xl={4} md={6} sm={12} key={idx}>
+                  <div className="pd-home-card" >
+                    <Link to={`/project/${search.projectId}`} className="card-link">
+                      <Card
+                        title={search.title} 
+                        content={search.introduce}
+                        category={search.category}
+                        likeCnt={search.likeCnt}
+                        viewCnt={search.hits}
+                        commentCnt={search.commentCnt}
+                        techStack={search.techStack}
+                        thumbnail={search.thumbnail}
+                        bookmark={search.isBookmarked}
+                      />  
+                    </Link>
+                  </div>
+                </Grid>
+              ))}
+            </Grid>
+          </div>
+          <div className="comment-div">
+            <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
+            { !(searchData.length === 0) ?
               
-              {/* {indicomment.slice(startWord+1)} */}
-              <p className="comment-p">댓글  <span className="comment-number">{commentCnt}</span></p>
-              { !(searchData.length === 0) ?
-                
-                <div className="search-main-div">
-                  <p>{searchMap}</p>
-                </div>
-
-                : 
-                null
-              }
-              <div>
-                <textarea id="commentText" value={indicomment} onKeyPress={checkTag} onChange={onChangeComment} className="comment-box" maxLength={400}></textarea>
-                <button className="comment-submit" type="submit" onClick={writeComment}>댓글 작성</button>
+              <div className="search-main-div">
+                <p>{searchMap}</p>
               </div>
-            </div>
-            {commentBox}
-            
-          </div>
-          <div className="project-remote-controll">
-            <div className="remote-div">
-              <img onClick={goUp} src={letsUp} alt="likePic" />
-              <img onClick={projectLike} src={(isliked) ? alLikePic : likePic} alt="likePic" />
-              <img onClick={projectBookmark} src={(isbookmarked) ? alBookmark : bookmarkPic} alt="likePic" />
-            </div>
 
+              : 
+              null
+            }
+            <div>
+              <textarea id="commentText" value={indicomment} onKeyPress={checkTag} onChange={onChangeComment} className="comment-box" maxLength={400}></textarea>
+              <button className="comment-submit" type="submit" onClick={writeComment}>댓글 작성</button>
+            </div>
           </div>
+          {commentBox}
+          
         </div>
-        :
-        <div>
-          <h1>로그인하라고 이씨</h1>
+        <div className="project-remote-controll">
+          <div className="remote-div">
+            <img onClick={goUp} src={letsUp} alt="likePic" />
+            <img onClick={projectLike} src={(isliked) ? alLikePic : likePic} alt="likePic" />
+            <img onClick={projectBookmark} src={(isbookmarked) ? alBookmark : bookmarkPic} alt="likePic" />
+          </div>
+
         </div>
-        
-      }
+      </div>
     </>
   )
 }

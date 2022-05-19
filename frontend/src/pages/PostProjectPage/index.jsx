@@ -33,7 +33,7 @@ const PostProjectPage = () => {
   const [searchData, setSearchData] = useState([]);
   const [msearchData, setmSearchData] = useState([]);
   const editorRef = React.createRef();
-  const titleRef = React.createRef();
+
   
   // 기술스택 //
   const [hashbox, setHashbox] = useState(bhashbox)
