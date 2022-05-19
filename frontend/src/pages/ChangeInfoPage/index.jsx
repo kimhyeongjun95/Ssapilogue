@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import API from "../../api/API";
 import store from "../../utils/store";
 import DefaultImage from "../../assets/default.png"
@@ -13,14 +12,11 @@ const ChangeInfoPage = () => {
   });
   const [email, setEmail] = useState('');
   const [image, setImage] = useState('');
-  const [username, setUsername] = useState('');
   const { github, greeting } = inputs;
-  const navigate = useNavigate();
 
   const getInfo = async () => {
     store.getToken();
     const response = await API.get("/api/user")
-    setUsername(response.data.user.username);
     setImage(response.data.user.image);
     setInputs(response.data.user);
     setEmail(response.data.user.nickName);
