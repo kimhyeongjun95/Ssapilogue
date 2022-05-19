@@ -57,6 +57,7 @@ const SignInPage = () => {
   return (
     <div className="box">
       <img className="mattermost" src={mattermost} alt="mattermost" />
+      <p className="signin-instruction">* SSAFY 매터모스트 계정으로 로그인 해주세요.</p>
       <p className="id">아이디</p>
       <input className="input" name="id" onChange={handleOnChange} onKeyDown={e => handleKeys(e)} autoComplete="off" value={id}/>
       <p className="password">비밀번호</p>
