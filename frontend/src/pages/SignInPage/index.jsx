@@ -44,7 +44,7 @@ const SignInPage = () => {
         const token = res.data.token;
         store.setToken(token);
         const response = await API.get('/api/user')
-        if (response === null) {
+        if (response.data.user.image === null) {
           store.setImage("")
         } else {
           store.setImage(response.data.user.image)
