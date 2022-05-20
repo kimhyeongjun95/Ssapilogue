@@ -14,9 +14,9 @@
 | SpringBoot   | 2.6.6     |
 | MySQL        | 8.0.29    |
 | MongoDB      | 4.4.13    |
-|              |           |
-|              |           |
-|              |           |
+| React        | 17.0.1    |
+| Sass         | 1.50.1    |
+| Node.js      | 16.13.1   |
 |              |           |
 |              |           |
 |              | -         |
@@ -35,11 +35,29 @@ git clone https://lab.ssafy.com/s06-final/S06P31C104.git
 
 
 
+폴더 이동
+
+```
+cd frontend
+```
+
+
+
 빌드
 
 ```
 npm install
 ```
+
+
+
+실행
+
+```
+npm start
+```
+
+
 
 
 
