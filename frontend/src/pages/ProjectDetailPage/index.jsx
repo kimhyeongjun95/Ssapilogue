@@ -15,10 +15,10 @@ import google from "../../assets/Google.png"
 import report from "../../assets/report.png"
 import API from "../../api/API";
 import store from "../../utils/store";
-import markdownIt from "markdown-it";
 import swal from 'sweetalert';
 import Card from "../../components/SmallCard"
 import save from '../../assets/save.png';
+import { Viewer } from '@toast-ui/react-editor';
 
 //mui  디자인 라이브러리
 import Grid from '@mui/material/Grid';
@@ -62,6 +62,7 @@ const DetailPage = () => {
   useEffect(() => {
     window.scrollTo(0,0);
   },[])
+
   useEffect(() => {
     if (!token) {
       swal("권한 없음", "로그인을 마친 회원만 이용 가능합니다.","error")
@@ -76,6 +77,7 @@ const DetailPage = () => {
       setMyEmail(response.data.user.email)
 
       const res = await API.get(`/api/project/${id}`)
+      setReadme(res.data.project.readme)
       setCategory(res.data.project.category)
       setTitle(res.data.project.title)
       setStack(res.data.project.techStack)
@@ -84,7 +86,6 @@ const DetailPage = () => {
       setComment(res.data.project.comment)
       setRepo(res.data.project.gitAddress)
       setBepo(res.data.project.deployAddress)
-      setReadme(res.data.project.readme)
       setAuthorMember(res.data.project.member)
       setIntro(res.data.project.introduce)
       setThumbnail(res.data.project.thumbnail)
@@ -488,10 +489,11 @@ const DetailPage = () => {
             </span>
           </div>
           <hr style={{width: "100%" , border: "0.5px solid #ADADAD"}}/>
-          <div id="readme" className="readme-div" dangerouslySetInnerHTML={{
-            __html: markdownIt().render(readme),
-          }}
-          ></div>
+          { (readme) ? 
+            <Viewer initialValue={readme} />
+            : 
+            null
+          } 
           <div className="recommend-project">
             <Grid container>
               {otherProject && otherProject.map((search, idx) => (
