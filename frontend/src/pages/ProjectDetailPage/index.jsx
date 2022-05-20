@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import detailImage from "../../assets/detailImage.png"
 import "./style.scss"
 import constructionPic from "../../assets/construction.png"
@@ -410,6 +410,11 @@ const DetailPage = () => {
       });
   }
   
+  const gotoOther = (projectId) => {
+    navigate(`/project/${projectId}`)
+    window.location.reload();
+  }
+  
   return (
     <>
       <div className="project-div">
@@ -473,19 +478,13 @@ const DetailPage = () => {
                 </span>
               </span>
             }
-            {/* <Link 
-              to={`/project/${id}/opinions/review`}
-              className="link-a"
-            > */}
             <span className="which-one" onClick={whichOne} >
               <img className="icon" src={report} alt="report" />
               <span>리뷰·버그 리포트</span>
-              {/* </Link> */}
             </span>
             <span className="which-one" onClick={printDocument} >
               <img className="icon" src={save} alt="save" />
               <span>README 내보내기</span>
-              {/* </Link> */}
             </span>
           </div>
           <hr style={{width: "100%" , border: "0.5px solid #ADADAD"}}/>
@@ -498,20 +497,18 @@ const DetailPage = () => {
             <Grid container>
               {otherProject && otherProject.map((search, idx) => (
                 <Grid container item xl={4} md={6} sm={12} key={idx}>
-                  <div className="pd-home-card" >
-                    <Link to={`/project/${search.projectId}`} className="card-link">
-                      <Card
-                        title={search.title} 
-                        content={search.introduce}
-                        category={search.category}
-                        likeCnt={search.likeCnt}
-                        viewCnt={search.hits}
-                        commentCnt={search.commentCnt}
-                        techStack={search.techStack}
-                        thumbnail={search.thumbnail}
-                        bookmark={search.isBookmarked}
-                      />  
-                    </Link>
+                  <div onClick={() => gotoOther(search.projectId)} className="pd-home-card" >
+                    <Card
+                      title={search.title} 
+                      content={search.introduce}
+                      category={search.category}
+                      likeCnt={search.likeCnt}
+                      viewCnt={search.hits}
+                      commentCnt={search.commentCnt}
+                      techStack={search.techStack}
+                      thumbnail={search.thumbnail}
+                      bookmark={search.isBookmarked}
+                    />  
                   </div>
                 </Grid>
               ))}
