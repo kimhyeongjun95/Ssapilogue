@@ -42,7 +42,7 @@ const PostProjectPage = () => {
   useEffect(() => {
     const token = store.getToken()
     if (!token) {
-      swal("권한 없음", "로그인을 마친 회원만 이용 가능합니다.","info")
+      swal("권한 없음", "로그인을 마친 회원만 이용 가능합니다.","error")
       navigate('/')
     }
     console.log(document.getElementsByClassName('pp-main-div')[0].querySelector('div'))

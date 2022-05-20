@@ -64,7 +64,7 @@ const DetailPage = () => {
   },[])
   useEffect(() => {
     if (!token) {
-      swal("권한 없음", "로그인을 마친 회원만 이용 가능합니다.","info")
+      swal("권한 없음", "로그인을 마친 회원만 이용 가능합니다.","error")
       navigate('/')
     }
     let myEmail = ''
@@ -198,7 +198,7 @@ const DetailPage = () => {
   }
 
   const stackBox = stack.map((item) => {
-    return <Button variant="contained" style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#3396F4", color:'white', fontFamily: 'GmarketSansMedium'}}
+    return <Button variant="contained" disabled style={{margin:"1px 5px 1px 0", height: "32px", backgroundColor : "#3396F4", color:'white', fontFamily: 'GmarketSansMedium'}}
       
     >{item}</Button>
   })
