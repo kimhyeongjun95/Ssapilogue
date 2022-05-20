@@ -33,14 +33,14 @@ const PostReviewPage = () => {
   }
   
   const goBackBtn = () => {
-    navigate(`/project/${id}/opinions`)
+    navigate(`/project/${id}/opinions/review`)
   }
 
   const submit = async () => {
     try {
       store.getToken()
       await API.post(`/api/review`, {reviews:reviews})
-      navigate(`/project/${id}/opinions`)
+      navigate(`/project/${id}/opinions/review`)
     } catch (e) {
       throw e;
     }
