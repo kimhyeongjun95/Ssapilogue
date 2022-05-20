@@ -34,6 +34,7 @@ const SignUpPage = () => {
         if (res.data.message === "success") {
           const token = res.data.token;
           store.setToken(token);
+          store.setImage("");
           window.location.replace("/");
           return;
         }
