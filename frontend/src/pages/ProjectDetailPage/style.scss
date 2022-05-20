@@ -336,6 +336,7 @@
   justify-content: center;
 }
 .pd-home-card:hover {
+  cursor: pointer;
   transform: translateY(-10px);
   transition: transform 0.5s;
 }
