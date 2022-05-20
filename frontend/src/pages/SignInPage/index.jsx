@@ -57,10 +57,11 @@ const SignInPage = () => {
   return (
     <div className="box">
       <img className="mattermost" src={mattermost} alt="mattermost" />
+      <p className="signin-instruction">* SSAFY 매터모스트 계정으로 로그인 해주세요.</p>
       <p className="id">아이디</p>
-      <input className="input" name="id" onChange={handleOnChange} onKeyDown={e => handleKeys(e)} value={id}/>
+      <input className="input" name="id" onChange={handleOnChange} onKeyDown={e => handleKeys(e)} autoComplete="off" value={id}/>
       <p className="password">비밀번호</p>
-      <input className="input" name="pw" onChange={handleOnChange} onKeyDown={e => handleKeys(e)} type="password" value={pw}/>
+      <input className="input" name="pw" onChange={handleOnChange} onKeyDown={e => handleKeys(e)} autoComplete="off" type="password" value={pw}/>
       <button className="button" onClick={signIn}>로그인</button>
     </div>
   )
