@@ -46,7 +46,6 @@ const HomePage = () => {
 
   const handlePopular = (e) => {
     const value = e.target.innerText;
-    console.log(sortOption);
     if (value === "인기순") {
       const result = searchResult.sort((a, b) => b.likeCnt - a.likeCnt);
       setSortOption(value);

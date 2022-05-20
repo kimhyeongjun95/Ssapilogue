@@ -33,7 +33,7 @@ const PostReviewPage = () => {
   }
   
   const goBackBtn = () => {
-
+    navigate(`/project/${id}/opinions`)
   }
 
   const submit = async () => {

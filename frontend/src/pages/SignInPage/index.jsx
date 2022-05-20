@@ -44,7 +44,11 @@ const SignInPage = () => {
         const token = res.data.token;
         store.setToken(token);
         const response = await API.get('/api/user')
-        store.setImage(response.data.user.image)
+        if (response === null) {
+          store.setImage("")
+        } else {
+          store.setImage(response.data.user.image)
+        }
         window.location.replace("/")
         return;
       }
